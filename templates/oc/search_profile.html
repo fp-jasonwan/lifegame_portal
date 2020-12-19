@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+    <div class="col-lg-6">
+        <div class="p-5">
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">使用QR Code</h1>
+            </div>
+            <div id="reader"></div>
+            <hr>
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">使用玩家ID</h1>
+            </div>
+            <form class="user">
+                <div class="form-group">
+                    <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Student ID">
+                </div>
+                <a href="index.html" class="btn btn-primary btn-user btn-block">
+                    尋找
+                </a>
+            </form>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/html5-qrcode.min.js' %}"></script>
+<script>
+    function onScanSuccess(qrCodeMessage) {
+        // handle on success condition with the decoded message
+        console.log(qrCodeMessage)
+    }
+
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+</script>
+{% endblock %}
