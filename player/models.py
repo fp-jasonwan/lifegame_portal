@@ -1,6 +1,7 @@
 from django.db import models
 from booth.models import Participation
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from account.models import User
 # Create your models here.
 LIVE_STATUS_CHOICES = [
@@ -44,46 +45,19 @@ class Player(models.Model):
     
     def get_scores(self):
         return {
-            'money': self.get_money(),
-            'health': self.get_health_score(),
-            'academic': self.get_academic_score(),
-            'growth': self.get_growth_score(),
-            'relationship': self.get_relationship_score(),
-            'joy': self.get_joy_score()
+            'money': self.get_score('money'),
+            'health_score': self.get_score('health_score'),
+            'academic_score': self.get_score('academic_score'),
+            'growth_score': self.get_score('growth_score'),
+            'relationship_score': self.get_score('relationship_score'),
+            'joy_score': self.get_score('joy_score')
         }
-
-    def get_money(self):
-        money = self.born_status.money
-        participations = Participation.objects.filter(player=self).aggregate(money=Sum('money'))
-        money += participations['money']
-        return money
         
-    def get_health_score(self):
-        health_score = self.born_status.health_score
-        participations = Participation.objects.filter(player=self).aggregate(health_score=Sum('health_score'))
-        health_score += participations['health_score']
-        return health_score
-        
-    def get_academic_score(self):
-        academic_score = self.born_status.academic_score
-        participations = Participation.objects.filter(player=self).aggregate(academic_score=Sum('academic_score'))
-        academic_score += participations['academic_score']
-        return academic_score
-        
-    def get_growth_score(self):
-        growth_score = self.born_status.growth_score
-        participations = Participation.objects.filter(player=self).aggregate(growth_score=Sum('growth_score'))
-        growth_score += participations['growth_score']
-        return growth_score
-        
-    def get_relationship_score(self):
-        relationship_score = self.born_status.relationship_score
-        participations = Participation.objects.filter(player=self).aggregate(relationship_score=Sum('relationship_score'))
-        relationship_score += participations['relationship_score']
-        return relationship_score
-
-    def get_joy_score(self):
-        joy_score = self.born_status.joy_score
-        participations = Participation.objects.filter(player=self).aggregate(joy_score=Sum('joy_score'))
-        joy_score += participations['joy_score']
-        return joy_score
+    def get_score(self, score_name):
+        if score_name not in self.born_status.__dict__:
+            return False
+        score = getattr(self.born_status, score_name)
+        parti_score = Participation.objects.filter(player=self).aggregate(score=Coalesce(Sum(score_name), 0))
+        if parti_score['score'] > 0:
+            score += parti_score['score']
+        return score

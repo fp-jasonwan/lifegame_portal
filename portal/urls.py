@@ -21,10 +21,12 @@ from django.conf.urls.static import static
 from news.views import NewsListView
 from account.views import home_page
 
+handler404 = 'main.views.handler404'
+
 urlpatterns = [
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('', home_page, name='home'),
-    path('oc_portal/', include('oc.urls')),
+    path('oc/', include('oc.urls')),
     path('test', TemplateView.as_view(template_name='test.html'), name='test'),
     path('admin/', admin.site.urls),
     path('accounts/', include('account.urls')),

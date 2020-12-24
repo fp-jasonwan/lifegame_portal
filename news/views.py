@@ -9,7 +9,10 @@ class NewsTable(tables.Table):
     class Meta:
         model = News
         template_name = "django_tables2/bootstrap.html"
-        fields = ("message", )
+        fields = ("time", "message")
+        attrs = {
+            'class': 'table table-bordered dataTable'
+        }
 
 class NewsListView(SingleTableView):
     model = News
