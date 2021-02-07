@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render
 # Create your views here.
 
 def get_profile(request, player_id=""):
+    print(player_id)
     if player_id == "":
         player = request.user.player
         scores = player.get_scores()

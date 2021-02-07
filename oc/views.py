@@ -9,6 +9,8 @@ from django.contrib import messages
 # Create your views here.
 
 def oc_portal(request):
+    if request.user.is_authenticated == False:
+        return redirect('/')
     if request.user.user_type == 'student':
         return redirect('/404')
     return render(request, 'oc/oc_portal.html')
@@ -52,6 +54,7 @@ def check_player(request, booth_id, user_id=""):
     context = {
         'booth': booth
     }
+    print(user_id)
     if user_id == "":
         return HttpResponse(template.render(context, request))
     else:
