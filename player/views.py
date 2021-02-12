@@ -15,6 +15,7 @@ def get_profile(request, player_id=""):
         template = loader.get_template('player/profile.html')
         context = {
             'scores': scores,
+            'player': player,
         }
         return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
