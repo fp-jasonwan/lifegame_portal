@@ -2,20 +2,48 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from .models import Player
+from booth.models import Participation
 from django.shortcuts import get_object_or_404, render
+import django_tables2 as tables
+from account.models import User
+
 # Create your views here.
 
-def get_profile(request, player_id=""):
-    print(player_id)
-    if player_id == "":
+def get_profile(request, user_id=""):
+    if user_id == "":
         player = request.user.player
-        scores = player.get_scores()
-        print(scores)
-        # profile = get_object_or_404(Student, user=request.user)
-        template = loader.get_template('player/profile.html')
-        context = {
-            'scores': scores,
-            'player': player,
-        }
-        return HttpResponse(template.render(context, request))
+    else:
+        print(user_id)
+        user = User.objects.get(id=user_id)
+        player = user.player
+        # player = Player.objects.get(player_id=player_id)
+    scores = player.get_scores()
+    participations = Participation.objects.filter(player=player).all()
+    print(scores)
+    template = loader.get_template('player/profile.html')
+    context = {
+        'scores': scores,
+        'player': player,
+        'participations': PlayerParticipationTable(participations),
+
+    }
+    return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
+
+class PlayerParticipationTable(tables.Table):
+    record_time = tables.DateTimeColumn(verbose_name= '時間', format='h:i A')
+    booth = tables.Column(verbose_name='攤位')
+    overall_score = tables.Column(verbose_name='獲得分數', accessor='score.overall_score')
+    class Meta:
+        model = Participation
+        template_name = "django_tables2/bootstrap.html"
+        fields = ("record_time", "booth")
+        sequence = ('record_time', 'booth', )
+        attrs = {
+            'class': 'table table-bordered dataTable'
+        }
+
+# class PlayerParticipationListView(SingleTableView):
+#     model = Participation
+#     table_class = PlayerParticipationTable
+#     template_name = 'news.html'

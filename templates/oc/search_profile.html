@@ -5,23 +5,20 @@
     <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
     <div class="col-lg-6">
         <div class="p-5">
-            <div class="text-center">
+            <!-- <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">使用QR Code</h1>
             </div>
-            <div id="reader"></div>
+            <div id="reader"></div> -->
             <hr>
             <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">使用玩家ID</h1>
             </div>
-            <form class="user">
-                <div class="form-group">
-                    <input type="number" class="form-control form-control-user" placeholder="Enter Student ID">
-                </div>
-                <button type='submit'>search</button>
-                <!-- <a class="btn btn-primary btn-user btn-block">
-                    尋找
-                </a> -->
-            </form>
+            <div class="form-group">
+                <input type="email" class="form-control form-control-user" id="inputId" aria-describedby="emailHelp" placeholder="Enter Student ID">
+            </div>
+            <a class="btn btn-primary btn-user btn-block" onclick="searchPlayerButton()" style="color: white">
+                尋找
+            </a>
             <hr>
         </div>
     </div>
@@ -29,6 +26,25 @@
 
 <script src="{% static 'js/html5-qrcode.min.js' %}"></script>
 <script>
+    function searchPlayer(id) {
+        var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
+        console.log('check');
+        if (lastSegment != 'search_profile') {
+            var the_arr = window.location.href.split('/');
+            the_arr.pop();
+            var baseUrl = the_arr.join('/');
+            window.location.href = baseUrl + "/" + id
+        } else {
+            window.location.href = window.location.href + "/" + id
+        }
+    }
+
+    function searchPlayerButton() {
+        var id = document.getElementById('inputId').value;
+        if(Number.isInteger(parseInt(id))) {
+            searchPlayer(id);
+        }
+    }
     function onScanSuccess(qrCodeMessage) {
         // handle on success condition with the decoded message
         console.log(qrCodeMessage)

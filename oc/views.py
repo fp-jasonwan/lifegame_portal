@@ -5,6 +5,7 @@ from booth.models import Booth, Participation
 from booth.forms import ParticipationForm
 from account.models import User
 from django.contrib import messages
+from player.views import get_profile
 # Create your views here.
 # Create your views here.
 
@@ -15,11 +16,26 @@ def oc_portal(request):
         return redirect('/404')
     return render(request, 'oc/oc_portal.html')
 
-def search_profile(request):
+def search_profile(request, user_id=""):
     # profile = get_object_or_404(Student, user=request.user)
     template = loader.get_template('oc/search_profile.html')
     context = {
     }
+    if user_id == "":
+        return HttpResponse(template.render(context, request))
+    else:
+        
+        print('check point 1', user_id)
+        try:
+            user = User.objects.get(id=user_id)
+            
+            # player = user.player
+        except:
+            context['message'] = '查無此玩家!'
+            return HttpResponse(template.render(context, request))
+        print(user_id)
+        return get_profile(request, user_id)
+        # return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
 
@@ -64,12 +80,10 @@ def check_player(request, booth_id, user_id=""):
         except:
             context['message'] = '查無此玩家!'
             return HttpResponse(template.render(context, request))
-        qualify = booth.requirement.check_player(player)
-        if len(qualify) == 0:
-            return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
-        else:
-            context['message'] = '此玩家不符合資格!'
-        return HttpResponse(template.render(context, request))
+        return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
+        # else:
+        #     context['message'] = '此玩家不符合資格!'
+        # return HttpResponse(template.render(context, request))
 
 def register_page(request, booth_id, user_id):
     booth = get_object_or_404(Booth, id=booth_id)

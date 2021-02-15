@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% csrf_token %}
+{% load render_table from django_tables2 %}
 {% block content %}
     
 <!-- Content Row -->
@@ -32,18 +33,33 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                                    姓名</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ player.user }}</div>
+                                    分數</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ scores.overall_score }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                <i class="fas fa-graduation-cap fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
               </div>
+              
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                    參與記錄</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{% render_table participations %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            
               <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4 col-6">
+              <!-- <div class="col-xl-3 col-md-6 mb-4 col-6">
                   <div class="card border-left-primary shadow h-100 py-2">
                       <div class="card-body">
                           <div class="row no-gutters align-items-center">
@@ -58,10 +74,10 @@
                           </div>
                       </div>
                   </div>
-              </div>
+              </div> -->
 
               <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4 col-6">
+              <!-- <div class="col-xl-3 col-md-6 mb-4 col-6">
                   <div class="card border-left-success shadow h-100 py-2">
                       <div class="card-body">
                           <div class="row no-gutters align-items-center">
@@ -77,10 +93,10 @@
                           </div>
                       </div>
                   </div>
-              </div>
+              </div> -->
 
               <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4 col-6">
+              <!-- <div class="col-xl-3 col-md-6 mb-4 col-6">
                   <div class="card border-left-info shadow h-100 py-2">
                       <div class="card-body">
                           <div class="row no-gutters align-items-center">
@@ -100,10 +116,10 @@
                           </div>
                       </div>
                   </div>
-              </div>
+              </div> -->
 
               <!-- Pending Requests Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4 col-6">
+              <!-- <div class="col-xl-3 col-md-6 mb-4 col-6">
                   <div class="card border-left-warning shadow h-100 py-2">
                       <div class="card-body">
                           <div class="row no-gutters align-items-center">
@@ -119,10 +135,10 @@
                           </div>
                       </div>
                   </div>
-              </div>
+              </div> -->
               
               <!-- Pending Requests Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4 col-6">
+              <!-- <div class="col-xl-3 col-md-6 mb-4 col-6">
                 <div class="card border-left-dark shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -138,11 +154,11 @@
                         </div>
                     </div>
                 </div>
-              </div>
+              </div> -->
 
               
               <!-- Pending Requests Card Example -->
-              <div class="col-xl-3 col-md-6 mb-4 col-6">
+              <!-- <div class="col-xl-3 col-md-6 mb-4 col-6">
                 <div class="card border-left-danger shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -158,7 +174,7 @@
                         </div>
                     </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-secondary shadow h-100 py-2">

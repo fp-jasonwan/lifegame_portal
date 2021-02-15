@@ -9,12 +9,13 @@ class BoothRequirement(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    health_score = models.IntegerField(default=0)
-    academic_score = models.IntegerField(default=0)
-    growth_score = models.IntegerField(default=0)
-    relationship_score = models.IntegerField(default=0)
-    joy_score = models.IntegerField(default=0)
-    money = models.IntegerField(default=0)
+    overall_score = models.IntegerField(default=0)
+    # health_score = models.IntegerField(default=0)
+    # academic_score = models.IntegerField(default=0)
+    # growth_score = models.IntegerField(default=0)
+    # relationship_score = models.IntegerField(default=0)
+    # joy_score = models.IntegerField(default=0)
+    # money = models.IntegerField(default=0)
 
     def check_player(self, player):
         failed_list = []
@@ -30,12 +31,13 @@ class BoothScoring(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    health_score = models.IntegerField(blank=True, null=True)
-    academic_score = models.IntegerField(blank=True, null=True)
-    growth_score = models.IntegerField(blank=True, null=True)
-    relationship_score = models.IntegerField(blank=True, null=True)
-    joy_score = models.IntegerField(blank=True, null=True)
-    money = models.IntegerField(blank=True, null=True)
+    overall_score = models.IntegerField(blank=True, null=True)
+    # health_score = models.IntegerField(blank=True, null=True)
+    # academic_score = models.IntegerField(blank=True, null=True)
+    # growth_score = models.IntegerField(blank=True, null=True)
+    # relationship_score = models.IntegerField(blank=True, null=True)
+    # joy_score = models.IntegerField(blank=True, null=True)
+    # money = models.IntegerField(blank=True, null=True)
 
 class Booth(models.Model):
     def __str__(self):
@@ -60,10 +62,12 @@ class Participation(models.Model):
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
-    health_score = models.IntegerField(default=0)
-    academic_score = models.IntegerField(default=0)
-    growth_score = models.IntegerField(default=0)
-    relationship_score = models.IntegerField(default=0)
-    joy_score = models.IntegerField(default=0)
-    money = models.IntegerField(default=0)
+    record_time = models.DateTimeField(auto_now_add=True, blank=True)
+    score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE)
+    # health_score = models.IntegerField(default=0)
+    # academic_score = models.IntegerField(default=0)
+    # growth_score = models.IntegerField(default=0)
+    # relationship_score = models.IntegerField(default=0)
+    # joy_score = models.IntegerField(default=0)
+    # money = models.IntegerField(default=0)
     
