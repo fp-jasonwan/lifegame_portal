@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from news.views import NewsListView
 from account.views import home_page
+from booth.views import BoothsListView
 
 handler404 = 'main.views.handler404'
 
@@ -33,6 +34,7 @@ urlpatterns = [
     # path('accounts/', include('django.contrib.auth.urls')),
     path('profile/', include('player.urls')),
     path('news/', NewsListView.as_view()),
+    path('booths/', BoothsListView.as_view()),
     path('404', TemplateView.as_view(template_name='error/404.html'), name='test'),
 ]
 

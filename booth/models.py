@@ -53,7 +53,9 @@ class Booth(models.Model):
     booth_admins = models.ManyToManyField(User, related_name='booth_admins')
     score_options = models.ManyToManyField(BoothScoring, related_name='score_options')
     name = models.CharField(max_length=50)
-    requirement = models.ForeignKey(BoothRequirement, on_delete=models.CASCADE)
+    # requirement = models.ForeignKey(BoothRequirement, on_delete=models.CASCADE)
+    description = models.TextField(max_length=1000, null=True, blank=True)
+    url = models.CharField(max_length=1000, null=True, blank=True)
 
 class Participation(models.Model):
     def __str__(self):

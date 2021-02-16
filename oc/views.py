@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.template import loader
-from booth.models import Booth, Participation
+from booth.models import Booth, Participation, BoothScoring
 from booth.forms import ParticipationForm
 from account.models import User
 from django.contrib import messages
@@ -105,11 +105,12 @@ def register_player(request, booth_id, user_id, participation=""):
 
     if request.method == 'POST':
         form = ParticipationForm(request.POST)
-        print(form)
         if form.is_valid():
             print("VALID FORM")
+            booth_score_id = form.cleaned_data['booth_score_id']
+            booth_score = BoothScoring.objects.get(id=booth_score_id)
             new_parti = Participation(
-                booth = booth, player=user.player,
+                booth = booth, player=user.player, score=booth_score
             )
             new_parti.save()
             messages.success(request, '成功登記該玩家!')
