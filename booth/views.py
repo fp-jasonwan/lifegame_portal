@@ -7,10 +7,11 @@ from .models import Booth, Participation
 from django.http import HttpResponse
 import django_tables2 as tables
 from django.template import loader
+
 class BoothsTable(tables.Table):
-    name = tables.TemplateColumn('<a href="{{record.booth.url}}">{{record.booth}}</a>', verbose_name='攤位')    
-    description = tables.Column(verbose_name='簡介', accessor='booth.description')
-    # description = tables.TemplateColumn('{{ record.booth.description|linebreaks }}', verbose_name='簡介')
+    name = tables.TemplateColumn('<a href="{{record.url}}">{{record}}</a>', verbose_name='攤位')    
+    # description = tables.Column(verbose_name='簡介', accessor='booth.description')
+    description = tables.TemplateColumn('{{ record.description|linebreaks }}', verbose_name='簡介')
     class Meta:
         model = Booth
         template_name = "django_tables2/bootstrap.html"
@@ -20,14 +21,24 @@ class BoothsTable(tables.Table):
         }
 
 class BoothsListView(SingleTableView):
-    model = Participation
+    model = Booth
     table_class = BoothsTable
     template_name = 'booths.html'
+
+
+def get_booths_map(request):
+    booths = Booth.objects.all()
+    template = loader.get_template('booths.html')
+    context = {
+        'booths': BoothsTable(booths),
+
+    }
+    return HttpResponse(template.render(context, request))
 
 class ParticipationsTable(tables.Table):
     
     record_time = tables.DateTimeColumn(verbose_name= '時間', format='h:i A')
-    player = tables.TemplateColumn('<a href="/oc/search_profile/{{record.player.id }}">{{record.player}}</a>', verbose_name='玩家')    
+    player = tables.TemplateColumn('<a href="/oc/search_profile/{{record.player.user.id }}">{{record.player}}</a>', verbose_name='玩家')    
     class Meta:
         model = Participation
         template_name = "django_tables2/bootstrap.html"
