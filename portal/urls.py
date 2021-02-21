@@ -35,6 +35,7 @@ urlpatterns = [
     path('profile/', include('player.urls')),
     path('news/', NewsListView.as_view()),
     path('booths/', get_booths_map),
+    path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
     path('404', TemplateView.as_view(template_name='error/404.html'), name='test'),
 ]
 
