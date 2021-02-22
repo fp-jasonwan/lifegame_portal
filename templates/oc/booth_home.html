@@ -1,116 +1,52 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="container">
-    <div class="row">
-        
-        <!-- Profile Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ booth.id }} - {{ booth.name }}</h6>
-                </div>
-                <div class="card-body">
-                    Introduction
-                </div>
-            </div>
-        </div>
 
-        <!-- News Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <a href='check_player'>
-                <div class="card border-left-primary shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <!-- <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Earnings (Monthly)</div> -->
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">登記玩家</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-newspaper fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
 
-        <!-- Tasks Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <a href='participations'>
-                <div class="card border-left-info shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">登記紀錄</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- Pending Requests Card Example -->
-        <!-- <div class="col-xl-3 col-md-6 mb-4">
-            <a href='#'>
-                <div class="card border-left-warning shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">4</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-poll fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div> -->
-        
-        <!-- Pending Requests Card Example -->
-        <!-- <div class="col-xl-3 col-md-6 mb-4">
-            <a href='#'>
-                <div class="card border-left-danger shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-map fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div> -->
-        
-        <!-- Pending Requests Card Example -->
-        <!-- <div class="col-xl-3 col-md-6 mb-4">
-            <a href='#'>
-            <div class="card border-left-dark shadow">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">6</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-phone fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </a>
-        </div> -->
-    </div>
-    
+<body>
+<div class="main">
+	<div class="logo"><img src="{% static 'images/logo.png' %}" alt="logo"></div>
+	<div class="menu">
+		<div class="btnNews">
+			<div class="text">登記玩家</div>
+			<div class="icon"><a href="check_player"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
+		</div>
+		<div class="btnInfo">
+			<div class="text">登記紀錄</div>
+			<div class="icon"><a href="participations"><img src="{% static 'images/btnInfo.png' %}" alt="Info"></a></div>
+		</div>
+		<!-- <div class="btnStock">
+			<div class="text">地 圖</div>
+			<div class="icon"><a href="/booths"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
+		</div>
+		<div class="btnIndex">
+			<div class="text">聯 絡</div>
+			<div class="icon"><a href="/contact"><img src="{% static 'images/btnIndex.png' %}" alt="Contact"></a></div>
+		</div>
+		<div class="btnMap">
+			<div class="text">登 出</div>
+			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
+		</div> -->
+		<!-- <div class="btnMap">
+			<div class="text">地 圖</div>
+			<div class="icon"><a href="/booths"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
+		</div>
+		<div class="btnContact">
+			<div class="text">聯 絡</div>
+			<div class="icon"><a href="/contact"><img src="{% static 'images/btnIndex.png' %}" alt="Contact"></a></div>
+		</div> -->
+	
+	</div>
+		
 </div>
-{% endblock %}
+	
+	
+
+</body>
+</html>

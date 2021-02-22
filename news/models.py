@@ -10,7 +10,9 @@ class NewsCategory(models.Model):
 
 class News(models.Model):
     id = models.AutoField(primary_key=True)
-    category_id = models.OneToOneField(NewsCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(NewsCategory, related_name='news_category',
+        on_delete=models.CASCADE, 
+        null=True, blank=True)
     title = models.CharField(max_length=100)
     message = models.TextField(max_length=200)
     date = models.DateField()

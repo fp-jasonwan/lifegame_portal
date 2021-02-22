@@ -1,104 +1,41 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="container">
-    <div class="row">
-        
-        <!-- Profile Card -->
-        {% for booth in booths %}
-        <div class="col-xl-3 col-md-6 mb-4">
-            <a href='/oc/booth/{{ booth.id }}'>
-                <div class="card border-left-success shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ booth.id }} - {{ booth.name }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        {% endfor %}
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
 
-        <!-- News Card -->
-        
-
-        <!-- Tasks Card Example -->
-        <!-- <div class="col-xl-3 col-md-6 mb-4">
-            <a href='#'>
-                <div class="card border-left-info shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">3</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div> -->
-
-        <!-- Pending Requests Card Example -->
-        <!-- <div class="col-xl-3 col-md-6 mb-4">
-            <a href='#'>
-                <div class="card border-left-warning shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">4</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-poll fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div> -->
-        
-        <!-- Pending Requests Card Example -->
-        <!-- <div class="col-xl-3 col-md-6 mb-4">
-            <a href='#'>
-                <div class="card border-left-danger shadow">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-map fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div> -->
-        
-        <!-- Pending Requests Card Example -->
-        <!-- <div class="col-xl-3 col-md-6 mb-4">
-            <a href='#'>
-            <div class="card border-left-dark shadow">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">6</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-phone fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </a>
-        </div> -->
-    </div>
-    
+<body>
+<div class="sub">
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	<div class="subContent">
+		<div class="contentInfo">
+            <div class="contentNews title">攤位</div>
+			<!-- <div class="contentNews sub">
+				<div class="contentNews subMenu select">政策</div>
+				<div class="contentNews subMenu">經濟</div>
+				<div class="contentNews subMenu">...</div>
+			</div> -->
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%'>時間</div>
+			</div>
+            
+            {% for booth in booths %}
+			<div class="contentNews content1">
+				<div class="content1" style='width:100%'><a href='/oc/booth/{{ booth.id }}'>{{ booth.id }} - {{ booth.name }}</a> </div>
+			</div>
+            {% endfor %}
+      
+		</div>
+	</div>
+	
+		
 </div>
-{% endblock %}
+	
+	
+
+</body>
+</html>

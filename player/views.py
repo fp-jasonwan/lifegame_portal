@@ -19,13 +19,11 @@ def get_profile(request, user_id=""):
         # player = Player.objects.get(player_id=player_id)
     scores = player.get_scores()
     participations = Participation.objects.filter(player=player).all()
-    print(scores)
     template = loader.get_template('player/profile.html')
     context = {
         'scores': scores,
         'player': player,
-        'participations': PlayerParticipationTable(participations),
-
+        'participations': participations,
     }
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)

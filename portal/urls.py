@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from news.views import NewsListView
+from news.views import NewsListView, get_news
 from account.views import home_page
 from booth.views import BoothsListView, get_booths_map
 
@@ -33,7 +33,7 @@ urlpatterns = [
     path('accounts/', include('account.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
     path('profile/', include('player.urls')),
-    path('news/', NewsListView.as_view()),
+    path('news/', get_news),
     path('booths/', get_booths_map),
     path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
     path('404', TemplateView.as_view(template_name='error/404.html'), name='test'),

@@ -30,7 +30,7 @@ def get_booths_map(request):
     booths = Booth.objects.all()
     template = loader.get_template('booths.html')
     context = {
-        'booths': BoothsTable(booths),
+        'booths': booths,
 
     }
     return HttpResponse(template.render(context, request))
@@ -57,7 +57,8 @@ def get_parti_record(request, booth_id):
     participations = Participation.objects.filter(booth=booth).all()
     template = loader.get_template('oc/booth_participations.html')
     context = {
-        'participations': ParticipationsTable(participations),
+        'booth': booth,
+        'participations': participations,
 
     }
     return HttpResponse(template.render(context, request))

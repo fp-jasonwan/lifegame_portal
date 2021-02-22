@@ -1,99 +1,43 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-</style>
-<div class="container">
-    <div class="row">
-        
-        <!-- Profile Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ booth.id }} - {{ booth.name }}</h6>
-                </div>
-                <div class="card-body">
-                    Introduction
-                </div>
+<body>
+<div class="sub">
+    <div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+    <div class="subContent">
+        <div class="contentInfo">
+            <div class="contentNews title">攤位</div>
+            <div class="contentNews bar">
+                <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
             </div>
+            <div class="contentNews content1">
+                <div class="content1" style='width:100%'>{{ booth.description }} </div>
+            </div>
+        
         </div>
         
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">核實玩家</div>
-                <div class="card-body">
-                    <div class="p-5">
-                        <!-- <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">使用QR Code</h1>
-                        </div>
-                        <div id="reader"></div> -->
-                        <hr>
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">使用玩家ID</h1>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control form-control-user" id="inputId" aria-describedby="emailHelp" placeholder="Enter Student ID">
-                        </div>
-                        <a class="btn btn-primary btn-user btn-block" onclick="checkPlayerButton()" style="color: white">
-                            尋找
-                        </a>
-                        <hr>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+    
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="login">
+            <div class="username"><input type="text" id="inputId" name="username" class="usernameBox" placeholder="User ID"></div>
+        </div>	
+        <div class="btn"><img src="{% static 'images/btnGo.png' %}" onclick="checkPlayerButton()"></div>
+        
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+        
 </div>
-<div id="myModal" class="modal">
 
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>{{ message }}</p>
-    </div>
-  
-</div>
+</body>
 <script type='text/javascript'>
     var msg = "{{ message }}";
     if (msg) {
@@ -157,4 +101,3 @@ body {font-family: Arial, Helvetica, sans-serif;}
         "reader", { fps: 10, qrbox: 250 });
     html5QrcodeScanner.render(onScanSuccess);
 </script>
-{% endblock %}

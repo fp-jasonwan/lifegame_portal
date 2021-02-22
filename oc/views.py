@@ -105,6 +105,7 @@ def register_player(request, booth_id, user_id, participation=""):
 
     if request.method == 'POST':
         form = ParticipationForm(request.POST)
+        print(form.is_valid())
         if form.is_valid():
             print("VALID FORM")
             booth_score_id = form.cleaned_data['booth_score_id']

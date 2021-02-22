@@ -1,32 +1,40 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<div class="col-lg-6">
-  <div class="p-5">
-      <div class="text-center">
-          <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-      </div>
-      
-      <form method="post" action="{% url 'login' %}">
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="container">
+	<div class="logo"><img src="{% static 'images/logo.png' %}" alt="logo"></div>
+    
+    <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <table>
-        <tr>
-            <td>{{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.password.label_tag }}</td>
-            <td>{{ form.password }}</td>
-        </tr>
-        </table>
+        <!-- <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table> -->
+        <div class="login">
+            <div class="username"><input type="text" id="id_username" name="username" class="usernameBox" placeholder="USERNAME"></div>
+            <div class="password form-control form_control-user"><input type="password" id="passwordBox" name="password" class="passwordBox" placeholder="PASSWORD" required_id=''></div>
+        </div>	
+        <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" value="login"></div>
         
-        <input type="submit" value="login">
         <input type="hidden" name="next" value="{{ next }}">
-      </form>
-      <hr>
-      <div class="text-center">
-          <a class="small" href="forgot-password.html">Forgot Password?</a>
-      </div>
-  </div>
+	</form>
 </div>
-{% endblock %}
+	
+	
+
+</body>
+</html>

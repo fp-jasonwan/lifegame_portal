@@ -1,62 +1,52 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="container">
-    <div class="row">
-        
-        <!-- Profile Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ booth.id }} - {{ booth.name }}</h6>
-                </div>
-                <div class="card-body">
-                    Introduction
-                </div>
-            </div>
-        </div>
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
 
-        <!-- Player Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card mb-4">
-                    <div class="card-header"><h6 class="m-0 font-weight-bold text-primary">登記玩家</h6></div>
-                    <div class="card-body">
-                        <!-- Component Preview-->
-                        <div class="sbp-preview">
-                            <div class="sbp-preview-content">
-                                <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">User ID</label>
-                                        <input class="form-control" id="user_id" name="user_id" type="number" value="{{ user.id }}" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Booth ID</label>
-                                        <input class="form-control" id="booth_id" name="booth_id" type="text" value="{{ booth.id }}" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1">Score Option</label>
-                                        <select class="form-control" id="booth_score_id" name="booth_score_id">
-                                            {% for option in score_options %}
-                                                <option value="{{ option.id }}">{{ option.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlTextarea1">Remarks</label>
-                                        <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
-                                    </div>
-                                    <button class="btn btn-primary btn-user btn-block" type="submit">登記</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+<body>
+<div class="sub">
+    <div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+    <div class="subContent" style='background:#b9d7bb'>
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+        </div>
+        <div style='padding:20px'>
+            <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">User ID</label>
+                    <input class="usernameBox form-control" id="user_id" name="user_id" type="number" value="{{ user.id }}" readonly>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Booth ID</label>
+                    <input class="usernameBox form-control" id="booth_id" name="booth_id" type="text" value="{{ booth.id }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Score Option</label>
+                    <select class="usernameBox form-control" id="booth_score_id" name="booth_score_id">
+                        {% for option in score_options %}
+                            <option value="{{ option.id }}">{{ option.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Remarks</label>
+                    <textarea class="usernameBox form-control" id="remarks" name="remarks" rows="3"></textarea>
+                </div>
+                <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
+            </form>
         </div>
     </div>
     
+        
 </div>
+
+</body>
 {% if messages %}
     {% for message in messages %}
     <script>
@@ -66,5 +56,3 @@
 
     {% endfor %}
 {% endif %}
-
-{% endblock %}

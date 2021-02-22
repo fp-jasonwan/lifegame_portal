@@ -1,21 +1,85 @@
-{% extends 'base.html' %}
-{% load render_table from django_tables2 %}
-{% block content %}
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">即時新聞</h6>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        {% render_table table %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+<div class="sub">
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	<div class="subContent">
+		<div class="contentInfo">
+            <div class="contentNews title">新聞</div>
+			<!-- <div class="contentNews sub">
+				<div class="contentNews subMenu select">政策</div>
+				<div class="contentNews subMenu">經濟</div>
+				<div class="contentNews subMenu">...</div>
+			</div> -->
+			<div class="contentNews bar">
+				<div class="contentNews bar1">時間</div>
+				<div class="contentNews bar2">分類</div>
+				<div class="contentNews bar3">內容</div>
+			</div>
+            
+            {% for new in news %}
+			<div class="contentNews content1">
+				<div class="content1"> {{ new.title }}</div>
+				<div class="content2"> {{ new.message }}</div>
+				<div class="content3"> {{ new.time }}</div>
+			</div>
+            {% endfor %}
+            
+<!-- 			
+			<div class="contentNews line"></div>
+			
+			
+			<div class="contentNews content1">
+				<div class="content1">10:35</div>
+				<div class="content2">分類</div>
+				<div class="content3">內容</div>
+				
+			
+			</div>
+			<div class="contentNews content">
+				<div class="content1">9:35</div>
+				<div class="content2">......</div>
+				<div class="content3">......</div>
+				
+			
+			</div>
+			<div class="contentNews content1">
+				<div class="content1">10:35</div>
+				<div class="content2">分類</div>
+				<div class="content3">內容</div>
+				
+			
+			</div>
+			<div class="contentNews content">
+				<div class="content1">9:35</div>
+				<div class="content2">......</div>
+				<div class="content3">......</div>
+				
+			
+			</div>
+			<div class="contentNews content1">
+				<div class="content1">10:35</div>
+				<div class="content2">分類</div>
+				<div class="content3">內容</div>
+				
+			
+			</div> -->
+		
+		</div>
+	</div>
+	
+		
 </div>
-{% endblock %}
+	
+	
+
+</body>
+</html>

@@ -1,28 +1,43 @@
-{% extends 'base.html' %}
+
 {% load static %}
-{% block content %}
-<div class="row">
-    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-    <div class="col-lg-6">
-        <div class="p-5">
-            <!-- <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">使用QR Code</h1>
-            </div>
-            <div id="reader"></div> -->
-            <hr>
-            <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">使用玩家ID</h1>
-            </div>
-            <div class="form-group">
-                <input type="email" class="form-control form-control-user" id="inputId" aria-describedby="emailHelp" placeholder="Enter Student ID">
-            </div>
-            <a class="btn btn-primary btn-user btn-block" onclick="searchPlayerButton()" style="color: white">
-                尋找
-            </a>
-            <hr>
-        </div>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="container">
+	<div class="logo">
+        <a href='/'>
+            <img src="{% static 'images/logo.png' %}" alt="logo">
+        </a>
     </div>
+    
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <!-- <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table> -->
+        <div class="login">
+            <div class="username"><input type="text" id="inputId" name="username" class="usernameBox" placeholder="User ID"></div>
+        </div>	
+        <div class="btn"><img src="{% static 'images/btnGo.png' %}" onclick="searchPlayerButton()"></div>
+        
+        <input type="hidden" name="next" value="{{ next }}">
+	</form>
 </div>
+</body>
 
 <script src="{% static 'js/html5-qrcode.min.js' %}"></script>
 <script>
@@ -54,4 +69,4 @@
         "reader", { fps: 10, qrbox: 250 });
     html5QrcodeScanner.render(onScanSuccess);
 </script>
-{% endblock %}
+</html>
