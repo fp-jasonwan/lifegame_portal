@@ -43,7 +43,7 @@ class Booth(models.Model):
     def __str__(self):
         return self.name
 
-    id = models.CharField(max_length=3, primary_key=True)
+    id = models.CharField(max_length=4, primary_key=True)
     booth_in_charge = models.ForeignKey(
         User, 
         related_name='booth_in_charge', 
@@ -66,10 +66,10 @@ class Participation(models.Model):
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
     record_time = models.DateTimeField(auto_now_add=True, blank=True)
     score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE)
-    # health_score = models.IntegerField(default=0)
-    # academic_score = models.IntegerField(default=0)
-    # growth_score = models.IntegerField(default=0)
-    # relationship_score = models.IntegerField(default=0)
-    # joy_score = models.IntegerField(default=0)
-    # money = models.IntegerField(default=0)
-    
+    remarks = models.TextField(max_length=1000, null=True, blank=True)
+    marker = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class BoothTraffic(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
+    record_time = models.DateTimeField(auto_now_add=True, blank=True)

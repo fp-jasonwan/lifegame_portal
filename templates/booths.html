@@ -26,7 +26,7 @@
             
             {% for booth in booths %}
 			<div class="contentNews content1">
-				<div class="content1"> <a href='{{ booth.url }}'>{{ booth.name }}</a></div>
+				<div class="content1"> <a href='/booths/{{ booth.id }}'>{{ booth.name }}</a></div>
 				<div class="content2" style="width:70%"> {{ booth.description }}</div>
 			</div>
             {% endfor %}

@@ -44,6 +44,20 @@
                 <div class="content3"> {{ participation.score }}</div>
             </div>
             {% endfor %}
+
+
+            <div class="contentNews title">瀏覽記錄</div>
+            <div class="contentNews bar">
+                <div class="contentNews bar1">時間</div>
+                <div class="contentNews bar2">攤位</div>
+            </div>
+            
+            {% for v in visits %}
+            <div class="contentNews content1">
+                <div class="content1"> {{ v.record_time|time:"h:i" }}</div>
+                <div class="content2"> {{ v.booth }}</div>
+            </div>
+            {% endfor %}
 		</div>
 	</div>
 	

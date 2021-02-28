@@ -1,0 +1,89 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	<div class="subContent">
+		<div class="contentInfo">
+            <div class="contentNews title">新聞</div>
+			<!-- <div class="contentNews sub">
+				<div class="contentNews subMenu select">政策</div>
+				<div class="contentNews subMenu">經濟</div>
+				<div class="contentNews subMenu">...</div>
+			</div> -->
+			<div class="contentNews bar">
+				<div class="contentNews bar1">學生</div>
+				<div class="contentNews bar2">分數</div>
+				<div class="contentNews bar3">評分</div>
+			</div>
+            
+            {% for p in players %}
+			<div class="contentNews content1">
+				<div class="content1"> <a href='/oc/search_profile/{{ p.user.id }}'>{{ p.user }}</a></div>
+				<div class="content2"> {{ p.get_scores.overall_score }}</div>
+				{% if p.comment_added %}
+				<div class="content3">已評分</div>
+				{% else %}
+				<div class="content3"> <a href='/oc/instructor/register/{{ p.id }}'>評分</a></div>
+				{% endif %}
+			</div>
+            {% endfor %}
+            
+<!-- 			
+			<div class="contentNews line"></div>
+			
+			
+			<div class="contentNews content1">
+				<div class="content1">10:35</div>
+				<div class="content2">分類</div>
+				<div class="content3">內容</div>
+				
+			
+			</div>
+			<div class="contentNews content">
+				<div class="content1">9:35</div>
+				<div class="content2">......</div>
+				<div class="content3">......</div>
+				
+			
+			</div>
+			<div class="contentNews content1">
+				<div class="content1">10:35</div>
+				<div class="content2">分類</div>
+				<div class="content3">內容</div>
+				
+			
+			</div>
+			<div class="contentNews content">
+				<div class="content1">9:35</div>
+				<div class="content2">......</div>
+				<div class="content3">......</div>
+				
+			
+			</div>
+			<div class="contentNews content1">
+				<div class="content1">10:35</div>
+				<div class="content2">分類</div>
+				<div class="content3">內容</div>
+				
+			
+			</div> -->
+		
+		</div>
+	</div>
+	
+		
+</div>
+	
+	
+
+</body>
+</html>

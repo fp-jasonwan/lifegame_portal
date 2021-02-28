@@ -27,9 +27,9 @@
             
             {% for new in news %}
 			<div class="contentNews content1">
-				<div class="content1"> {{ new.title }}</div>
-				<div class="content2"> {{ new.message }}</div>
-				<div class="content3"> {{ new.time }}</div>
+				<div class="content1"> {{ new.time|time:"h:i" }}</div>
+				<div class="content2"> {{ new.category }}</div>
+				<div class="content3"> {{ new.title }}</div>
 			</div>
             {% endfor %}
             

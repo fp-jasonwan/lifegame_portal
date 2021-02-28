@@ -18,30 +18,33 @@
 			<div class="icon"><a href="/news"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
 		</div>
 		<div class="btnInfo">
-			<div class="text">OC Portal</div>
-			<div class="icon"><a href="/oc"><img src="{% static 'images/btnInfo.png' %}" alt="Info"></a></div>
+			<div class="text">查 閱 玩 家</div>
+			<div class="icon"><a href="/oc/search_profile"><img src="{% static 'images/btnInfo.png' %}" alt="Info"></a></div>
 		</div>
+		{% if user.user_type == 'oc' or user.user_type == 'admin' %}
 		<div class="btnStock">
-			<div class="text">地 圖</div>
-			<div class="icon"><a href="/booths"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
+			<div class="text">攤 位</div>
+			<div class="icon"><a href="/oc/booth_list"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
 		</div>
+		{% endif %}
+		{% if user.user_type == 'instructor' %}
+		<div class="btnStock">
+			<div class="text">學 員</div>
+			<div class="icon"><a href="/oc/instructor"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
+		</div>
+		{% endif %}
 		<div class="btnIndex">
-			<div class="text">聯 絡</div>
-			<div class="icon"><a href="/contact"><img src="{% static 'images/btnIndex.png' %}" alt="Contact"></a></div>
+			<div class="text">地 圖</div>
+			<div class="icon"><a href="/booths"><img src="{% static 'images/btnIndex.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnMap">
 			<div class="text">登 出</div>
 			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
 		</div>
-		<!-- <div class="btnMap">
-			<div class="text">地 圖</div>
-			<div class="icon"><a href="/booths"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
-		</div>
 		<div class="btnContact">
 			<div class="text">聯 絡</div>
 			<div class="icon"><a href="/contact"><img src="{% static 'images/btnIndex.png' %}" alt="Contact"></a></div>
-		</div> -->
-	
+		</div> 
 	</div>
 		
 </div>

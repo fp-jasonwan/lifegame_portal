@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django_tables2 import SingleTableView
-from .models import Booth, Participation
+from .models import Booth, Participation, BoothTraffic
 
 from django.http import HttpResponse
 import django_tables2 as tables
@@ -31,9 +31,21 @@ def get_booths_map(request):
     template = loader.get_template('booths.html')
     context = {
         'booths': booths,
-
     }
     return HttpResponse(template.render(context, request))
+
+def redirect_zoom(request, booth_id):
+    booth = Booth.objects.get(id=booth_id)
+    print(booth, request.user)
+    traffic = BoothTraffic(
+        booth = booth,
+        user = request.user
+    )
+    print(traffic)
+    traffic.save()
+    response = redirect(booth.url)
+    return response
+
 
 class ParticipationsTable(tables.Table):
     

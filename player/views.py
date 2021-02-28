@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from .models import Player
-from booth.models import Participation
+from booth.models import Participation, BoothTraffic
 from django.shortcuts import get_object_or_404, render
 import django_tables2 as tables
 from account.models import User
@@ -19,11 +19,13 @@ def get_profile(request, user_id=""):
         # player = Player.objects.get(player_id=player_id)
     scores = player.get_scores()
     participations = Participation.objects.filter(player=player).all()
+    visits = BoothTraffic.objects.filter(user=player.user).all()
     template = loader.get_template('player/profile.html')
     context = {
         'scores': scores,
         'player': player,
         'participations': participations,
+        'visits': visits
     }
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
@@ -40,6 +42,7 @@ class PlayerParticipationTable(tables.Table):
         attrs = {
             'class': 'table table-bordered dataTable'
         }
+
 
 # class PlayerParticipationListView(SingleTableView):
 #     model = Participation

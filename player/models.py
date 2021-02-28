@@ -3,6 +3,9 @@ from booth.models import Participation
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from account.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+
 # Create your models here.
 LIVE_STATUS_CHOICES = [
     ('active', 'active'),
@@ -37,9 +40,9 @@ class Player(models.Model):
         default='active', 
         max_length=8
     )
-    past_user = models.ForeignKey(
+    instructor = models.ForeignKey(
         User, 
-        related_name='past_user', 
+        related_name='instructor', 
         on_delete=models.CASCADE,
         null=True, blank=True
     )
@@ -65,3 +68,10 @@ class Player(models.Model):
             print(parti_score)
             score += parti_score
         return score
+
+class InstructorScore(models.Model):
+    player = models.OneToOneField(Player, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0, validators=[MaxValueValidator(10), MinValueValidator(0)])
+    comments = models.TextField(max_length=1000, null=True, blank=True)
+    instructor = models.ForeignKey(User, on_delete=models.CASCADE)
+    record_time = models.DateTimeField(auto_now_add=True, blank=True)

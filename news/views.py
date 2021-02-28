@@ -8,7 +8,7 @@ from django.template import loader
 from django.http import HttpResponse
 
 class NewsTable(tables.Table):
-    time = tables.Column(verbose_name='時間', attrs={"th": {"class": "contentNews bar3"}})
+    time = tables.DateTimeColumn(verbose_name='時間', attrs={"th": {"class": "contentNews bar3"}})
     title = tables.Column(verbose_name='標題', attrs={"th": {"class": "contentNews bar2"}})
     message = tables.Column(verbose_name='訊息', )
     class Meta:
@@ -28,7 +28,7 @@ def get_news(request):
     # news_category = NewsCategory.objects.all()
     # for cat in news_category:
 
-    news = News.objects.filter().all()
+    news = News.objects.filter().order_by('-time').all()
     template = loader.get_template('news.html')
     # news_list = {}
     # for n in news_category:

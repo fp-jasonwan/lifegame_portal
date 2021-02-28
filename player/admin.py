@@ -1,5 +1,5 @@
 from django.contrib import admin
-from player.models import Player, Education, BornStatus
+from player.models import Player, Education, BornStatus, InstructorScore
 # Register your models here.
 
 # admin.site.register(Player)
@@ -15,3 +15,4 @@ class PlayerAdmin(admin.ModelAdmin):
         queryset.update(past_user=queryset.user)
         queryset.update(user=null)
 admin.site.register(Player, PlayerAdmin)
+admin.site.register(InstructorScore)

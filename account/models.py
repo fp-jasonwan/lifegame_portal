@@ -10,10 +10,10 @@ class User(AbstractUser):
 
     user_type = models.CharField(
         max_length=10,
-        choices=(('student', 'student'), ('oc', 'oc'),('admin', 'admin')),
+        choices=(('student', 'student'), ('oc', 'oc'),('admin', 'admin'), ('instructor', 'instructor')),
         blank=True, null=True
         )
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     nick_name = models.CharField(max_length=100, blank=True, null=True)
-    icon = models.ImageField(blank=True, null=True, upload_to='profile/', default='')
+    icon = models.ImageField(blank=True, null=True, upload_to='profile/', default='profile/person.png')

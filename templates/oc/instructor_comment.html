@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+    <div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+    <div class="subContent" style='background:#b9d7bb'>
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>{{ player.user }}</div>
+        </div>
+        <div style='padding:20px'>
+            <form action="/oc/instructor/register/{{ player.id }}" method="post">
+                {% csrf_token %}
+                <!-- <div class="form-group">
+                    <label for="exampleFormControlInput1">User ID</label>
+                    <input class="usernameBox form-control" id="user_id" name="user_id" type="number" value="{{ user.id }}" readonly>
+                </div> -->
+                <div class="form-group">
+                    <input class="usernameBox form-control" id="score" name="score" type="number" min="1" max="10" placeholder="分數 (1-10)">
+                </div>
+                <div class="form-group">
+                    <textarea class="usernameBox form-control" id="comments" name="comments" rows="3" placeholder="評語"></textarea>
+                </div>
+                <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
+            </form>
+        </div>
+    </div>
+    
+        
+</div>
+
+</body>
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert("{{ message }}");
+        window.location.href = "/oc/instructor";
+    </script>  
+
+    {% endfor %}
+{% endif %}

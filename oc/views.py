@@ -5,7 +5,9 @@ from booth.models import Booth, Participation, BoothScoring
 from booth.forms import ParticipationForm
 from account.models import User
 from django.contrib import messages
+from player.models import Player, InstructorScore
 from player.views import get_profile
+from player.forms import InstructorCommentForm
 # Create your views here.
 # Create your views here.
 
@@ -109,9 +111,14 @@ def register_player(request, booth_id, user_id, participation=""):
         if form.is_valid():
             print("VALID FORM")
             booth_score_id = form.cleaned_data['booth_score_id']
+            remarks = form.cleaned_data['remarks']
             booth_score = BoothScoring.objects.get(id=booth_score_id)
             new_parti = Participation(
-                booth = booth, player=user.player, score=booth_score
+                booth = booth, 
+                player=user.player, 
+                score=booth_score, 
+                remarks=remarks,
+                marker = request.user
             )
             new_parti.save()
             messages.success(request, '成功登記該玩家!')
@@ -123,5 +130,46 @@ def register_player(request, booth_id, user_id, participation=""):
         'booth': booth,
         'user': user,
         'score_options': score_options
+    }
+    return HttpResponse(template.render(context, request))
+
+def get_instructor_players(request):
+    instructor = request.user
+    players = Player.objects.filter(instructor=instructor).all()
+    for p in players:
+        print(p)
+        print(InstructorScore.objects.filter(player=p).count())
+        p.__dict__['comment_added'] = InstructorScore.objects.filter(player=p).count() > 0
+    template = loader.get_template('oc/instructor.html')
+    context = {
+        'players': players,
+    }
+    return HttpResponse(template.render(context, request))
+
+def register_instructor_comment(request, player_id, participation=""):
+    player = get_object_or_404(Player, id=player_id)
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = InstructorCommentForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            print("VALID FORM")
+            comments = form.cleaned_data['comments']
+            score = form.cleaned_data['score']
+            new_parti = InstructorScore(
+                player = player, 
+                score=score, 
+                comments=comments,
+                instructor=request.user, 
+            )
+            new_parti.save()
+            messages.success(request, '成功登記該玩家!')
+        else:
+            print("INVALID FORM")
+    template = loader.get_template('oc/instructor_comment.html')
+    
+    context = {
+        'player': player
     }
     return HttpResponse(template.render(context, request))
