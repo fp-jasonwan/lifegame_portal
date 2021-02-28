@@ -148,8 +148,10 @@ def get_instructor_players(request):
 
 def register_instructor_comment(request, player_id):
     player = get_object_or_404(Player, id=player_id)
-    comment_record = InstructorScore.objects.get(player=player)
-    print(comment_record.__dict__)
+    try:
+        comment_record = InstructorScore.objects.get(player=player)
+    except:
+        comment_record = None
     if request.method == 'POST':
         print(request.POST)
         form = InstructorCommentForm(request.POST)
