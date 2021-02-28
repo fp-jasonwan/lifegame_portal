@@ -146,30 +146,33 @@ def get_instructor_players(request):
     }
     return HttpResponse(template.render(context, request))
 
-def register_instructor_comment(request, player_id, participation=""):
+def register_instructor_comment(request, player_id):
     player = get_object_or_404(Player, id=player_id)
-
+    comment_record = InstructorScore.objects.get(player=player)
+    print(comment_record.__dict__)
     if request.method == 'POST':
         print(request.POST)
         form = InstructorCommentForm(request.POST)
-        print(form.is_valid())
         if form.is_valid():
             print("VALID FORM")
             comments = form.cleaned_data['comments']
             score = form.cleaned_data['score']
-            new_parti = InstructorScore(
-                player = player, 
-                score=score, 
-                comments=comments,
-                instructor=request.user, 
-            )
-            new_parti.save()
-            messages.success(request, '成功登記該玩家!')
+
+            if not comment_record:
+                comment_record = InstructorScore(
+                    player = player, 
+                    score=score, 
+                    comments=comments,
+                    instructor=request.user, 
+                )
+            comment_record.save()
+            messages.success(request, '評分已被記錄!')
         else:
             print("INVALID FORM")
     template = loader.get_template('oc/instructor_comment.html')
     
     context = {
-        'player': player
+        'player': player,
+        'comment': comment_record
     }
     return HttpResponse(template.render(context, request))

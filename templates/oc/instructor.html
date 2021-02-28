@@ -13,7 +13,7 @@
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
 	<div class="subContent">
 		<div class="contentInfo">
-            <div class="contentNews title">新聞</div>
+            <div class="contentNews title">學生資料</div>
 			<!-- <div class="contentNews sub">
 				<div class="contentNews subMenu select">政策</div>
 				<div class="contentNews subMenu">經濟</div>
@@ -30,7 +30,7 @@
 				<div class="content1"> <a href='/oc/search_profile/{{ p.user.id }}'>{{ p.user }}</a></div>
 				<div class="content2"> {{ p.get_scores.overall_score }}</div>
 				{% if p.comment_added %}
-				<div class="content3">已評分</div>
+				<div class="content3"> <a href='/oc/instructor/register/{{ p.id }}'>修改評分</a></div>
 				{% else %}
 				<div class="content3"> <a href='/oc/instructor/register/{{ p.id }}'>評分</a></div>
 				{% endif %}
