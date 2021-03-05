@@ -14,7 +14,7 @@
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
 	<div class="subContent">
 		<div class="titleInfo">
-			<div class="infoIcon"><img src="{{ player.user.icon }}" alt="logo"></div>
+			<div class="infoIcon"><img src="{% static 'images/info.png' %}" alt="logo"></div>
 			<div class="infotext">{{ player.user }}</div>
 			<div class="iconHome"></div>
 	
@@ -23,7 +23,7 @@
 			<div class="contentInfo title">個人資料</div>
 			<div class="contentInfo content">
 				<div class="contentInfo content left">導師</div>
-				<div class="contentInfo content right"><a href='http://wa.me/85296440647'>冼導師</a></div>
+				<div class="contentInfo content right"><a href='http://wa.me/852{{ player.instructor.mobile }}'>{{ player.instructor.last_name }}導師</a></div>
 			</div>
 			<div class="contentInfo content">
 				<div class="contentInfo content left">分數</div>
@@ -61,7 +61,12 @@
 		</div>
 	</div>
 	
+	
+	<div class="footer">
 		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
 </div>
 	
 	

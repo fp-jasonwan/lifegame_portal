@@ -20,14 +20,16 @@
 				<div class="contentNews subMenu">...</div>
 			</div> -->
 			<div class="contentNews bar">
-				<div class="contentNews bar1">攤位</div>
-				<div class="contentNews bar2" style="width:70%">簡介</div>
+				<div class="contentNews bar1" style="width:15%">編號</div>
+				<div class="contentNews bar2" style="width:35%">攤位</div>
+				<div class="contentNews bar3" style="width:50%">簡介</div>
 			</div>
             
             {% for booth in booths %}
 			<div class="contentNews content1">
-				<div class="content1"> <a href='/booths/{{ booth.id }}'>{{ booth.name }}</a></div>
-				<div class="content2" style="width:70%"> {{ booth.description }}</div>
+				<div class="content1" style="width:15%"> {{ booth.id }}</a></div>
+				<div class="content2" style="width:35%"> <a href='/booths/{{ booth.id }}'>{{ booth.name }}</a></div>
+				<div class="content3" style="width:50%"> {{ booth.description }}</div>
 			</div>
             {% endfor %}
             
@@ -35,7 +37,12 @@
 		</div>
 	</div>
 	
+	
+	<div class="footer">
 		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
 </div>
 	
 	

@@ -26,15 +26,15 @@
 			</div> -->
 			<div class="contentNews bar">
 				<div class="contentNews bar1">時間</div>
-				<div class="contentNews bar2">分類</div>
-				<div class="contentNews bar3">內容</div>
+				<div class="contentNews bar2">評分</div>
+				<div class="contentNews bar3">玩家</div>
 			</div>
             
             {% for participation in participations %}
 			<div class="contentNews content1">
                 <div class="content1"> {{ participation.record_time|time:"h:i" }}</div>
-                <div class="content2"> {{ participation.booth }}</div>
-                <div class="content3"> {{ participation.score }}</div>
+                <div class="content2"> {{ participation.score }}</div>
+                <div class="content3"><a href="/oc/search_profile/{{ participation.player.user.id }}"> {{ participation.player }}</a></div>
 			</div>
             {% endfor %}
             
@@ -42,6 +42,11 @@
 	</div>
 	
 		
+	<div class="footer">
+		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
 </div>
 	
 	

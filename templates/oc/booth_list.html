@@ -13,23 +13,29 @@
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
 	<div class="subContent">
 		<div class="contentInfo">
-            <div class="contentNews title">攤位</div>
+            <!-- <div class="contentNews title"></div> -->
 			<!-- <div class="contentNews sub">
 				<div class="contentNews subMenu select">政策</div>
 				<div class="contentNews subMenu">經濟</div>
 				<div class="contentNews subMenu">...</div>
 			</div> -->
 			<div class="contentNews bar">
-				<div class="contentNews bar1" style='width:100%'>時間</div>
+				<div class="contentNews bar1" style='width:100%'>攤位</div>
 			</div>
             
             {% for booth in booths %}
 			<div class="contentNews content1">
-				<div class="content1" style='width:100%'><a href='/oc/booth/{{ booth.id }}'>{{ booth.id }} - {{ booth.name }}</a> </div>
+				<div class="content1" style='width:15%'>{{ booth.id }}</a> </div>
+				<div class="content2" style='width:85%'><a href='/oc/booth/{{ booth.id }}'> {{ booth.name }}</a> </div>
 			</div>
             {% endfor %}
       
 		</div>
+	</div>
+	
+	<div class="footer">
+		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
 	</div>
 	
 		

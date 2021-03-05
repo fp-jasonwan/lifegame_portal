@@ -36,10 +36,16 @@
         
         <input type="hidden" name="next" value="{{ next }}">
 	</form>
+
+	<div class="footer">
+		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
 </div>
 </body>
 
-<script src="{% static 'js/html5-qrcode.min.js' %}"></script>
+<!-- <script src="{% static 'js/html5-qrcode.min.js' %}"></script> -->
 <script>
     function searchPlayer(id) {
         var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
@@ -65,8 +71,8 @@
         console.log(qrCodeMessage)
     }
 
-    var html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader", { fps: 10, qrbox: 250 });
-    html5QrcodeScanner.render(onScanSuccess);
+    // var html5QrcodeScanner = new Html5QrcodeScanner(
+    //     "reader", { fps: 10, qrbox: 250 });
+    // html5QrcodeScanner.render(onScanSuccess);
 </script>
 </html>

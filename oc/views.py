@@ -30,9 +30,14 @@ def search_profile(request, user_id=""):
         print('check point 1', user_id)
         try:
             user = User.objects.get(id=user_id)
-            
-            # player = user.player
+            print(hasattr(user, 'player'))
+            if hasattr(user, 'player') == False:
+                messages.success(request, '查無此玩家!')
+                context['message'] = '查無此玩家!'
+                return HttpResponse(template.render(context, request))
+            player = user.player
         except:
+            messages.success(request, '查無此玩家!')
             context['message'] = '查無此玩家!'
             return HttpResponse(template.render(context, request))
         print(user_id)
@@ -43,7 +48,7 @@ def search_profile(request, user_id=""):
 
 
 def list_booth(request):
-    booths = Booth.objects.filter(booth_admins__in=[request.user])
+    booths = Booth.objects.filter(booth_admins__in=[request.user]).order_by('id')
     # profile = get_object_or_404(Student, user=request.user)
     if len(booths) > 1:
         template = loader.get_template('oc/booth_list.html')
@@ -78,8 +83,15 @@ def check_player(request, booth_id, user_id=""):
     else:
         try:
             user = User.objects.get(id=user_id)
+            print(hasattr(user, 'player'))
+            if hasattr(user, 'player') == False:
+                messages.success(request, '查無此玩家!')
+                print('查無此玩家!')
+                context['message'] = '查無此玩家!'
+                return HttpResponse(template.render(context, request))
             player = user.player
         except:
+            messages.success(request, '查無此玩家!')
             context['message'] = '查無此玩家!'
             return HttpResponse(template.render(context, request))
         return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
