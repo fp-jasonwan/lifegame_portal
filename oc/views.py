@@ -8,6 +8,7 @@ from django.contrib import messages
 from player.models import Player, InstructorScore
 from player.views import get_profile
 from player.forms import InstructorCommentForm
+from .models import ContactPerson
 # Create your views here.
 # Create your views here.
 
@@ -65,10 +66,16 @@ def booth_home(request, booth_id):
     booth = get_object_or_404(Booth, id=booth_id)
     request.session['booth'] = booth.id
     template = loader.get_template('oc/booth_home.html')
+
+    if request.method == 'POST':
+        print(request.POST['is_active'] )
+        booth.is_active = request.POST['is_active'] == 'true'
+        booth.save()
     context = {
         'booth': booth
     }
     return HttpResponse(template.render(context, request))
+
 
 def check_player(request, booth_id, user_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
@@ -188,5 +195,14 @@ def register_instructor_comment(request, player_id):
     context = {
         'player': player,
         'comment': comment_record
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def get_contact(request):
+    contacts = ContactPerson.objects.all()
+
+    context = {
+        'contacts': contacts,
     }
     return HttpResponse(template.render(context, request))

@@ -56,6 +56,7 @@ class Booth(models.Model):
     # requirement = models.ForeignKey(BoothRequirement, on_delete=models.CASCADE)
     description = models.TextField(max_length=1000, null=True, blank=True)
     url = models.CharField(max_length=1000, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
 class Participation(models.Model):
     def __str__(self):

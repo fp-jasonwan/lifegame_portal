@@ -28,9 +28,27 @@ class BoothsListView(SingleTableView):
 
 def get_booths_map(request):
     booths = Booth.objects.all()
+    categories = [b.description for b in booths]
+    categories = list(set(categories))
+    booth_dict = {
+        'OLE': [],
+        'Non-OLE': [],
+        '工作分享': []
+    }
+    # for cat in sorted(categories):
+    #     booth_dict[cat] = []
+    for b in booths:
+        if b.description[0] == 'O':
+            booth_dict['OLE'].append(b)
+        elif b.description[0] == 'N':
+            booth_dict['Non-OLE'].append(b)
+        else:
+            booth_dict['工作分享'].append(b)
     template = loader.get_template('booths.html')
     context = {
-        'booths': booths,
+        # 'booths': booths,
+        'categories': categories,
+        'booth_dict': booth_dict
     }
     return HttpResponse(template.render(context, request))
 

@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'account',
     'news',
     'oc',
-    'django_tables2'
+    'main',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -89,6 +90,12 @@ DATABASES = {
         'PASSWORD': '18watch',
         'HOST': '18watch.ddns.net',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
+        # 'ENGINE': 'django.db.backends.mysql', 
+        # 'NAME': 'lifegame',
+        # 'USER': 'root',
+        # 'PASSWORD': 'oc2021',
+        # 'HOST': 'bolhk.net',   # Or an IP Address that your DB is hosted on
+        # 'PORT': '3306',
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',

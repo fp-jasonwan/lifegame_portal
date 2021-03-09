@@ -23,14 +23,23 @@
 				<div class="contentNews bar1" style="width:15%">編號</div>
 				<div class="contentNews bar2" style="width:35%">攤位</div>
 				<div class="contentNews bar3" style="width:50%">簡介</div>
+
 			</div>
             
-            {% for booth in booths %}
-			<div class="contentNews content1">
-				<div class="content1" style="width:15%"> {{ booth.id }}</a></div>
-				<div class="content2" style="width:35%"> <a href='/booths/{{ booth.id }}'>{{ booth.name }}</a></div>
-				<div class="content3" style="width:50%"> {{ booth.description }}</div>
+            {% for category, booths in booth_dict.items %}
+			<div class="contentNews bar">
+				<div class="contentNews" style="width:100%; color:white; font-weight: bold;">{{ category }}</div>
 			</div>
+			{% for booth in booths %}
+			<div class="contentNews content1">
+				<div class="content1" style="width:15%; font-size:12px"> {{ booth.id }}</a></div>
+				<div class="content2" style="width:30%; font-size:12px"> <a href='/booths/{{ booth.id }}'>{{ booth.name }}</a></div>
+				<div class="content3" style="width:40%; font-size:12px"> {{ booth.description }}</div>
+				<div class="content3" style="width:15%; font-size:12px"> 
+					<span style='font-size:18px; color:{% if booth.is_active %}green{% else %}red{% endif %}'>&#x25cf;</span>
+				</div>
+			</div>
+			{% endfor %}
             {% endfor %}
             
 		
