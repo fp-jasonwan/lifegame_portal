@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 def home_page(request):
     #you can check user here with request.user
     #example
-    if request.user.is_authenticated:
-        print(request.user.user_type)
+    if request.user.is_authenticated and request.user.is_active:
+        
         if request.user.user_type == 'student':
             return render(request, 'player/home.html', {})
         elif request.user.user_type == 'oc':

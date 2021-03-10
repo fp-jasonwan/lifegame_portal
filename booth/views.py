@@ -84,7 +84,7 @@ class ParticipationsListView(SingleTableView):
 
 def get_parti_record(request, booth_id):
     booth = Booth.objects.get(id=booth_id)
-    participations = Participation.objects.filter(booth=booth).all()
+    participations = Participation.objects.filter(booth=booth).all().order_by('-record_time')
     template = loader.get_template('oc/booth_participations.html')
     context = {
         'booth': booth,

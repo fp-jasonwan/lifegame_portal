@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from news.views import NewsListView, get_news
 from account.views import home_page
 from booth.views import BoothsListView, get_booths_map, redirect_zoom
-
+from oc.views import get_contact
 handler404 = 'main.views.handler404'
 
 urlpatterns = [
@@ -36,7 +36,8 @@ urlpatterns = [
     path('news/', get_news),
     path('booths/', get_booths_map),
     path('booths/<str:booth_id>', redirect_zoom),
-    path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
+    path('contact/', get_contact, name='contact'),
+    path('rules/', TemplateView.as_view(template_name='rules.html'), name='test'),
     path('404', TemplateView.as_view(template_name='error/404.html'), name='test'),
 ]
 

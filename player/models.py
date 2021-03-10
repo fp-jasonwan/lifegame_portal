@@ -32,7 +32,7 @@ class Player(models.Model):
     def __str__(self):
         return "{} - {} {}".format(self.user.id, self.user.nick_name, self.user.last_name)
     id = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField('account.User', on_delete=models.CASCADE, null=True, blank=True)
     born_status = models.ForeignKey(BornStatus, on_delete=models.CASCADE)
     born_education_level = models.ForeignKey(Education, on_delete=models.CASCADE)
     live_status = models.CharField(
@@ -75,3 +75,19 @@ class InstructorScore(models.Model):
     comments = models.TextField(max_length=1000, null=True, blank=True)
     instructor = models.ForeignKey(User, on_delete=models.CASCADE)
     record_time = models.DateTimeField(auto_now_add=True, blank=True)
+
+
+def create_player(instance, created, raw, **kwargs):
+    # Ignore fixtures and saves for existing courses.
+    if not created or raw:
+        return
+
+    Player.objects.create(
+        user = instance,
+        born_status=BornStatus.objects.get(id=1),
+        born_education_level=Education.objects.get(id=1),
+        live_status='active'
+    )
+
+
+models.signals.post_save.connect(create_player, sender=User, dispatch_uid='create_player')

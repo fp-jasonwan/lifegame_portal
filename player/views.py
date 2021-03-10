@@ -18,8 +18,8 @@ def get_profile(request, user_id=""):
         player = user.player
         # player = Player.objects.get(player_id=player_id)
     scores = player.get_scores()
-    participations = Participation.objects.filter(player=player).all()
-    visits = BoothTraffic.objects.filter(user=player.user).all()
+    participations = Participation.objects.filter(player=player).all().order_by('-record_time')
+    visits = BoothTraffic.objects.filter(user=player.user).all().order_by('-record_time')
     template = loader.get_template('player/profile.html')
     context = {
         'scores': scores,

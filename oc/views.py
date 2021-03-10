@@ -201,7 +201,7 @@ def register_instructor_comment(request, player_id):
 
 def get_contact(request):
     contacts = ContactPerson.objects.all()
-
+    template = loader.get_template('contact.html')
     context = {
         'contacts': contacts,
     }
