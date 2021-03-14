@@ -54,12 +54,10 @@ def get_booths_map(request):
 
 def redirect_zoom(request, booth_id):
     booth = Booth.objects.get(id=booth_id)
-    print(booth, request.user)
     traffic = BoothTraffic(
         booth = booth,
         user = request.user
     )
-    print(traffic)
     traffic.save()
     response = redirect(booth.url)
     return response

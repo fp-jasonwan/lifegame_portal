@@ -126,9 +126,7 @@ def register_player(request, booth_id, user_id, participation=""):
 
     if request.method == 'POST':
         form = ParticipationForm(request.POST)
-        print(form.is_valid())
         if form.is_valid():
-            print("VALID FORM")
             booth_score_id = form.cleaned_data['booth_score_id']
             remarks = form.cleaned_data['remarks']
             booth_score = BoothScoring.objects.get(id=booth_score_id)
@@ -156,10 +154,9 @@ def get_instructor_players(request):
     instructor = request.user
     players = Player.objects.filter(instructor=instructor).all()
     for p in players:
-        print(p)
-        print(InstructorScore.objects.filter(player=p).count())
         p.__dict__['comment_added'] = InstructorScore.objects.filter(player=p).count() > 0
     template = loader.get_template('oc/instructor.html')
+    last_seen = Participation.objects.filter()
     context = {
         'players': players,
     }
