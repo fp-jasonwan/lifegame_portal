@@ -20,19 +20,21 @@
 				<div class="contentNews subMenu">...</div>
 			</div> -->
 			<div class="contentNews bar">
-				<div class="contentNews bar1">學生</div>
-				<div class="contentNews bar2">分數</div>
-				<div class="contentNews bar3">評分</div>
+				<div class="contentNews bar1" style='font-size:12px'>學生</div>
+				<div class="contentNews bar2" style='font-size:12px'>分數</div>
+				<div class="contentNews bar1" style='font-size:12px'>動向</div>
+				<div class="contentNews bar3" style='font-size:12px'>評分</div>
 			</div>
             
             {% for p in players %}
 			<div class="contentNews content1">
-				<div class="content1"> <a href='/oc/search_profile/{{ p.user.id }}'>{{ p.user }}</a></div>
-				<div class="content2"> {{ p.get_scores.overall_score }}</div>
+				<div class="content1" style='font-size:12px'> <a href='/oc/search_profile/{{ p.user.id }}'>{{ p.user }}</a></div>
+				<div class="content2" style='font-size:12px'> {{ p.get_scores.overall_score }}</div>
+				<div class="content1" style='font-size:12px'> <a href='{{ p.user.get_last_seen.booth.url }}'>{{ p.user.get_last_seen.booth }}</a></div>
 				{% if p.comment_added %}
-				<div class="content3"> <a href='/oc/instructor/register/{{ p.id }}'>修改評分</a></div>
+				<div class="content3" style='font-size:12px'> <a href='/oc/instructor/register/{{ p.id }}'>修改評分</a></div>
 				{% else %}
-				<div class="content3"> <a href='/oc/instructor/register/{{ p.id }}'>評分</a></div>
+				<div class="content3" style='font-size:12px'> <a href='/oc/instructor/register/{{ p.id }}'>評分</a></div>
 				{% endif %}
 			</div>
             {% endfor %}

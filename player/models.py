@@ -5,7 +5,6 @@ from django.db.models.functions import Coalesce
 from account.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-
 # Create your models here.
 LIVE_STATUS_CHOICES = [
     ('active', 'active'),
@@ -46,7 +45,7 @@ class Player(models.Model):
         on_delete=models.CASCADE,
         null=True, blank=True
     )
-    
+
     def get_scores(self):
         return {
             'overall_score': self.get_score('overall_score')
@@ -65,7 +64,6 @@ class Player(models.Model):
         participations = Participation.objects.filter(player=self)
         for parti in participations:
             parti_score = getattr(parti.score, score_name)
-            print(parti_score)
             score += parti_score
         return score
 

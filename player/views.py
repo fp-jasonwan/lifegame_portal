@@ -13,7 +13,6 @@ def get_profile(request, user_id=""):
     if user_id == "":
         player = request.user.player
     else:
-        print(user_id)
         user = User.objects.get(id=user_id)
         player = user.player
         # player = Player.objects.get(player_id=player_id)

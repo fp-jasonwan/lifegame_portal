@@ -1,5 +1,4 @@
 from django.db import models
-from account.models import User
 # from player.models import Player
 
 # Create your models here.
@@ -45,12 +44,12 @@ class Booth(models.Model):
 
     id = models.CharField(max_length=5, primary_key=True)
     booth_in_charge = models.ForeignKey(
-        User, 
+        'account.User', 
         related_name='booth_in_charge', 
         on_delete=models.CASCADE, 
         null=True, blank=True
     )
-    booth_admins = models.ManyToManyField(User, related_name='booth_admins')
+    booth_admins = models.ManyToManyField('account.User', related_name='booth_admins')
     score_options = models.ManyToManyField(BoothScoring, related_name='score_options')
     name = models.CharField(max_length=50)
     # requirement = models.ForeignKey(BoothRequirement, on_delete=models.CASCADE)
@@ -68,9 +67,9 @@ class Participation(models.Model):
     record_time = models.DateTimeField(auto_now_add=True, blank=True)
     score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE)
     remarks = models.TextField(max_length=1000, null=True, blank=True)
-    marker = models.ForeignKey(User, on_delete=models.CASCADE)
+    marker = models.ForeignKey('account.User', on_delete=models.CASCADE)
 
 class BoothTraffic(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('account.User', on_delete=models.CASCADE)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
     record_time = models.DateTimeField(auto_now_add=True, blank=True)
