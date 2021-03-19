@@ -13,23 +13,21 @@
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
 	<div class="subContent">
 		<div class="contentInfo">
-            <div class="contentNews title">新聞</div>
+            <div class="contentNews title">流程</div>
 			<!-- <div class="contentNews sub">
 				<div class="contentNews subMenu select">政策</div>
 				<div class="contentNews subMenu">經濟</div>
 				<div class="contentNews subMenu">...</div>
 			</div> -->
 			<div class="contentNews bar">
-				<div class="contentNews bar1">時間</div>
-				<div class="contentNews bar2">分類</div>
-				<div class="contentNews bar3">內容</div>
+				<div class="contentNews bar1" style='width:30%'>時間</div>
+				<div class="contentNews bar3" style='width:70%'>內容</div>
 			</div>
             
             {% for new in news %}
 			<div class="contentNews content1">
-				<div class="content1"> {{ new.time|time:"h:i" }}</div>
-				<div class="content2"> {{ new.category }}</div>
-				<div class="content3"> {{ new.title }}</div>
+				<div class="content1" style='width:30%'> {{ new.time|time:"h:i" }}</div>
+				<div class="content3" style='width:70%'><a href='{{ new.url }}'> {{ new.title }}</a></div>
 			</div>
             {% endfor %}
             

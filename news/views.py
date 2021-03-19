@@ -6,7 +6,7 @@ from .models import News, NewsCategory
 import django_tables2 as tables
 from django.template import loader
 from django.http import HttpResponse
-
+import datetime
 class NewsTable(tables.Table):
     time = tables.DateTimeColumn(verbose_name='時間', attrs={"th": {"class": "contentNews bar3"}})
     title = tables.Column(verbose_name='標題', attrs={"th": {"class": "contentNews bar2"}})
@@ -27,7 +27,7 @@ class NewsListView(SingleTableView):
 def get_news(request):
     # news_category = NewsCategory.objects.all()
     # for cat in news_category:
-
+    currentTime = datetime.datetime.now().time()
     news = News.objects.filter().order_by('-time').all()
     template = loader.get_template('news.html')
     # news_list = {}

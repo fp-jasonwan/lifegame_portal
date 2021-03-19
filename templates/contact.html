@@ -21,8 +21,8 @@
 			<div class="contentContact title">緊急聯絡</div>
 			{% for contact in contacts %}
 			<div class="contentContact content">
-				<div class="contentContact content left">{{ contact.name}} </div>
-				<div class="contentContact content right"><a href='{{ contact.url }}'>{{ contact.contact_number }}</a></div>
+				<div class="contentContact content left">{{ contact.name }}</div>
+				<div class="contentContact content right">{{ contact.contact_person }} <a href='{{ contact.url }}'>{{ contact.contact_number }}</a></div>
             </div>
 			{% endfor %}
 			
