@@ -18,7 +18,7 @@ class User(AbstractUser):
     nick_name = models.CharField(max_length=100, blank=True, null=True)
     mobile = models.IntegerField(blank=True, null=True )
     icon = models.ImageField(blank=True, null=True, upload_to='profile/', default='profile/person.png')
-
+    hall_link = models.CharField(max_length=200, default='https://zoom.us/j/98922319654?pwd=MXVDNEJCOGppeU1pbWtrMkZsNWlLUT09')
     def get_last_seen(self):
         last_seen = BoothTraffic.objects.filter(user=self).order_by('-record_time').first()
         return last_seen

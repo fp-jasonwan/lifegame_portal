@@ -27,7 +27,7 @@
             {% for new in news %}
 			<div class="contentNews content1">
 				<div class="content1" style='width:30%'> {{ new.time|time:"h:i" }}</div>
-				<div class="content3" style='width:70%'><a href='{{ new.url }}'> {{ new.title }}</a></div>
+				<div class="content3" style='width:70%'>{{ new.title }}</div>
 			</div>
             {% endfor %}
             
