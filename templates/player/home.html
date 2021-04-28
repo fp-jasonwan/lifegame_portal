@@ -14,10 +14,19 @@
 	<div class="logo"><img src="{% static 'images/logo.png' %}" alt="logo"></div>
 	<div class="menu">
 		<div class="btnNews">
-			<div class="text">流 程</div>
-			<div class="icon"><a href="/news"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
+			<div class="text">個人資料</div>
+			<div class="icon"><a href="/profile"><img src="{% static 'images/btnInfo.png' %}" alt="Info"></a></div>
 		</div>
 		<div class="btnInfo">
+			<div class="text">登 出</div>
+			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
+		</div>
+		<!-- Following are orignal code -->
+		<!-- <div class="btnNews">
+			<div class="text">流 程</div>
+			<div class="icon"><a href="/news"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
+		</div> -->
+		<!-- <div class="btnInfo">
 			<div class="text">個人資料</div>
 			<div class="icon"><a href="/profile"><img src="{% static 'images/btnInfo.png' %}" alt="Info"></a></div>
 		</div>
@@ -37,7 +46,7 @@
 		<div class="btnContact">
 			<div class="text">登 出</div>
 			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
-		</div>
+		</div> -->
 		<!--<div class="btnContact">
 			<div class="text">聯 絡</div>
 			<div class="icon"><a href="/contact"><img src="{% static 'images/btnIndex.png' %}" alt="Contact"></a></div>

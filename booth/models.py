@@ -68,6 +68,7 @@ class Participation(models.Model):
     score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE)
     remarks = models.TextField(max_length=1000, null=True, blank=True)
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE)
+    verified = models.BooleanField()
 
 class BoothTraffic(models.Model):
     user = models.ForeignKey('account.User', on_delete=models.CASCADE)
