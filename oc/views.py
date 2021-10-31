@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from booth.models import Booth, Participation, BoothScoring
 from booth.forms import ParticipationForm
@@ -53,8 +53,8 @@ def list_booth(request, type=""):
     # profile = get_object_or_404(Student, user=request.user)
     if type == 'traffics':
         url_base = '/oc/booth/%s/traffics'
-    elif type == 'participation':
-        url_base = '/oc/booth/%s/participation'
+    elif type == 'participations':
+        url_base = '/oc/booth/%s/participations'
     else:
         url_base = '/oc/booth/%s'
 
@@ -129,6 +129,7 @@ def register_page(request, booth_id, user_id):
     return HttpResponse(template.render(context, request))
 
 def register_player(request, booth_id, user_id, participation=""):
+    request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
     user = get_object_or_404(User, id=user_id)
@@ -145,18 +146,8 @@ def register_player(request, booth_id, user_id, participation=""):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            # booth_score_id = form.cleaned_data['booth_score_id']
-            # remarks = form.cleaned_data['remarks']
-            # booth_score = BoothScoring.objects.get(id=booth_score_id)
-            # new_parti = Participation(
-            #     booth = booth,
-            #     player=user.player,
-            #     score=booth_score,
-            #     remarks=remarks,
-            #     marker = request.user
-            # )
-            # new_parti.save()
             messages.success(request, '成功登記該玩家!')
+            # return HttpResponseRedirect(f'/oc/booth/{booth.id}/traffics')
         else:
             print("INVALID FORM")
     template = loader.get_template('oc/booth_register.html')

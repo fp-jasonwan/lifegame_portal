@@ -42,7 +42,7 @@ class Booth(models.Model):
     def __str__(self):
         return f"{self.id} - {self.name}"
 
-    id = models.CharField(max_length=5, primary_key=True)
+    id = models.CharField(max_length=10, primary_key=True)
     booth_in_charge = models.ForeignKey(
         'account.User', 
         related_name='booth_in_charge', 

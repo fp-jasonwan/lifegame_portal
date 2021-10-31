@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from django_tables2 import SingleTableView
 from .models import Booth, Participation, BoothTraffic
 
-from django.http import HttpResponse
+from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect
 import django_tables2 as tables
 from django.template import loader
 
@@ -33,16 +34,19 @@ def get_booths_map(request):
     booth_dict = {
         'OLE': [],
         'Non-OLE': [],
-        '工作分享': []
+        '工作分享': [],
+        '升學': []
     }
     # for cat in sorted(categories):
     #     booth_dict[cat] = []
     for b in booths:
-        if b.description[0] == 'O':
+        if b.id[0] == 'O':
             booth_dict['OLE'].append(b)
-        elif b.description[0] == 'N':
+        elif b.id[0] == 'N':
             booth_dict['Non-OLE'].append(b)
-        else:
+        elif b.id[0] == 'E':
+            booth_dict['升學'].append(b)
+        elif b.id[0] == 'J':
             booth_dict['工作分享'].append(b)
     template = loader.get_template('booths.html')
     context = {
@@ -53,15 +57,24 @@ def get_booths_map(request):
     return HttpResponse(template.render(context, request))
 
 def redirect_zoom(request, booth_id):
+    request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = Booth.objects.get(id=booth_id)
     if request.user.is_player():
-        traffic = BoothTraffic(
-            booth = booth,
-            player = request.user.get_player()
-        )
-        traffic.save()
-    response = redirect(booth.url)
-    return response
+        if booth.is_active:
+            traffic = BoothTraffic(
+                booth = booth,
+                player = request.user.get_player()
+            )
+            traffic.save()
+            response = redirect(booth.url)
+            return response
+        else:
+
+            messages.error(request, '此攤位已經爆滿!')
+            return HttpResponseRedirect("/booths")
+    else:
+        response = redirect(booth.url)
+        return response
 
 
 class TrafficTable(tables.Table):

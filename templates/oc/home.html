@@ -24,12 +24,12 @@
 		</div>
 		<div class="btnInfo">
 			<div class="text">登記玩家</div>
-			<div class="icon"><a href="/oc/booth/traffics"><img src="{% static 'images/btnContact.png' %}" alt="Info"></a></div>
+			<div class="icon"><a href="/oc/booth/traffics"><img src="{% static 'images/btnTraffic.png' %}" alt="Info"></a></div>
 		</div>
 		{% if user.user_type == 'oc' or user.user_type == 'admin' %}
 		<div class="btnStock">
 			<div class="text">登記記錄</div>
-			<div class="icon"><a href="/oc/booth/participations"><img src="{% static 'images/btnInfo.png' %}" alt="Map"></a></div>
+			<div class="icon"><a href="/oc/booth/participations"><img src="{% static 'images/btnProfile.png' %}" alt="Map"></a></div>
 		</div>
 		{% endif %}
 		{% if user.user_type == 'instructor' %}
@@ -40,16 +40,16 @@
 		{% endif %}
 		<div class="btnIndex">
 			<div class="text">地 圖</div>
-			<div class="icon"><a href="/booths"><img src="{% static 'images/btnStock.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/booths"><img src="{% static 'images/btnMaps.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnMap">
 			<div class="text">聯 絡</div>
 			
-			<div class="icon"><a href="/contact"><img src="{% static 'images/btnIndex.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/contact"><img src="{% static 'images/btnContacts.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnContact">
 			<div class="text">登 出</div>
-			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnMap.png' %}" alt="Map"></a></div>
+			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnLogout.png' %}" alt="Map"></a></div>
 		</div> 
 
 	

@@ -53,8 +53,18 @@
 	</div>
 	
 </div>
-	
+
 	
 
 </body>
+
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert("{{ message }}");
+        window.location.href = "/booths";
+    </script>
+
+    {% endfor %}
+{% endif %}
 </html>
