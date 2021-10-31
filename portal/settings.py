@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'oc',
     'main',
     'django_tables2',
+    'constance',
+    'constance.backends.database',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'constance.context_processors.config',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -91,7 +94,7 @@ DATABASES = {
         # 'HOST': '18watch.ddns.net',   # Or an IP Address that your DB is hosted on
         # 'PORT': '3306',
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'lifegame',
+        'NAME': 'lifegame2122',
         'USER': 'root',
         'PASSWORD': 'oc2021',
         'HOST': 'bolhk.net',   # Or an IP Address that your DB is hosted on
@@ -151,3 +154,23 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+from collections import OrderedDict
+
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'game_mode': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': (("opening", "Opening"), ("debriefing", "Debriefing"), ("closing", "Closing"))
+    }],
+}
+
+
+CONSTANCE_CONFIG = {
+    'SITE_NAME': ('青少年人生之旅', 'Website title'),
+    'ANNOUNCEMENT': ('', '公告'),
+    'HALL_LINK': ('', '禮堂連結'),
+    'GAME_MODE': ('opening', 'Select game mode', 'game_mode')
+}

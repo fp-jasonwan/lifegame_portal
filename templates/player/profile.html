@@ -26,27 +26,21 @@
 				<div class="contentInfo content right">{{ player.user.id }}</div>
 			</div>
 			<div class="contentInfo content">
-				<div class="contentInfo content left">導師</div>
-				<div class="contentInfo content right"><a href='http://wa.me/852{{ player.instructor.mobile }}'>{{ player.instructor.last_name }}導師</a></div>
+				<div class="contentInfo content left">姓名</div>
+				<div class="contentInfo content right">{{ player.user.first_name }} {{ player.user.last_name }}</a></div>
 			</div>
-			<div class="contentInfo content">
-				<div class="contentInfo content left">分數</div>
-				<div class="contentInfo content right">{{ scores.overall_score }}</div>
-			</div>
-            
             <div class="contentNews title">參與記錄</div>
             <div class="contentNews bar">
-                <div class="contentNews bar1">攤位</div>
-                <div class="contentNews bar2">評分</div>
-                <div class="contentNews bar3">獲得分數</div>
+                <div class="contentNews bar1"  style="width:60%">攤位</div>
+                <div class="contentNews bar3"  style="width:40%">評分</div>
+<!--                <div class="contentNews bar3">評語(如適用)</div>-->
             </div>
             
             {% for participation in participations %}
             <div class="contentNews content1">
                 <!-- <div class="content1"> {{ participation.record_time|time:"h:i" }}</div> -->
-                <div class="content1"> {{ participation.booth }}</div>
-                <div class="content2"> {{ participation.score }}</div>
-                <div class="content3"> {{ participation.score.overall_score }}</div>
+                <div class="content1" style="width:60%"> {{ participation.booth }}</div>
+                <div class="content3" style="width:40%"> {{ participation.score }}</div>
             </div>
             {% endfor %}
 

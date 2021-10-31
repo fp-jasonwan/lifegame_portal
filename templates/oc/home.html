@@ -12,19 +12,24 @@
 <body>
 <div class="main">
 	<div class="logo"><img src="{% static 'images/logo.png' %}" alt="logo"></div>
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
 	<div class="menu">
 		<div class="btnNews">
 			<div class="text">流 程</div>
-			<div class="icon"><a href="/news"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
+			<div class="icon"><a href="/news"><img src="{% static 'images/btnSchedule.png' %}" alt="News"></a></div>
 		</div>
 		<div class="btnInfo">
-			<div class="text">查閱玩家</div>
-			<div class="icon"><a href="/oc/search_profile"><img src="{% static 'images/btnContact.png' %}" alt="Info"></a></div>
+			<div class="text">登記玩家</div>
+			<div class="icon"><a href="/oc/booth/traffics"><img src="{% static 'images/btnContact.png' %}" alt="Info"></a></div>
 		</div>
 		{% if user.user_type == 'oc' or user.user_type == 'admin' %}
 		<div class="btnStock">
-			<div class="text">攤 位</div>
-			<div class="icon"><a href="/oc/booth_list"><img src="{% static 'images/btnInfo.png' %}" alt="Map"></a></div>
+			<div class="text">登記記錄</div>
+			<div class="icon"><a href="/oc/booth/participations"><img src="{% static 'images/btnInfo.png' %}" alt="Map"></a></div>
 		</div>
 		{% endif %}
 		{% if user.user_type == 'instructor' %}

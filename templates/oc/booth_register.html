@@ -18,26 +18,27 @@
         <div style='padding:20px'>
             <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">User ID</label>
-                    <input class="usernameBox form-control" id="user_id" name="user_id" type="number" value="{{ user.id }}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Booth ID</label>
-                    <input class="usernameBox form-control" id="booth_id" name="booth_id" type="text" value="{{ booth.id }}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Score Option</label>
-                    <select class="usernameBox form-control" id="booth_score_id" name="booth_score_id">
-                        {% for option in score_options %}
-                            <option value="{{ option.id }}">{{ option.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Remarks</label>
-                    <textarea class="usernameBox form-control" id="remarks" name="remarks" rows="3"></textarea>
-                </div>
+                {{ form.as_p }}
+<!--                <div class="form-group">-->
+<!--                    <label for="exampleFormControlInput1">User ID</label>-->
+<!--                    <input class="usernameBox form-control" id="user_id" name="user_id" type="number" value="{{ user.id }}" readonly>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="exampleFormControlInput1">Booth ID</label>-->
+<!--                    <input class="usernameBox form-control" id="booth_id" name="booth_id" type="text" value="{{ booth.id }}" readonly>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="exampleFormControlSelect1">Score Option</label>-->
+<!--                    <select class="usernameBox form-control" id="booth_score_id" name="booth_score_id">-->
+<!--                        {% for option in score_options %}-->
+<!--                            <option value="{{ option.id }}">{{ option.name }}</option>-->
+<!--                        {% endfor %}-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="exampleFormControlTextarea1">Remarks</label>-->
+<!--                    <textarea class="usernameBox form-control" id="remarks" name="remarks" rows="3"></textarea>-->
+<!--                </div>-->
                 <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
             </form>
         </div>

@@ -16,17 +16,17 @@ def get_profile(request, user_id=""):
         user = User.objects.get(id=user_id)
         player = user.player
         # player = Player.objects.get(player_id=player_id)
-    scores = player.get_scores()
-    participations = Participation.objects.filter(player=player, verified=True).all().order_by('-record_time')
-    visits = BoothTraffic.objects.filter(user=player.user).all().order_by('-record_time')
-    instructor_score = InstructorScore.objects.filter(player=player).first()
+    # scores = player.get_scores()
+    participations = Participation.objects.filter(player=player).all().order_by('-record_time')
+    visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
+    # instructor_score = InstructorScore.objects.filter(player=player).first()
     template = loader.get_template('player/profile.html')
     context = {
-        'scores': scores,
+        # 'scores': scores,
         'player': player,
         'participations': participations,
         'visits': visits,
-        'instructor_score': instructor_score
+        # 'instructor_score': instructor_score
     }
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)

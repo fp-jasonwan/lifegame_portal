@@ -2,11 +2,18 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from booth.models import BoothTraffic
+from player.models import Player
 # Create your models here.
 
 class User(AbstractUser):
     def __str__(self):
         return "{} - {} {}".format(self.id, self.last_name, self.first_name)
+
+    def is_player(self):
+        return Player.objects.filter(user=self).exists()
+
+    def get_player(self):
+        return Player.objects.filter(user=self).first()
 
     user_type = models.CharField(
         max_length=10,
@@ -20,5 +27,7 @@ class User(AbstractUser):
     icon = models.ImageField(blank=True, null=True, upload_to='profile/', default='profile/person.png')
     hall_link = models.CharField(max_length=200, default='https://zoom.us/j/98922319654?pwd=MXVDNEJCOGppeU1pbWtrMkZsNWlLUT09')
     def get_last_seen(self):
-        last_seen = BoothTraffic.objects.filter(user=self).order_by('-record_time').first()
-        return last_seen
+        if self.is_player():
+            last_seen = BoothTraffic.objects.filter(player=self.get_player()).order_by('-record_time').first()
+            return last_seen
+        return None

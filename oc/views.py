@@ -48,17 +48,26 @@ def search_profile(request, user_id=""):
     # return HttpResponse("You're voting on question %s." % question_id)
 
 
-def list_booth(request):
+def list_booth(request, type=""):
     booths = Booth.objects.filter(booth_admins__in=[request.user]).order_by('id')
     # profile = get_object_or_404(Student, user=request.user)
+    if type == 'traffics':
+        url_base = '/oc/booth/%s/traffics'
+    elif type == 'participation':
+        url_base = '/oc/booth/%s/participation'
+    else:
+        url_base = '/oc/booth/%s'
+
     if len(booths) > 1:
         template = loader.get_template('oc/booth_list.html')
         context = {
-            'booths': booths
+            'booths': booths,
+            'url_base': url_base,
+            'type': type
         }
         return HttpResponse(template.render(context, request))
     if len(booths) == 1:
-        return redirect('/oc/booth/{}'.format(booths[0].id))
+        return redirect(url_base % (booths[0].id))
     else:
         return redirect('404')
 
@@ -123,21 +132,30 @@ def register_player(request, booth_id, user_id, participation=""):
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
     user = get_object_or_404(User, id=user_id)
-
+    if Participation.objects.filter(player=user.get_player(), booth=booth).exists():
+        instance = Participation.objects.get(player=user.get_player(), booth=booth)
+        form = ParticipationForm(request.POST or None, instance=instance)
+    else:
+        form = ParticipationForm(request.POST or None,
+                                 initial={
+                                     'booth': booth,
+                                     'player': user.get_player(),
+                                     'marker': request.user
+                                 })
     if request.method == 'POST':
-        form = ParticipationForm(request.POST)
         if form.is_valid():
-            booth_score_id = form.cleaned_data['booth_score_id']
-            remarks = form.cleaned_data['remarks']
-            booth_score = BoothScoring.objects.get(id=booth_score_id)
-            new_parti = Participation(
-                booth = booth, 
-                player=user.player, 
-                score=booth_score, 
-                remarks=remarks,
-                marker = request.user
-            )
-            new_parti.save()
+            form.save()
+            # booth_score_id = form.cleaned_data['booth_score_id']
+            # remarks = form.cleaned_data['remarks']
+            # booth_score = BoothScoring.objects.get(id=booth_score_id)
+            # new_parti = Participation(
+            #     booth = booth,
+            #     player=user.player,
+            #     score=booth_score,
+            #     remarks=remarks,
+            #     marker = request.user
+            # )
+            # new_parti.save()
             messages.success(request, '成功登記該玩家!')
         else:
             print("INVALID FORM")
@@ -146,7 +164,8 @@ def register_player(request, booth_id, user_id, participation=""):
     context = {
         'booth': booth,
         'user': user,
-        'score_options': score_options
+        'score_options': score_options,
+        'form': form
     }
     return HttpResponse(template.render(context, request))
 

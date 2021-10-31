@@ -54,13 +54,37 @@ def get_booths_map(request):
 
 def redirect_zoom(request, booth_id):
     booth = Booth.objects.get(id=booth_id)
-    traffic = BoothTraffic(
-        booth = booth,
-        user = request.user
-    )
-    traffic.save()
+    if request.user.is_player():
+        traffic = BoothTraffic(
+            booth = booth,
+            player = request.user.get_player()
+        )
+        traffic.save()
     response = redirect(booth.url)
     return response
+
+
+class TrafficTable(tables.Table):
+    def __init__(self, *args, **kwargs):
+        if kwargs.pop("booth", False):
+            for column in self.base_columns.values():
+                if isinstance(column, tables.LinkColumn):
+                    column.args.insert(0, "booth")
+        super(TrafficTable, self).__init__(*args, **kwargs)
+
+    player = tables.TemplateColumn('<a href="/oc/search_profile/{{record.player.user.id }}">{{record.player}}</a>',
+                                   verbose_name='玩家')
+    record_time = tables.DateTimeColumn(verbose_name='時間', format='h:i A')
+    register = tables.TemplateColumn('<a href="/oc/booth/{{booth.booth_id }}">{{record.player}}</a>',
+                                   verbose_name='登記')
+
+    class Meta:
+        model = BoothTraffic
+        template_name = "django_tables2/bootstrap.html"
+        fields = ("player", "record_time", "register")
+        attrs = {
+            'class': 'table table-bordered dataTable'
+        }
 
 
 class ParticipationsTable(tables.Table):
@@ -88,5 +112,18 @@ def get_parti_record(request, booth_id):
         'booth': booth,
         'participations': participations,
 
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def get_traffic_record(request, booth_id):
+    booth = Booth.objects.get(id=booth_id)
+    traffic = BoothTraffic.objects.filter(
+        booth=booth
+    ).all().order_by('-record_time')
+    template = loader.get_template('oc/booth_traffic.html')
+    context = {
+        'booth': booth,
+        'traffic': traffic,
     }
     return HttpResponse(template.render(context, request))
