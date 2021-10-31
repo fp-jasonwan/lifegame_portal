@@ -83,9 +83,9 @@ def create_player(instance, created, raw, **kwargs):
 
     Player.objects.create(
         user = instance,
-        born_status=BornStatus.objects.get(id=1),
-        born_education_level=Education.objects.get(id=1),
-        live_status='active'
+        # born_status=BornStatus.objects.get(id=1),
+        # born_education_level=Education.objects.get(id=1),
+        # live_status='active'
     )
 
 
