@@ -163,7 +163,7 @@ from collections import OrderedDict
 CONSTANCE_ADDITIONAL_FIELDS = {
     'game_mode': ['django.forms.fields.ChoiceField', {
         'widget': 'django.forms.Select',
-        'choices': (("opening", "Opening"), ("debriefing", "Debriefing"), ("closing", "Closing"))
+        'choices': (("opening", "Opening"), ("booth", "Booth"), ("debriefing", "Debriefing"), ("closing", "Closing"))
     }],
 }
 

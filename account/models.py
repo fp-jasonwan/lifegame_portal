@@ -15,6 +15,10 @@ class User(AbstractUser):
     def get_player(self):
         return Player.objects.filter(user=self).first()
 
+    @property
+    def player(self):
+        return Player.objects.filter(user=self).first()
+
     user_type = models.CharField(
         max_length=10,
         choices=(('student', 'student'), ('oc', 'oc'),('admin', 'admin'), ('instructor', 'instructor')),

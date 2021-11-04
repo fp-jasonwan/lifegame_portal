@@ -29,7 +29,7 @@ class Education(models.Model):
 
 class Player(models.Model):
     def __str__(self):
-        return "{} - {} {}".format(self.user.id, self.user.nick_name, self.user.last_name)
+        return "{} - {} {}".format(self.user.id, self.user.first_name, self.user.last_name)
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField('account.User', on_delete=models.CASCADE, null=True, blank=True)
     debriefing_booth = models.ForeignKey("booth.Booth", on_delete=models.CASCADE, null=True, blank=True)

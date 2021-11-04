@@ -12,6 +12,11 @@
 <body>
 <div class="main">
 	<div class="logo"><img src="{% static 'images/logo.png' %}" alt="logo"></div>
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
 	<div class="menu">
 		<div class="btnNews">
 			<div class="text">個人資料</div>
