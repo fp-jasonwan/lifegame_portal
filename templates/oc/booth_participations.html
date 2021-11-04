@@ -48,8 +48,18 @@
 	</div>
 	
 </div>
-	
-	
+
 
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#checkbox').change(function() {
+        $.post("/oc/booth/{{booth.id}}/", {
+            id: '{{booth.id}}',
+            is_active: this.checked,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        });
+    });
+});
+</script>
 </html>

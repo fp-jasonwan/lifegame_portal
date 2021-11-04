@@ -19,19 +19,17 @@
 	<div class="subContent">
 		<div class="contentInfo">
             <div class="contentNews title">獅城地圖</div>
-			<!-- <div class="contentNews sub">
-				<div class="contentNews subMenu select">政策</div>
-				<div class="contentNews subMenu">經濟</div>
-				<div class="contentNews subMenu">...</div>
-			</div> -->
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style="width:100%; font-size:16px">禮堂</div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:100%; font-size:12px" >
+					<a href="{{ config.HALL_LINK }}">前往</a>
+				</div>
+			</div>
+			<br />
 			{% if config.GAME_MODE == "booth" %}
 			<section id="booth">
-				<div class="contentNews bar">
-					<div class="contentNews bar1" style="width:15%; font-size:16px">編號</div>
-					<div class="contentNews bar2" style="width:30%; font-size:16px">攤位</div>
-					<div class="contentNews bar3" style="width:40%; font-size:16px">簡介</div>
-					<div class="contentNews bar3" style="width:15%; font-size:16px"></div>
-				</div>
 				<div class="contentNews bar">
 					{% for category, booths in booth_dict.items %}
 					<div class="contentNews bar1" style="width:25%">
@@ -70,30 +68,19 @@
 			</div>
 			<div class="contentNews content1">
 				<div class="content1" style="width:100%; font-size:12px" >
-					<a href="{{ request.user.player.debriefing_booth.url }}">前往</a></div>
-				</div>
-			</div>
-			{% elif config.GAME_MODE == "opening" or config.GAME_MODE == "closing" %}
-			<div class="contentNews bar">
-				<div class="contentNews bar1" style="width:100%; font-size:16px">禮堂</div>
-			</div>
-			<div class="contentNews content1">
-				<div class="content1" style="width:100%; font-size:12px" >
-					<a href="{{ config.HALL_LINK }}">前往</a></div>
+					<a href="{{ request.user.player.debriefing_booth.url }}">前往</a>
 				</div>
 			</div>
 			{% endif %}
 		
 		</div>
-	</div>
-	
-	
-	<div class="footer">
-		
-		<img src="{% static 'images/footer.png' %}" alt="footer">
-	</div>
-	
 </div>
+	
+	
+<div class="footer">
+	<img src="{% static 'images/footer.png' %}" alt="footer">
+</div>
+
 
 	
 
