@@ -44,21 +44,6 @@
             </div>
             {% endfor %}
 
-            <div class="contentNews title">導師評分</div>
-			{% if instructor_score %}
-            <div class="contentNews bar">
-                <div class="contentNews bar1" style='width:20%'>評分</div>
-                <div class="contentNews bar2" style='width:80%'>評語</div>
-            </div>
-            
-            <div class="contentNews content1">
-                <!-- <div class="content1"> {{ participation.record_time|time:"h:i" }}</div> -->
-                <div class="content1" style='width:20%'> {{ instructor_score.score }}</div>
-                <div class="content2" style='width:80%'> {{ instructor_score.comments }}</div>
-            </div>
-			{% else %}
-			<div class="contentNews content1">導師沒有給予評分</div>
-			{% endif %}
 
             <!-- <div class="contentNews title">瀏覽記錄</div>
             <div class="contentNews bar">

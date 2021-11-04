@@ -49,7 +49,7 @@ class Booth(models.Model):
         on_delete=models.CASCADE, 
         null=True, blank=True
     )
-    booth_admins = models.ManyToManyField('account.User', related_name='booth_admins')
+    booth_admins = models.ManyToManyField('account.User', related_name='booth_admins', blank=True)
     score_options = models.ManyToManyField(BoothScoring, related_name='score_options')
     name = models.CharField(max_length=50)
     # requirement = models.ForeignKey(BoothRequirement, on_delete=models.CASCADE)
