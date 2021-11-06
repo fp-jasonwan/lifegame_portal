@@ -163,7 +163,13 @@ from collections import OrderedDict
 CONSTANCE_ADDITIONAL_FIELDS = {
     'game_mode': ['django.forms.fields.ChoiceField', {
         'widget': 'django.forms.Select',
-        'choices': (("opening", "Opening"), ("booth", "Booth"), ("debriefing", "Debriefing"), ("closing", "Closing"))
+        'choices': (
+            ("opening", "Opening"),
+            ("booth", "Booth"),
+            ("debriefing", "Debriefing"),
+            ("sharing", "Sharing"),
+            ("closing", "Closing")
+        )
     }],
 }
 
@@ -172,5 +178,6 @@ CONSTANCE_CONFIG = {
     'SITE_NAME': ('青少年人生之旅', 'Website title'),
     'ANNOUNCEMENT': ('', '公告'),
     'HALL_LINK': ('', '禮堂連結'),
-    'GAME_MODE': ('opening', 'Select game mode', 'game_mode')
+    'GAME_MODE': ('opening', 'Select game mode', 'game_mode'),
+    'SHARING_LINK': ('', '')
 }
