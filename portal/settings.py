@@ -164,6 +164,7 @@ CONSTANCE_ADDITIONAL_FIELDS = {
     'game_mode': ['django.forms.fields.ChoiceField', {
         'widget': 'django.forms.Select',
         'choices': (
+            ("notopened", "Not Opened"),
             ("opening", "Opening"),
             ("booth", "Booth"),
             ("debriefing", "Debriefing"),

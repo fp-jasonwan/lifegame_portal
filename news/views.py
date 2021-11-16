@@ -28,7 +28,7 @@ def get_news(request):
     # news_category = NewsCategory.objects.all()
     # for cat in news_category:
     currentTime = datetime.datetime.now().time()
-    news = News.objects.filter().order_by('-time').all()
+    news = News.objects.filter().order_by('time').all()
     template = loader.get_template('news.html')
     # news_list = {}
     # for n in news_category:

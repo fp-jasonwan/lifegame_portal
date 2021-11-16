@@ -19,6 +19,11 @@
 	<div class="subContent">
 		<div class="contentInfo">
             <div class="contentNews title">獅城地圖</div>
+			{% if config.GAME_MODE == "notopened" %}
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style="width:100%; font-size:16px">尚未開放</div>
+			</div>
+			{% else %}
 			<div class="contentNews bar">
 				<div class="contentNews bar1" style="width:100%; font-size:16px">禮堂</div>
 			</div>
@@ -90,7 +95,7 @@
 				</div>
 			</div>
 			{% endif %}
-		
+			{% endif %}
 		</div>
 </div>
 	
