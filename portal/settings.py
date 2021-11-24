@@ -180,5 +180,6 @@ CONSTANCE_CONFIG = {
     'ANNOUNCEMENT': ('', '公告'),
     'HALL_LINK': ('', '禮堂連結'),
     'GAME_MODE': ('opening', 'Select game mode', 'game_mode'),
-    'SHARING_LINK': ('', '')
+    'SHARING_LINK': ('', ''),
+    'RULES': ('', '')
 }
