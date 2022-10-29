@@ -1,0 +1,97 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	
+    <div class="subContent">
+            <div class="contentNews bar">
+                <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+            </div>
+        
+		<div id="qr-reader" style="width:500px"></div>
+		<div id="qr-reader-results"></div>
+		<div class="contentInfo">
+            <div class="contentNews title">玩家進入紀錄</div>
+			<!-- <div class="contentNews sub">
+				<div class="contentNews subMenu select">政策</div>
+				<div class="contentNews subMenu">經濟</div>
+				<div class="contentNews subMenu">...</div>
+			</div> -->
+			<div class="contentNews bar">
+				<div class="contentNews bar1">玩家</div>
+				<div class="contentNews bar2">時間</div>
+				<div class="contentNews bar3">評分</div>
+			</div>
+            
+            {% for t in traffic %}
+			<div class="contentNews content1">
+				<div class="content1"><a href="/oc/search_profile/{{ t.player.user.id }}"> {{ t.player }}</a></div>
+                <div class="content2"> {{ t.record_time|time:"h:i" }}</div>
+				<div class="content3">
+					{% if t.is_participated %}
+					<a href="/oc/booth/{{ booth.id }}/register/{{ t.player.user.id }}"> 修改</a>
+					{% else %}
+					<a href="/oc/booth/{{ booth.id }}/register/{{ t.player.user.id }}"> 登記</a>
+					{% endif %}
+				</div>
+
+			</div>
+            {% endfor %}
+            
+		</div>
+	</div>
+	
+		
+	<div class="footer">
+		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
+</div>
+	
+	
+
+</body>
+
+<!-- Test QR code -->
+<script src="{% static 'js/html5-qrcode.min.js' %}"></script>
+<script>
+    function docReady(fn) {
+        // see if DOM is already available
+        if (document.readyState === "complete"
+            || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function () {
+        var resultContainer = document.getElementById('qr-reader-results');
+        var lastResult, countResults = 0;
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText !== lastResult) {
+                ++countResults;
+                lastResult = decodedText;
+                // Handle on success condition with the decoded message.
+                console.log(`Scan result ${decodedText}`, decodedResult);
+            }
+        }
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+</script>
+<!-- End test QR code -->
+</html>
