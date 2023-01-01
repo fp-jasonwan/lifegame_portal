@@ -31,9 +31,8 @@ class Player(models.Model):
         return "{} - {} {}".format(self.user.id, self.user.first_name, self.user.last_name)
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField('account.User', on_delete=models.CASCADE, null=True, blank=True)
-    debriefing_booth = models.ForeignKey("booth.Booth", on_delete=models.CASCADE, null=True, blank=True)
-    born_status = models.ForeignKey(BornStatus, on_delete=models.CASCADE)
-    born_education_level = models.ForeignKey(Education, on_delete=models.CASCADE)
+    born_status = models.ForeignKey(BornStatus, on_delete=models.CASCADE, null=True, blank=True)
+    born_education_level = models.ForeignKey(Education, on_delete=models.CASCADE, null=True, blank=True)
     live_status = models.CharField(
         choices=LIVE_STATUS_CHOICES,
         default='active',

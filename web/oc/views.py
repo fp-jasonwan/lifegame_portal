@@ -27,8 +27,6 @@ def search_profile(request, user_id=""):
     if user_id == "":
         return HttpResponse(template.render(context, request))
     else:
-        
-        print('check point 1', user_id)
         try:
             user = User.objects.get(id=user_id)
             print(hasattr(user, 'player'))
@@ -47,6 +45,12 @@ def search_profile(request, user_id=""):
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
 
+def register(request):
+    print(request.__dict__)
+    return "Hi"
+
+def register2(request):
+    return HttpResponseRedirect()
 
 def list_booth(request, type=""):
     booths = Booth.objects.filter(booth_admins__in=[request.user]).order_by('id')
@@ -86,31 +90,32 @@ def booth_home(request, booth_id):
     return HttpResponse(template.render(context, request))
 
 
-def check_player(request, booth_id, user_id=""):
-    booth = get_object_or_404(Booth, id=booth_id)
-    request.session['booth'] = booth.id
-    template = loader.get_template('oc/check_player.html')
-    context = {
-        'booth': booth
-    }
-    print(user_id)
-    if user_id == "":
-        return HttpResponse(template.render(context, request))
-    else:
-        try:
-            user = User.objects.get(id=user_id)
-            print(hasattr(user, 'player'))
-            if hasattr(user, 'player') == False:
-                messages.success(request, '查無此玩家!')
-                print('查無此玩家!')
-                context['message'] = '查無此玩家!'
-                return HttpResponse(template.render(context, request))
-            player = user.player
-        except:
-            messages.success(request, '查無此玩家!')
-            context['message'] = '查無此玩家!'
-            return HttpResponse(template.render(context, request))
-        return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
+def check_player(request, booth_id="", user_id=""):
+    print(request)
+    # booth = get_object_or_404(Booth, id=booth_id)
+    # request.session['booth'] = booth.id
+    # template = loader.get_template('oc/check_player.html')
+    # context = {
+    #     'booth': booth
+    # }
+    # print(user_id)
+    # if user_id == "":
+    #     return HttpResponse(template.render(context, request))
+    # else:
+    #     try:
+    #         user = User.objects.get(id=user_id)
+    #         print(hasattr(user, 'player'))
+    #         if hasattr(user, 'player') == False:
+    #             messages.success(request, '查無此玩家!')
+    #             print('查無此玩家!')
+    #             context['message'] = '查無此玩家!'
+    #             return HttpResponse(template.render(context, request))
+    #         player = user.player
+    #     except:
+    #         messages.success(request, '查無此玩家!')
+    #         context['message'] = '查無此玩家!'
+    #         return HttpResponse(template.render(context, request))
+    #     return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
         # else:
         #     context['message'] = '此玩家不符合資格!'
         # return HttpResponse(template.render(context, request))

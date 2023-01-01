@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-from booth.models import BoothTraffic
+from booth.models import BoothTraffic, Booth
 from player.models import Player
 # Create your models here.
 
@@ -19,6 +19,10 @@ class User(AbstractUser):
     def player(self):
         return Player.objects.filter(user=self).first()
 
+    def get_booths(self):
+        if self.user_type in ('oc', 'admin'):
+            booths = Booth.objects.filter(user__)
+
     user_type = models.CharField(
         max_length=10,
         choices=(('student', 'student'), ('oc', 'oc'),('admin', 'admin'), ('instructor', 'instructor')),
@@ -29,7 +33,6 @@ class User(AbstractUser):
     nick_name = models.CharField(max_length=100, blank=True, null=True)
     mobile = models.IntegerField(blank=True, null=True )
     icon = models.ImageField(blank=True, null=True, upload_to='profile/', default='profile/person.png')
-    hall_link = models.CharField(max_length=200, default='https://zoom.us/j/98922319654?pwd=MXVDNEJCOGppeU1pbWtrMkZsNWlLUT09')
     def get_last_seen(self):
         if self.is_player():
             last_seen = BoothTraffic.objects.filter(player=self.get_player()).order_by('-record_time').first()
