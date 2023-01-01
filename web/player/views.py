@@ -31,6 +31,23 @@ def get_profile(request, user_id=""):
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
 
+def get_profile_qrcode(request, user_id=""):
+    if user_id == "":
+        player = request.user.player
+    else:
+        user = User.objects.get(id=user_id)
+        player = user.player
+    profile_url = request.build_absolute_uri(f'/oc/search_profile/{user_id}')
+    template = loader.get_template('player/profile_qrcode.html')
+    context = {
+        # 'scores': scores,
+        'player': player,
+        'profile_url': profile_url
+        # 'instructor_score': instructor_score
+    }
+    return HttpResponse(template.render(context, request))
+    # return HttpResponse("You're voting on question %s." % question_id)
+
 class PlayerParticipationTable(tables.Table):
     record_time = tables.DateTimeColumn(verbose_name= '時間', format='h:i A')
     booth = tables.Column(verbose_name='攤位')

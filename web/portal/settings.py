@@ -12,22 +12,40 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os 
+import environ
+from urllib.parse import urlparse
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env(DEBUG=(bool, True))
+env_file = os.path.join(BASE_DIR, ".env")
 
-
+if os.path.isfile(env_file):
+    # Use a local secret file, if provided
+    env.read_env(env_file)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'uj6g7vig$awvjj)4#dugs%)rm5sy%nbhjn2adesox!aynp&5%-'
 
+# SECURITY WARNING: It's recommended that you use this when
+# running in production. The URL will be known once you first deploy
+# to Cloud Run. This code takes the URL and converts it to both these settings formats.
+CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
+if CLOUDRUN_SERVICE_URL:
+    ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
+    CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+else:
+    ALLOWED_HOSTS = ["*"]
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
-
+CSRF_TRUSTED_ORIGINS = ['https://*.a.run.app']
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +56,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'booth',
-    'index',
     'player',
     'account',
     'news',
@@ -47,6 +64,8 @@ INSTALLED_APPS = [
     'django_tables2',
     'constance',
     'constance.backends.database',
+    'qr_code',
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -95,7 +114,7 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 #         'PASSWORD': 'postgres',
 #     }
 # }
-DATABASES = {
+# DATABASES = {
 #     # 'default': {
 #     #     # 'ENGINE': 'django.db.backends.mysql', 
 #     #     # 'NAME': 'lifegame',
@@ -110,12 +129,41 @@ DATABASES = {
 #     #     'HOST': 'bolhk.net',   # Or an IP Address that your DB is hosted on
 #     #     'PORT': '3306',
 #     # }
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),
-    }
-}
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': str(BASE_DIR / 'db.sqlite3'),
+#     }
+# }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'db',
+#         'USER': 'postgres',
+#         'HOST': '34.96.151.191',
+#         'PORT': 5432,
+#         'PASSWORD': 'postgres',
+#     }
+# }
+DATABASES = {"default": env.db()}
+
+# Use django-environ to parse the connection string
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'db',
+#         'USER': 'postgres',
+#         'HOST': '127.0.0.1',
+#         'PORT': 5432,
+#         'PASSWORD': 'postgres',
+#     }
+# }
+# # If the flag as been set, configure to use proxy
+# if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+#     DATABASES["default"]["HOST"] = "127.0.0.1"
+#     DATABASES["default"]["PORT"] = 5432
+# else:
+#     DATABASES = {"default": env.db()}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -153,17 +201,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-LOGIN_REDIRECT_URL = '/'
-
-AUTH_USER_MODEL = 'account.User'
-
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
-
+# STATIC_URL = '/static/'
+# Define static storage via django-storages[google]
+GS_BUCKET_NAME = env("GS_BUCKET_NAME")
+STATIC_URL = "/static/"
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_DEFAULT_ACL = "publicRead"
+LOGIN_REDIRECT_URL = '/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTH_USER_MODEL = 'account.User'
+
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True

@@ -1,0 +1,78 @@
+{% load static %}
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
+	<div class="subContent">
+		<div class="titleInfo">
+			<div class="infoIcon"><img src="{% static 'images/info.png' %}" alt="logo"></div>
+			<div class="infotext">{{ player.user }}</div>
+			<div class="iconHome"></div>
+	
+		</div>
+		<div class="contentInfo">
+			<div class="contentInfo title">個人資料</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left">學生編號</div>
+				<div class="contentInfo content right">{{ player.user.id }}</div>
+			</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left">姓名</div>
+				<div class="contentInfo content right">{{ player.user.first_name }} {{ player.user.last_name }}</a></div>
+			</div>
+            <div class="contentNews title">參與記錄</div>
+            <div class="contentNews bar">
+                <div class="contentNews bar1"  style="width:100%"></div>
+            </div>
+            
+            <div class="contentNews content1">
+                <!-- <div class="content1"> {{ participation.record_time|time:"h:i" }}</div> -->
+                <div class="content1" style="width:100%"> 
+					{% load qr_code %}
+					{% qr_from_text "/oc/search_profile/2" size=8 image_format="png" error_correction="L" %}
+				</div>
+            </div>
+
+
+            <!-- <div class="contentNews title">瀏覽記錄</div>
+            <div class="contentNews bar">
+                <div class="contentNews bar1">時間</div>
+                <div class="contentNews bar2">攤位</div>
+            </div>
+            
+            {% for v in visits %}
+            <div class="contentNews content1">
+                <div class="content1"> {{ v.record_time|time:"h:i" }}</div>
+                <div class="content2"> {{ v.booth }}</div>
+            </div>
+            {% endfor %} -->
+		</div>
+	</div>
+	
+	
+	<div class="footer">
+		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
+</div>
+	
+	
+
+</body>
+</html>
+

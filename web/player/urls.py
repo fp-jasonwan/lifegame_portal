@@ -4,4 +4,5 @@ from player import views
 
 urlpatterns = [
     path('', views.get_profile, name='self_profile'),
+    path('qrcode', views.get_profile_qrcode, name='qrcode'),
 ]

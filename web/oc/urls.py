@@ -1,8 +1,10 @@
 from .views import oc_portal, search_profile, list_booth, booth_home, check_player, register_player, register_page, get_instructor_players, register_instructor_comment
+from .views import register
 from django.urls import path, include
 from booth.views import get_parti_record, get_traffic_record
 urlpatterns = [
     path('', oc_portal, name='oc_portal'),
+    path('register', register, name="register"),
     path('search_profile', search_profile, name='search_profile'),
     path('search_profile/<int:user_id>', search_profile, name='search_profile_with_id'),
     path('booth_list', list_booth, name='list_booth'),
