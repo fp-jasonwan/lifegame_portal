@@ -4,8 +4,8 @@ from player.models import Player, Education, BornStatus, InstructorScore
 
 admin.site.register(Player)
 # admin.site.register(Player)
-# admin.site.register(Education)
-# admin.site.register(BornStatus)
+admin.site.register(Education)
+admin.site.register(BornStatus)
 
 # class PlayerAdmin(admin.ModelAdmin):
     # list_display = ('user', 'born_status', 'born_education_level')

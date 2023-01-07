@@ -91,31 +91,30 @@ def booth_home(request, booth_id):
 
 
 def check_player(request, booth_id="", user_id=""):
-    print(request)
-    # booth = get_object_or_404(Booth, id=booth_id)
-    # request.session['booth'] = booth.id
-    # template = loader.get_template('oc/check_player.html')
-    # context = {
-    #     'booth': booth
-    # }
-    # print(user_id)
-    # if user_id == "":
-    #     return HttpResponse(template.render(context, request))
-    # else:
-    #     try:
-    #         user = User.objects.get(id=user_id)
-    #         print(hasattr(user, 'player'))
-    #         if hasattr(user, 'player') == False:
-    #             messages.success(request, '查無此玩家!')
-    #             print('查無此玩家!')
-    #             context['message'] = '查無此玩家!'
-    #             return HttpResponse(template.render(context, request))
-    #         player = user.player
-    #     except:
-    #         messages.success(request, '查無此玩家!')
-    #         context['message'] = '查無此玩家!'
-    #         return HttpResponse(template.render(context, request))
-    #     return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
+    booth = get_object_or_404(Booth, id=booth_id)
+    request.session['booth'] = booth.id
+    template = loader.get_template('oc/check_player.html')
+    context = {
+        'booth': booth
+    }
+    print(user_id)
+    if user_id == "":
+        return HttpResponse(template.render(context, request))
+    else:
+        try:
+            user = User.objects.get(id=user_id)
+            print(hasattr(user, 'player'))
+            if hasattr(user, 'player') == False:
+                messages.success(request, '查無此玩家!')
+                print('查無此玩家!')
+                context['message'] = '查無此玩家!'
+                return HttpResponse(template.render(context, request))
+            player = user.player
+        except:
+            messages.success(request, '查無此玩家!')
+            context['message'] = '查無此玩家!'
+            return HttpResponse(template.render(context, request))
+        return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
         # else:
         #     context['message'] = '此玩家不符合資格!'
         # return HttpResponse(template.render(context, request))
@@ -214,9 +213,7 @@ def register_instructor_comment(request, player_id):
 def get_contact(request):
     contacts = ContactPerson.objects.all()
     template = loader.get_template('contact.html')
-    hall_link = request.user.hall_link
     context = {
-        'contacts': contacts,
-        'hall_link': hall_link
+        'contacts': contacts
     }
     return HttpResponse(template.render(context, request))

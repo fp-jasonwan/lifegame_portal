@@ -104,48 +104,17 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'HOST': 'db',
-#         'PORT': 5432,
-#         'PASSWORD': 'postgres',
-#     }
-# }
-# DATABASES = {
-#     # 'default': {
-#     #     # 'ENGINE': 'django.db.backends.mysql', 
-#     #     # 'NAME': 'lifegame',
-#     #     # 'USER': '18watch',
-#     #     # 'PASSWORD': '18watch',
-#     #     # 'HOST': '18watch.ddns.net',   # Or an IP Address that your DB is hosted on
-#     #     # 'PORT': '3306',
-#     #     'ENGINE': 'django.db.backends.mysql', 
-#     #     'NAME': 'lifegame2122',
-#     #     'USER': 'root',
-#     #     'PASSWORD': 'oc2021',
-#     #     'HOST': 'bolhk.net',   # Or an IP Address that your DB is hosted on
-#     #     'PORT': '3306',
-#     # }
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': str(BASE_DIR / 'db.sqlite3'),
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'db',
-#         'USER': 'postgres',
-#         'HOST': '34.96.151.191',
-#         'PORT': 5432,
-#         'PASSWORD': 'postgres',
-#     }
-# }
-DATABASES = {"default": env.db()}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db',
+        'USER': 'postgres',
+        'HOST': '34.96.151.191',
+        'PORT': 5432,
+        'PASSWORD': 'postgres',
+    }
+}
+# DATABASES = {"default": env.db()}
 
 # Use django-environ to parse the connection string
 # DATABASES = {

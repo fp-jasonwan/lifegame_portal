@@ -38,16 +38,10 @@ class Player(models.Model):
         default='active',
         max_length=8
     )
-    instructor = models.ForeignKey(
-        "account.User",
-        related_name='instructor',
-        on_delete=models.CASCADE,
-        null=True, blank=True
-    )
 
     def get_scores(self):
-        return {
-            'overall_score': self.get_score('overall_score'),
+        result_dict = {
+            'total_score': self.get_score('total_score'),
             'money': self.get_score('money'),
             'health_score': self.get_score('health_score'),
             'academic_score': self.get_score('academic_score'),
@@ -55,6 +49,12 @@ class Player(models.Model):
             'relationship_score': self.get_score('relationship_score'),
             'joy_score': self.get_score('joy_score')
         }
+        result_dict['total_score'] = result_dict['health_score'] + \
+                                     result_dict['academic_score'] + \
+                                     result_dict['growth_score'] + \
+                                     result_dict['relationship_score'] + \
+                                     result_dict['joy_score'] 
+        return result_dict
         
     def get_score(self, score_name):
         if score_name not in self.born_status.__dict__:
@@ -81,9 +81,9 @@ def create_player(instance, created, raw, **kwargs):
 
     Player.objects.create(
         user = instance,
-        # born_status=BornStatus.objects.get(id=1),
-        # born_education_level=Education.objects.get(id=1),
-        # live_status='active'
+        born_status=BornStatus.objects.get(id=1),
+        born_education_level=Education.objects.get(id=1),
+        live_status='active'
     )
 
 

@@ -8,6 +8,10 @@ urlpatterns = [
     path('search_profile', search_profile, name='search_profile'),
     path('search_profile/<int:user_id>', search_profile, name='search_profile_with_id'),
     path('booth_list', list_booth, name='list_booth'),
+
+    path('booth/check_player', booth_home, name='booth_home'),
+
+
     path('booth/<str:booth_id>/', booth_home, name='booth_home'),
     path('booth/<str:booth_id>/check_player/<int:user_id>', check_player, name='check_player'),
     path('booth/<str:booth_id>/check_player', check_player, name='check_player'),
