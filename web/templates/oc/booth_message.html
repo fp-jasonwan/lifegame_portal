@@ -20,29 +20,33 @@
     
     <div class="subContent" style='background:#b9d7bb'>
         
-        
-        <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
-        {% csrf_token %}
+        <div class="contentNews title">{{ error_msg }}</div>
+        {% if error_type == 'not_eligible' %}
         <div class="contentInfo">
-            <div class="contentNews title">登記玩家</div>
+			<!-- <div class="contentNews sub">
+				<div class="contentNews subMenu select">政策</div>
+				<div class="contentNews subMenu">經濟</div>
+				<div class="contentNews subMenu">...</div>
+			</div> -->
 			<div class="contentNews bar">
-				<div class="contentNews bar1" style="width:30%">玩家</div>
-				<div class="contentNews bar2" style="width:70%">時間</div>
+				<div class="contentNews bar1" style="width:50%">分數</div>
+				<div class="contentNews bar2" style="width:25%">要求</div>
+				<div class="contentNews bar3" style="width:25%">玩家</div>
 			</div>
-            {% for field in form %}
-                <div class="contentNews content1">
-                    <div class="content1" style="width:30%">{{ field.label_tag }}</div>
-                    {% if field.name == "booth" or field.name == "player" or field.name == "marker" %}
-                        <div class="content2" style="width:70%">{{ field|attr:'disabled="true"' }}</div>
-                    {% else %}
-                        <div class="content2" style="width:70%">{{ field }}</div>
-                    {% endif %}
-                </div>
+            
+            {% for type in score_types %}
+            {% if type in eligibility %}
+			<div class="contentNews content1" style="background-color:#FF938F;">
+            {% else %}
+			<div class="contentNews content1" style="background-color:#97FF86;">
+            {% endif %}
+                <div class="content1" style="width:50%">{{ score_translation|get_item:type }}</div>
+                <div class="content2" style="width:25%">{{ booth_scores|get_item:type }}</div>
+                <div class="content3" style="width:25%">{{ player_scores|get_item:type }}</div>
+			</div>
             {% endfor %}
-            <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
 		</div>
-        </form>
-        
+        {% endif %}
     </div>
 </div>
        

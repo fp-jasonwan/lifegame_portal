@@ -14,14 +14,12 @@
     <div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
     <a href='/oc/booth/{{ booth.id }}'>
         <div class="contentNews bar">
-            <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }}</div>
         </div>
     </a>
-    
     <div class="subContent" style='background:#b9d7bb'>
         
-        
-        <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
+        <form action="/oc/booth/{{ booth.id }}/settings" method="post">
         {% csrf_token %}
         <div class="contentInfo">
             <div class="contentNews title">登記玩家</div>

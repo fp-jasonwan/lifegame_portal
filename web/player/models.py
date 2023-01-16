@@ -41,7 +41,6 @@ class Player(models.Model):
 
     def get_scores(self):
         result_dict = {
-            'total_score': self.get_score('total_score'),
             'money': self.get_score('money'),
             'health_score': self.get_score('health_score'),
             'academic_score': self.get_score('academic_score'),
@@ -49,6 +48,7 @@ class Player(models.Model):
             'relationship_score': self.get_score('relationship_score'),
             'joy_score': self.get_score('joy_score')
         }
+        print(result_dict)
         result_dict['total_score'] = result_dict['health_score'] + \
                                      result_dict['academic_score'] + \
                                      result_dict['growth_score'] + \
@@ -63,8 +63,12 @@ class Player(models.Model):
         participations = Participation.objects.filter(player=self)
         for parti in participations:
             parti_score = getattr(parti.score, score_name)
-            score += parti_score
-        return score
+            if parti_score:
+                score += parti_score
+        if score:
+            return score
+        else:
+            return 0
 
 class InstructorScore(models.Model):
     player = models.OneToOneField(Player, on_delete=models.CASCADE)

@@ -11,28 +11,32 @@
 
 <body>
 <div class="main">
-	<div class="logo"><img src="{% static 'images/logo.png' %}" alt="logo"></div>
+    <div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
 	{% if config.ANNOUNCEMENT != "" %}
 	<div class="contentNews bar">
 		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
 	</div>
 	{% endif %}
+
+	<a href='/oc/booth/{{ booth.id }}'>
+		<div class="contentNews bar">
+			<div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+		</div>
+	</a>
 	<div class="menu">
 		<div class="btnNews">
-			<div class="text">查閱玩家</div>
-			<div class="icon"><a href="/oc/search_profile"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
+			<div class="text">登記玩家</div>
+			<div class="icon"><a href="check_player"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
 		</div>
 		<div class="btnInfo">
-			<div class="text">攤位</div>
-			<div class="icon"><a href="/oc/booth"><img src="{% static 'images/btnTraffic.png' %}" alt="Info"></a></div>
-		</div>
-		{% if user.user_type == 'oc' or user.user_type == 'admin' %}
-		<div class="btnStock">
 			<div class="text">登記記錄</div>
-			<div class="icon"><a href="/oc/booth/participations"><img src="{% static 'images/btnProfile.png' %}" alt="Map"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/traffics"><img src="{% static 'images/btnTraffic.png' %}" alt="Info"></a></div>
 		</div>
-		{% endif %}
-		{% if user.user_type == 'instructor' %}
+		<div class="btnStock">
+			<div class="text">攤位設置</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'images/btnProfile.png' %}" alt="Map"></a></div>
+		</div>
+		<!-- {% if user.user_type == 'instructor' %}
 		<div class="btnStock">
 			<div class="text">學 員</div>
 			<div class="icon"><a href="/oc/instructor"><img src="{% static 'images/btnInfo.png' %}" alt="Map"></a></div>
@@ -50,7 +54,7 @@
 		<div class="btnContact">
 			<div class="text">登 出</div>
 			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnLogout.png' %}" alt="Map"></a></div>
-		</div> 
+		</div>  -->
 
 	
 	</div>

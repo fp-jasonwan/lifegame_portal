@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 </head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 <body>
 <div class="container">
@@ -16,22 +17,28 @@
             <img src="{% static 'images/logo.png' %}" alt="logo">
         </a>
     </div>
-    
+
+    <div class="subContent">
+		<div class="contentInfo">
+            <div class="contentNews title"></div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%'>掃描QR code</div>
+			</div>
+            
+            <div id='error_msg' class="contentNews content1" style="color:red;display:none" hidden>
+                Error: unknown QR code
+            </div>
+            <div class="contentNews content1">
+                <div id="reader"  style='width:100%'></div> 
+            </div>
+		</div>
+	</div>
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <!-- <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table> -->
         <div class="login">
             <div class="username"><input type="text" id="inputId" name="username" class="usernameBox" placeholder="User ID"></div>
         </div>	
+
         <div class="btn"><img src="{% static 'images/btnGo.png' %}" onclick="searchPlayerButton()"></div>
         
         <input type="hidden" name="next" value="{{ next }}">
@@ -46,7 +53,15 @@
 </body>
 
 <!-- <script src="{% static 'js/html5-qrcode.min.js' %}"></script> -->
-<script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script type="text/javascript">
+    let app = new Vue({
+      el: "#vue-app",
+      data: {
+        myTitle: '<h1>Hello Vue!</h1>',
+      },
+    });
+
     function searchPlayer(id) {
         var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
         console.log('check');
@@ -60,19 +75,19 @@
         }
     }
 
-    function searchPlayerButton() {
-        var id = document.getElementById('inputId').value;
-        if(Number.isInteger(parseInt(id))) {
-            searchPlayer(id);
+    function onScanSuccess(decodedText, decodedResult) {
+        // Handle on success condition with the decoded text or result.
+        var scanned_user_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        if(Number.isInteger(parseInt(scanned_user_id))) {
+            searchPlayer(scanned_user_id);
+        } else {
+            document.getElementById('error_msg').style.display='block';
         }
     }
-    function onScanSuccess(qrCodeMessage) {
-        // handle on success condition with the decoded message
-        console.log(qrCodeMessage)
-    }
 
-    // var html5QrcodeScanner = new Html5QrcodeScanner(
-    //     "reader", { fps: 10, qrbox: 250 });
-    // html5QrcodeScanner.render(onScanSuccess);
-</script>
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+
+  </script>
 </html>

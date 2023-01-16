@@ -12,13 +12,13 @@
 <div class="sub">
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
 	
+    <a href='/oc/booth/{{ booth.id }}'>
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+        </div>
+    </a>
+    
     <div class="subContent">
-            <div class="contentNews bar">
-                <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
-            </div>
-        
-		<div id="qr-reader" style="width:500px"></div>
-		<div id="qr-reader-results"></div>
 		<div class="contentInfo">
             <div class="contentNews title">玩家進入紀錄</div>
 			<!-- <div class="contentNews sub">
@@ -64,34 +64,5 @@
 
 <!-- Test QR code -->
 <script src="{% static 'js/html5-qrcode.min.js' %}"></script>
-<script>
-    function docReady(fn) {
-        // see if DOM is already available
-        if (document.readyState === "complete"
-            || document.readyState === "interactive") {
-            // call on next available tick
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
-    }
 
-    docReady(function () {
-        var resultContainer = document.getElementById('qr-reader-results');
-        var lastResult, countResults = 0;
-        function onScanSuccess(decodedText, decodedResult) {
-            if (decodedText !== lastResult) {
-                ++countResults;
-                lastResult = decodedText;
-                // Handle on success condition with the decoded message.
-                console.log(`Scan result ${decodedText}`, decodedResult);
-            }
-        }
-
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess);
-    });
-</script>
-<!-- End test QR code -->
 </html>

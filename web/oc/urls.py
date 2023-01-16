@@ -1,5 +1,5 @@
-from .views import oc_portal, search_profile, list_booth, booth_home, check_player, register_player, register_page, get_instructor_players, register_instructor_comment
-from .views import register
+from .views import oc_portal, search_profile, list_booth, booth_home,scan_player, check_player, register_player, register_page, get_instructor_players, register_instructor_comment
+from .views import register, redirect_to_booth, update_booth_settings
 from django.urls import path, include
 from booth.views import get_parti_record, get_traffic_record
 urlpatterns = [
@@ -12,10 +12,12 @@ urlpatterns = [
     path('booth/check_player', booth_home, name='booth_home'),
 
 
+    path('booth', redirect_to_booth, name='booth_home'),
     path('booth/<str:booth_id>/', booth_home, name='booth_home'),
     path('booth/<str:booth_id>/check_player/<int:user_id>', check_player, name='check_player'),
-    path('booth/<str:booth_id>/check_player', check_player, name='check_player'),
+    path('booth/<str:booth_id>/check_player', scan_player, name='check_player'),
     path('booth/<str:booth_id>/register/<int:user_id>', register_player, name='register_player'),
+    path('booth/<str:booth_id>/settings', update_booth_settings, name='update_booth_settings'),
     path('booth/traffics', list_booth, {"type": 'traffics'}, name='booth_traffics'),
     path('booth/participations', list_booth, {"type": 'participations'}, name='booth_participations'),
     path('booth/<str:booth_id>/participations', get_parti_record, name='booth_participations'),

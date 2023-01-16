@@ -1,0 +1,123 @@
+{% load static %}
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
+	<div class="subContent">
+		<div class="titleInfo">
+			<div class="infoIcon"><img src="{% static 'images/info.png' %}" alt="logo"></div>
+			<div class="infotext">{{ player.user }}</div>
+			<div class="iconHome"></div>
+	
+		</div>
+		<div class="contentInfo">
+			<div class="contentInfo title">個人資料</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left">學生編號</div>
+				<div class="contentInfo content right">{{ player.user.id }}</div>
+			</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left">姓名</div>
+				<div class="contentInfo content right">{{ player.user.first_name }} {{ player.user.last_name }}</a></div>
+			</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left">金錢</div>
+				<div class="contentInfo content right">{{ scores.money }}</a></div>
+			</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left">總得分</div>
+				<div class="contentInfo content right">{{ scores.total_score }}</a></div>
+			</div>
+
+			<!-- Scores breakdown -->
+			<div class="contentNews title">參與記錄</div>
+
+            <div class="contentNews bar">
+                <div class="contentNews bar1"  style="width:60%">攤位</div>
+                <div class="contentNews bar3"  style="width:40%">評分</div>
+            </div>
+			
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%"> Health Score</div>
+                <div class="content3" style="width:40%"> {{ scores.health_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%"> Academic Score</div>
+                <div class="content3" style="width:40%"> {{ scores.academic_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%"> Growth Score</div>
+                <div class="content3" style="width:40%"> {{ scores.growth_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%"> Relationship Score</div>
+                <div class="content3" style="width:40%"> {{ scores.relationship_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%"> Joy Score</div>
+                <div class="content3" style="width:40%"> {{ scores.joy_score }}</div>
+            </div>
+            
+
+			<!-- Participation records -->
+            <div class="contentNews title">參與記錄</div>
+
+            <div class="contentNews bar">
+                <div class="contentNews bar1"  style="width:60%">攤位</div>
+                <div class="contentNews bar3"  style="width:40%">評分</div>
+            </div>
+            
+            {% for participation in participations %}
+            <div class="contentNews content1">
+                <div class="content1" style="width:60%"> {{ participation.booth }}</div>
+                <div class="content3" style="width:40%"> {{ participation.score }}</div>
+            </div>
+            {% endfor %}
+
+
+            <!-- <div class="contentNews title">瀏覽記錄</div>
+            <div class="contentNews bar">
+                <div class="contentNews bar1">時間</div>
+                <div class="contentNews bar2">攤位</div>
+            </div>
+            
+            {% for v in visits %}
+            <div class="contentNews content1">
+                <div class="content1"> {{ v.record_time|time:"h:i" }}</div>
+                <div class="content2"> {{ v.booth }}</div>
+            </div>
+            {% endfor %} -->
+		</div>
+	</div>
+	
+	
+	<div class="footer">
+		Scan another user
+	</div>
+	
+	
+	<div class="footer">
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
+</div>
+	
+	
+
+</body>
+</html>
+

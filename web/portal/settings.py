@@ -14,6 +14,8 @@ from pathlib import Path
 import os 
 import environ
 from urllib.parse import urlparse
+from google.oauth2 import service_account
+import platform
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(DEBUG=(bool, True))
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
     'constance.backends.database',
     'qr_code',
     "storages",
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -104,17 +107,19 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db',
-        'USER': 'postgres',
-        'HOST': '34.96.151.191',
-        'PORT': 5432,
-        'PASSWORD': 'postgres',
+if platform.platform()[:5] == 'macOS':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'db',
+            'USER': 'postgres',
+            'HOST': '34.96.151.191',
+            'PORT': 5432,
+            'PASSWORD': 'postgres',
+        }
     }
-}
-# DATABASES = {"default": env.db()}
+else:
+    DATABASES = {"default": env.db()}
 
 # Use django-environ to parse the connection string
 # DATABASES = {
@@ -176,11 +181,29 @@ STATICFILES_DIRS = [
 # STATIC_URL = '/static/'
 # Define static storage via django-storages[google]
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
-STATIC_URL = "/static/"
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+service_account_info = {
+  "type": "service_account",
+  "project_id": "elated-strength-367005",
+  "private_key_id": "cf42f4450615f617c8656b4766d09cd7a32559f3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3AeSQEuGXX7gW\nWqYL+YRu9eqh139MrXt+n2/8WVFCWYp+9yitQ+4jF+ItFBOPoaIDffSSEoCdkkhM\nVHE+mF77KF8dfrJLam59xwfrcTHjD5mCnnW/3Pg5sxGN20SqmwYN6cd1gkmAckZk\nYKEzGGzmspBWUcOHVYsGVqe26yQnp/iSvlkUnBpgdOBw4VO4sI6zNQxgLC2I6EKu\nTOueEQ6hC5DHL4Wyv6x+tyCcYG8z1m4hGF6E9WusyHNzu+j2un3amkW/JmOZ6qPp\nXZQpthGDRAzs+UPcd/DOLwZg+XuMKgSTFdxNjnGvqY68QzLZger7y56kpgO/ObSE\ndkqCAGgbAgMBAAECggEAAT1Y+KUm9DALA0Dk8J5A/1O0ZtAazwCD1UeHV+EuuDqN\nL9P7xOlC0J7BJz4EW542dGCZ07jnpfvhnMbAOelkK+LuepQrDbneDQVYVQgEwmsz\nRoBNSJns8DxCyWTZVpUUYutP1Vrd7rwptudZhMHfGUJhrFdxBB+829g0R+ohszUO\nVZ32ZpeppN6yeprdZ4h6wrNo+joTUiljmDo7C9Td4GW2NTpUSCWqwhhIeGZGDUZU\nfo5QAgh8JdvZ6Sb4yDtyHiQniBBAJpcnc2JvL838JdKULW4GgV1MjQLafEilbYaZ\nvgGf+h9mHgNjV+REQYla4DD+D+dx6/ETR+4+kUaEWQKBgQDx1XPZowN4aKYHQ5O6\nLsG0aN1DlTLIPEKhQBW2X+AHCYZ1GTZU9CAJOwxZudXhVVZgMfGwln/wsn3NbEsm\nPaYhSL98wK2urpxPW8NFmpGDDBYHfJHOo6EJd8OrIyclFVWNuIDyiAkTPJIOuGOF\njk2kFKYp2POFKcyP3BQeoJPO0wKBgQDBukcRmQUy0RkUJwzCn6ACWOiMk1YWnK7V\nQ3plmyr6bGIzO/o279WxfSU9iEZ+eiU9FLRrvqQA+ooM4VMPDiFhyr8rj6uzZ4an\nxvccC5AsivG31LXB8P4AU4JCp2ZWXXCrZIYDAJPacWZhafaTf5Nv0dgo8ONn6Wp2\nAYFlH8eEmQKBgQCK+V2QLovqAEmZVw5oKkKLCNBO7Ei4pVitDgTsP4CgyqqIVKrS\ne1CFvXdFgPQWgFIZCdqY3oQ7sHd3O8qb+UWlTwcsDBZDknilalh3gXIp2yI1vzKT\ni5kZtceua48tUmtN/D+uINsGQQK2juQydirMJkmvNswLNJAoBBNT3nfSnQKBgQCk\ntuc6NSrQXCzAj7svt1zq4gFHlPY7X5jfRvJIdbgDGCgee75w+1ZsBIWnXbjiTKRg\n3LvSaFM1ac/6x5JBWLhVV3dXaF6KuVkqSedM9x/sX27J6JdpgKfWSyqT1ZUTlXr4\nnw26e8E6l/R+mwPFwVDwYDE0Diyr6zBTiVAlVPHk8QKBgHmgJ54HHmYhjDIZmNC0\nrfIdJWWic2jbQ9GdX2R1uFwiwttjN06WUxmb3eKy63s0zq7J8t4whpx5X91HdPyb\njs64sCa0I+33bI8telJ8A9iidj/OppUCx5wPp5FNMFZe3ySu2+dMrH1qKAFc1pOm\nh5X1PP1C5C7LMxWyO4WiCuhW\n-----END PRIVATE KEY-----\n",
+  "client_email": "604503346297-compute@developer.gserviceaccount.com",
+  "client_id": "104501610794353518437",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/604503346297-compute%40developer.gserviceaccount.com"
+}
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    service_account_info
+)
+# GS_ACCESS_KEY_ID = 'cf42f4450615f617c8656b4766d09cd7a32559f3'
+# GS_SECRET_ACCESS_KEY = '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3AeSQEuGXX7gW\nWqYL+YRu9eqh139MrXt+n2/8WVFCWYp+9yitQ+4jF+ItFBOPoaIDffSSEoCdkkhM\nVHE+mF77KF8dfrJLam59xwfrcTHjD5mCnnW/3Pg5sxGN20SqmwYN6cd1gkmAckZk\nYKEzGGzmspBWUcOHVYsGVqe26yQnp/iSvlkUnBpgdOBw4VO4sI6zNQxgLC2I6EKu\nTOueEQ6hC5DHL4Wyv6x+tyCcYG8z1m4hGF6E9WusyHNzu+j2un3amkW/JmOZ6qPp\nXZQpthGDRAzs+UPcd/DOLwZg+XuMKgSTFdxNjnGvqY68QzLZger7y56kpgO/ObSE\ndkqCAGgbAgMBAAECggEAAT1Y+KUm9DALA0Dk8J5A/1O0ZtAazwCD1UeHV+EuuDqN\nL9P7xOlC0J7BJz4EW542dGCZ07jnpfvhnMbAOelkK+LuepQrDbneDQVYVQgEwmsz\nRoBNSJns8DxCyWTZVpUUYutP1Vrd7rwptudZhMHfGUJhrFdxBB+829g0R+ohszUO\nVZ32ZpeppN6yeprdZ4h6wrNo+joTUiljmDo7C9Td4GW2NTpUSCWqwhhIeGZGDUZU\nfo5QAgh8JdvZ6Sb4yDtyHiQniBBAJpcnc2JvL838JdKULW4GgV1MjQLafEilbYaZ\nvgGf+h9mHgNjV+REQYla4DD+D+dx6/ETR+4+kUaEWQKBgQDx1XPZowN4aKYHQ5O6\nLsG0aN1DlTLIPEKhQBW2X+AHCYZ1GTZU9CAJOwxZudXhVVZgMfGwln/wsn3NbEsm\nPaYhSL98wK2urpxPW8NFmpGDDBYHfJHOo6EJd8OrIyclFVWNuIDyiAkTPJIOuGOF\njk2kFKYp2POFKcyP3BQeoJPO0wKBgQDBukcRmQUy0RkUJwzCn6ACWOiMk1YWnK7V\nQ3plmyr6bGIzO/o279WxfSU9iEZ+eiU9FLRrvqQA+ooM4VMPDiFhyr8rj6uzZ4an\nxvccC5AsivG31LXB8P4AU4JCp2ZWXXCrZIYDAJPacWZhafaTf5Nv0dgo8ONn6Wp2\nAYFlH8eEmQKBgQCK+V2QLovqAEmZVw5oKkKLCNBO7Ei4pVitDgTsP4CgyqqIVKrS\ne1CFvXdFgPQWgFIZCdqY3oQ7sHd3O8qb+UWlTwcsDBZDknilalh3gXIp2yI1vzKT\ni5kZtceua48tUmtN/D+uINsGQQK2juQydirMJkmvNswLNJAoBBNT3nfSnQKBgQCk\ntuc6NSrQXCzAj7svt1zq4gFHlPY7X5jfRvJIdbgDGCgee75w+1ZsBIWnXbjiTKRg\n3LvSaFM1ac/6x5JBWLhVV3dXaF6KuVkqSedM9x/sX27J6JdpgKfWSyqT1ZUTlXr4\nnw26e8E6l/R+mwPFwVDwYDE0Diyr6zBTiVAlVPHk8QKBgHmgJ54HHmYhjDIZmNC0\nrfIdJWWic2jbQ9GdX2R1uFwiwttjN06WUxmb3eKy63s0zq7J8t4whpx5X91HdPyb\njs64sCa0I+33bI8telJ8A9iidj/OppUCx5wPp5FNMFZe3ySu2+dMrH1qKAFc1pOm\nh5X1PP1C5C7LMxWyO4WiCuhW\n-----END PRIVATE KEY-----\n'
 GS_DEFAULT_ACL = "publicRead"
 LOGIN_REDIRECT_URL = '/'
+STATIC_URL = "/static/"
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'account.User'

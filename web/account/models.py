@@ -19,10 +19,6 @@ class User(AbstractUser):
     def player(self):
         return Player.objects.filter(user=self).first()
 
-    # def get_booths(self):
-    #     if self.user_type in ('oc', 'admin'):
-    #         booths = Booth.objects.filter(user__)
-
     user_type = models.CharField(
         max_length=10,
         choices=(('student', 'student'), ('oc', 'oc'),('admin', 'admin'), ('instructor', 'instructor')),

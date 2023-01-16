@@ -72,21 +72,12 @@
 <div class="sub">
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
 	
+	<a href='/oc/booth/{{ booth.id }}'>
+		<div class="contentNews bar">
+			<div class="contentNews bar1" style='width:100%'>{{ booth.id }}</div>
+		</div>
+	</a>
     <div class="subContent">
-            <div class="contentNews bar">
-                <div class="contentNews bar1" style='width:80%'>{{ booth.id }} - {{ booth.name }}</div>
-                <div class="contentNews bar1" style='width:20%'>
-
-
-					<div class="icon">
-						<label class="switch">
-							<input type="checkbox" id="checkbox" value="{{booth.is_active}}" {% if booth.is_active %}checked{% endif %}>
-							<span class="slider round"></span>
-						</label>
-					</div>
-				</div>
-
-            </div>
         
 		<div class="contentInfo">
             <div class="contentNews title">登記紀錄</div>

@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <meta charset="utf-8">
 <title>青少年人生之旅</title>
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
@@ -12,25 +12,32 @@
 
 <body>
 <div class="sub">
-    <div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+    <div class="logo"><a href="/"><img href='/' src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+    <a href='/oc/booth/{{ booth.id }}'>
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }}</div>
+        </div>
+    </a>
     <div class="subContent">
         <div class="contentInfo">
-            <div class="contentNews title">攤位</div>
-            <div class="contentNews bar">
-                <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+            <div class="contentNews title"></div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%'>掃描QR code</div>
+			</div>
+            
+            <div id='error_msg' class="contentNews content1" style="color:red;display:none" hidden>
+                Error: unknown QR code
             </div>
             <div class="contentNews content1">
-                <div class="content1" style='width:100%'>{{ booth.description }} </div>
-                
+                <div id="reader"  style='width:100%'></div> 
             </div>
-            <div id="reader"  style='width:100%'></div> 
             
             
         </div>
         
     </div>
     
-    <form method="post" action="{% url 'login' %}">
+    <!-- <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="login">
             <div class="contentNews bar">
@@ -46,7 +53,7 @@
         
         
         <input type="hidden" name="next" value="{{ next }}">
-    </form>
+    </form> -->
         
 	<div class="footer">
 		
@@ -73,8 +80,7 @@
     var html5QrcodeScanner = new Html5QrcodeScanner(
       "reader", { fps: 10, qrbox: 250 });
     html5QrcodeScanner.render(onScanSuccess);
-
-  </script>
+</script>
 
 
 <script>
