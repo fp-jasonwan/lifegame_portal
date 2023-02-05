@@ -19,10 +19,8 @@ import platform
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(DEBUG=(bool, True))
-try:
-    env_file = os.path.join(BASE_DIR, ".env")
-except: 
-    pass
+
+env_file = os.path.join(BASE_DIR, ".env.prod")
 
 if os.path.isfile(env_file):
     # Use a local secret file, if provided
