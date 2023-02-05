@@ -30,7 +30,7 @@
 		</div>
 		<div class="btnInfo">
 			<div class="text">登記記錄</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/traffics"><img src="{% static 'images/btnTraffic.png' %}" alt="Info"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/participations"><img src="{% static 'images/btnTraffic.png' %}" alt="Info"></a></div>
 		</div>
 		<div class="btnStock">
 			<div class="text">攤位設置</div>
@@ -41,22 +41,19 @@
 			<div class="text">學 員</div>
 			<div class="icon"><a href="/oc/instructor"><img src="{% static 'images/btnInfo.png' %}" alt="Map"></a></div>
 		</div>
-		{% endif %}
+		{% endif %} -->
 		<div class="btnIndex">
-			<div class="text">地 圖</div>
-			<div class="icon"><a href="/booths"><img src="{% static 'images/btnMaps.png' %}" alt="Contact"></a></div>
+			<div class="text">付 款</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/pay"><img src="{% static 'images/btnMaps.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnMap">
-			<div class="text">聯 絡</div>
-			
-			<div class="icon"><a href="/contact"><img src="{% static 'images/btnContacts.png' %}" alt="Contact"></a></div>
+			<div class="text">收 款</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/receive"><img src="{% static 'images/btnContacts.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnContact">
-			<div class="text">登 出</div>
-			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnLogout.png' %}" alt="Map"></a></div>
-		</div>  -->
-
-	
+			<div class="text">付款記錄</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transactions"><img src="{% static 'images/btnLogout.png' %}" alt="Map"></a></div>
+		</div>
 	</div>
 		
 	<div class="footer">

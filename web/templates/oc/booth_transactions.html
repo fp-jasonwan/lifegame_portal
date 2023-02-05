@@ -81,22 +81,17 @@
         
 		<div class="contentInfo">
             <div class="contentNews title">登記紀錄</div>
-			<!-- <div class="contentNews sub">
-				<div class="contentNews subMenu select">政策</div>
-				<div class="contentNews subMenu">經濟</div>
-				<div class="contentNews subMenu">...</div>
-			</div> -->
 			<div class="contentNews bar">
 				<div class="contentNews bar1" style="width:20%">#</div>
 				<div class="contentNews bar2" style="width:60%">玩家</div>
 				<div class="contentNews bar3" style="width:20%">時間</div>
 			</div>
             
-            {% for participation in participations %}
+            {% for transaction in transactions %}
 			<div class="contentNews content1">
-                <div class="content1" style="width:20%"><a href="/oc/booth/{{ booth.id }}/participations/{{ participation.id }}">{{ participation.id }}</a></div>
-                <div class="content2" style="width:60%"> {{ participation.player }}</div>
-                <div class="content3" style="width:20%"> {{ participation.record_time|time:"h:i" }}</a></div>
+                <div class="content1" style="width:20%"><a href="/oc/booth/{{ booth.id }}/transactions/{{ transaction.id }}">{{ transaction.id }}</a></div>
+                <div class="content2" style="width:60%"> {{ transaction }}</div>
+                <div class="content3" style="width:20%"> {{ transaction.record_time|time:"h:i" }}</a></div>
 			</div>
             {% endfor %}
             

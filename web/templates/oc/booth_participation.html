@@ -1,0 +1,99 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+    <div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+    <a href='/oc/booth/{{ booth.id }}'>
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+        </div>
+    </a>
+    
+    <div class="subContent" style='background:#b9d7bb'>
+        <!-- <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
+        </form> -->
+        
+        <div class="contentInfo">
+            <div class="contentNews title">{{ message }}</div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style="width:30%">玩家</div>
+				<div class="contentNews bar2" style="width:70%">時間</div>
+			</div>
+
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">Booth: </div>
+                        <div class="content2" style="width:70%">{{ participation.booth.name }}</div>
+                </div>
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">Player: </div>
+                        <div class="content2" style="width:70%">{{ participation.player }}</div>
+                </div>
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">Record time</div>
+                        <div class="content2" style="width:70%">{{ participation.record_time }}</div>
+                </div>
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">Score</div>
+                        <div class="content2" style="width:70%">{{ participation.score }}</div>
+                </div>
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">Remarks</div>
+                        <div class="content2" style="width:70%">{{ participation.remarks }}</div>
+                </div>
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">Marker</div>
+                        <div class="content2" style="width:70%">{{ participation.marker }}</div>
+                </div>
+            
+            <div class="contentNews title">
+                <a class="delete-link" id="delete-object" data-object-id="3">刪除此記錄</a>
+            </div>
+		</div>
+    </div>
+</div>
+       
+	<div class="footer">
+		
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	 
+</div>
+
+</body>
+
+<script>
+    var elm = document.getElementById('delete-object');
+    var objectID = elm.getAttribute('data-object-id');
+    var resultDiv = document.getElementById('result');
+    elm.addEventListener('click', function() {
+    var ask = confirm('你確認要把此記錄刪除?');
+    if (ask && objectID) {
+        window.location.replace("/oc/booth/{{ booth.id }}/participations/{{ participation.id }}/delete");
+    } else {
+        resultDiv.textContent = "User cancelled the dialog box...";
+    }
+    return false;
+    });
+
+</script>
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert("{{ message }}");
+        window.location.href = "/oc/booth/{{ booth.id }}/traffics";
+    </script>  
+
+    {% endfor %}
+{% endif %}

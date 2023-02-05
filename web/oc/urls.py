@@ -1,7 +1,8 @@
 from .views import oc_portal, search_profile, list_booth, booth_home,scan_player, check_player, register_player, register_page, get_instructor_players, register_instructor_comment
-from .views import register, redirect_to_booth, update_booth_settings
+from .views import register, redirect_to_booth, update_booth_settings, booth_transaction
 from django.urls import path, include
-from booth.views import get_parti_record, get_traffic_record
+from booth.views import show_participations, get_traffic_record, show_participation, \
+                        delete_participation, show_transactions, show_transaction, delete_transaction
 urlpatterns = [
     path('', oc_portal, name='oc_portal'),
     path('register', register, name="register"),
@@ -20,8 +21,19 @@ urlpatterns = [
     path('booth/<str:booth_id>/settings', update_booth_settings, name='update_booth_settings'),
     path('booth/traffics', list_booth, {"type": 'traffics'}, name='booth_traffics'),
     path('booth/participations', list_booth, {"type": 'participations'}, name='booth_participations'),
-    path('booth/<str:booth_id>/participations', get_parti_record, name='booth_participations'),
+    path('booth/<str:booth_id>/participations', show_participations, name='booth_participations'),
+    path('booth/<str:booth_id>/participations/<str:parti_id>', show_participation, name='booth_participation'),
+    path('booth/<str:booth_id>/participations/<str:parti_id>/success', show_participation, name='booth_participation_success'),
+    path('booth/<str:booth_id>/participations/<str:parti_id>/delete', delete_participation, name='booth_participation_delete'),
     path('booth/<str:booth_id>/traffics', get_traffic_record, name='booth_traffic'),
+
+    path('booth/<str:booth_id>/transactions', show_transactions, name='transaction_record'),
+    path('booth/<str:booth_id>/transactions/<str:tran_id>', show_transaction, name='transaction_record'),
+    path('booth/<str:booth_id>/transactions/<str:tran_id>/success', show_transaction, name='transaction_record_success'),
+    path('booth/<str:booth_id>/transactions/<str:tran_id>/delete', delete_transaction, name='transaction_record_success'),
+    path('booth/<str:booth_id>/transaction/<str:type>', booth_transaction, name='transaction_scan'),
+    path('booth/<str:booth_id>/transaction/<str:type>/<int:user_id>', booth_transaction, name='transaction'),
+    
     path('instructor', get_instructor_players, name='instructor_page'),
     path('instructor/register/<str:player_id>', register_instructor_comment, name='instructor_register')
 ]

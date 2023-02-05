@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 
 # Create your views here.
 from django_tables2 import SingleTableView
-from .models import Booth, Participation, BoothTraffic
+from .models import Booth, Participation, BoothTraffic, Transaction
 
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
@@ -117,7 +117,7 @@ class ParticipationsListView(SingleTableView):
     table_class = ParticipationsTable
     template_name = 'booths.html'
 
-def get_parti_record(request, booth_id):
+def show_participations(request, booth_id):
     booth = Booth.objects.get(id=booth_id)
     participations = Participation.objects.filter(booth=booth).all().order_by('-record_time')
     template = loader.get_template('oc/booth_participations.html')
@@ -125,6 +125,16 @@ def get_parti_record(request, booth_id):
         'booth': booth,
         'participations': participations,
 
+    }
+    return HttpResponse(template.render(context, request))
+
+def show_transactions(request, booth_id):
+    booth = Booth.objects.get(id=booth_id)
+    transactions = Transaction.objects.filter(booth=booth).all().order_by('-record_time')
+    template = loader.get_template('oc/booth_transactions.html')
+    context = {
+        'booth': booth,
+        'transactions': transactions,
     }
     return HttpResponse(template.render(context, request))
 
@@ -138,5 +148,53 @@ def get_traffic_record(request, booth_id):
     context = {
         'booth': booth,
         'traffic': traffic,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def show_participation(request, booth_id, parti_id, message=""):
+    if 'success' in request.path:
+        message = '成功登記玩家！'
+    template = loader.get_template('oc/booth_participation.html')
+    booth = get_object_or_404(Booth, id=booth_id)
+    participation = get_object_or_404(Participation, id=parti_id)
+    context = {
+        'message': message, 
+        'booth': booth,
+        'participation': participation
+    }
+    return HttpResponse(template.render(context, request))
+
+def delete_participation(request, booth_id, parti_id):
+    Participation.objects.get(id=parti_id).delete()
+    booth = Booth.objects.get(id=booth_id)
+    template = loader.get_template('oc/booth_message.html')
+    context = {
+        'booth': booth,
+        "message": "參與記錄已被刪除"
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def show_transaction(request, booth_id, tran_id, message=""):
+    if 'success' in request.path:
+        message = '成功登記玩家！'
+    template = loader.get_template('oc/booth_transaction.html')
+    booth = get_object_or_404(Booth, id=booth_id)
+    transaction = get_object_or_404(Transaction, id=tran_id)
+    context = {
+        'message': message, 
+        'booth': booth,
+        'transaction': transaction
+    }
+    return HttpResponse(template.render(context, request))
+
+def delete_transaction(request, booth_id, tran_id):
+    Transaction.objects.get(id=tran_id).delete()
+    booth = Booth.objects.get(id=booth_id)
+    template = loader.get_template('oc/booth_message.html')
+    context = {
+        'booth': booth,
+        "message": "參與記錄已被刪除"
     }
     return HttpResponse(template.render(context, request))

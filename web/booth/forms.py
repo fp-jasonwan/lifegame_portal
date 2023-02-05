@@ -1,6 +1,6 @@
 from django import forms
 from account.models import User
-from booth.models import Booth, BoothScoring, Participation
+from booth.models import Booth, BoothScoring, Participation, Transaction
 from player.models import Player
 from django.forms import ModelForm
 
@@ -9,12 +9,19 @@ class ParticipationForm(forms.ModelForm):
         super(ParticipationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
            visible.field.widget.attrs['class'] = 'usernameBox form-control'        
-    booth = forms.ModelChoiceField(queryset=Booth.objects.all())
-    player = forms.ModelChoiceField(queryset=Player.objects.all())
-    marker = forms.ModelChoiceField(queryset=User.objects.all())
 
     class Meta:
         model = Participation
+        fields = '__all__'
+
+class TransactionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TransactionForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+           visible.field.widget.attrs['class'] = 'usernameBox form-control'        
+
+    class Meta:
+        model = Transaction
         fields = '__all__'
 
 class BoothSettingsForm(forms.ModelForm):

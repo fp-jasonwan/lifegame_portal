@@ -19,9 +19,13 @@
     </a>
     
     <div class="subContent" style='background:#b9d7bb'>
+        <!-- <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
+        </form> -->
         
-        
-        <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
+        <form action="/oc/booth/{{ booth.id }}/{{ action_path }}/{{ user.id }}" method="post">
         {% csrf_token %}
         <div class="contentInfo">
             <div class="contentNews title">登記玩家</div>
@@ -29,11 +33,12 @@
 				<div class="contentNews bar1" style="width:30%">玩家</div>
 				<div class="contentNews bar2" style="width:70%">時間</div>
 			</div>
+
             {% for field in form %}
                 <div class="contentNews content1">
                     <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                     {% if field.name == "booth" or field.name == "player" or field.name == "marker" %}
-                        <div class="content2" style="width:70%">{{ field|attr:'disabled="true"' }}</div>
+                        <div class="content2" style="width:70%">{{ field }}</div>
                     {% else %}
                         <div class="content2" style="width:70%">{{ field }}</div>
                     {% endif %}

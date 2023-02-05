@@ -69,6 +69,7 @@ class Booth(models.Model):
     )
     booth_admins = models.ManyToManyField('account.User', related_name='booth_admins', blank=True)
     name = models.CharField(max_length=50)
+    score_options = models.ManyToManyField(BoothScoring, related_name='booth_scores', blank=True)
     # requirement = models.ForeignKey(BoothRequirement, on_delete=models.CASCADE)
     description = models.TextField(max_length=1000, null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -93,11 +94,18 @@ class Participation(models.Model):
 
 class Transaction(models.Model):
     def __str__(self):
-        return "{} - {} {}".format(self.booth.name, self.player.user.nick_name, self.player.user.last_name)
+        if self.type == 'pay':
+            return f'{self.booth} paid ${self.money} to {self.player}'
+        if self.type == 'receive':
+            return f'{self.booth} received ${self.money} from {self.player}'
+        return ""
 
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
+    type = models.CharField(max_length=10, choices=(
+        ('pay', 'pay'), ('receive', 'receive')
+    ))
     record_time = models.DateTimeField(auto_now_add=True, blank=True)
     money = models.IntegerField()
     remarks = models.TextField(max_length=1000, null=True, blank=True)

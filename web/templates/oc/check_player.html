@@ -37,24 +37,6 @@
         
     </div>
     
-    <!-- <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="login">
-            <div class="contentNews bar">
-				<div class="bar1" style="width:70%">
-                    <div class="username"><input type="text" id="inputId" name="username" class="usernameBox" placeholder="User ID"></div>
-                </div>
-				<div class="contentNews bar3" style="width:30%">
-                    <div class="btn" style="width:100%"><img src="{% static 'images/btnGo.png' %}" onclick="checkPlayerButton()"></div>
-                </div>
-			</div>
-            
-        </div>	
-        
-        
-        <input type="hidden" name="next" value="{{ next }}">
-    </form> -->
-        
 	<div class="footer">
 		
 		<img src="{% static 'images/footer.png' %}" alt="footer">
@@ -66,7 +48,7 @@
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script type="text/javascript">
     let app = new Vue({
-      el: "#vue-app",
+    //   el: "#vue-app",
       data: {
         myTitle: '<h1>Hello Vue!</h1>',
       },
@@ -75,6 +57,7 @@
     function onScanSuccess(decodedText, decodedResult) {
         // Handle on success condition with the decoded text or result.
         console.log(`Scan result: ${decodedText}`, decodedResult);
+        checkPlayer(decodedText)
     }
 
     var html5QrcodeScanner = new Html5QrcodeScanner(
