@@ -57,7 +57,8 @@
     function onScanSuccess(decodedText, decodedResult) {
         // Handle on success condition with the decoded text or result.
         console.log(`Scan result: ${decodedText}`, decodedResult);
-        checkPlayer(decodedText)
+        var scanned_user_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        checkPlayer(scanned_user_id)
     }
 
     var html5QrcodeScanner = new Html5QrcodeScanner(
