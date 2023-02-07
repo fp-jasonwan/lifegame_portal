@@ -15,11 +15,13 @@ class BornStatus(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     health_score = models.IntegerField()
-    academic_score = models.IntegerField()
+    skill_score = models.IntegerField()
     growth_score = models.IntegerField()
     relationship_score = models.IntegerField()
     joy_score = models.IntegerField()
     money = models.IntegerField()
+    academic_level = models.IntegerField()
+    steps = models.IntegerField()
     
 class Education(models.Model):
     id = models.AutoField(primary_key=True)
@@ -43,14 +45,14 @@ class Player(models.Model):
         result_dict = {
             'money': self.get_score('money'),
             'health_score': self.get_score('health_score'),
-            'academic_score': self.get_score('academic_score'),
+            'skill_score': self.get_score('skill_score'),
             'growth_score': self.get_score('growth_score'),
             'relationship_score': self.get_score('relationship_score'),
             'joy_score': self.get_score('joy_score')
         }
         print(result_dict)
         result_dict['total_score'] = result_dict['health_score'] + \
-                                     result_dict['academic_score'] + \
+                                     result_dict['skill_score'] + \
                                      result_dict['growth_score'] + \
                                      result_dict['relationship_score'] + \
                                      result_dict['joy_score'] 
@@ -74,7 +76,6 @@ class InstructorScore(models.Model):
     player = models.OneToOneField(Player, on_delete=models.CASCADE)
     score = models.IntegerField(default=0, validators=[MaxValueValidator(10), MinValueValidator(0)])
     comments = models.TextField(max_length=1000, null=True, blank=True)
-    instructor = models.ForeignKey("account.User", on_delete=models.CASCADE)
     record_time = models.DateTimeField(auto_now_add=True, blank=True)
 
 
