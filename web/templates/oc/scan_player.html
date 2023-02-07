@@ -70,19 +70,8 @@
 <script>
     function checkPlayer(id) {
         var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
-        if (lastSegment != 'check_player') {
-            var the_arr = window.location.href.split('/');
-            the_arr.pop();
-            var baseUrl = the_arr.join('/');
-            window.location.href = baseUrl + "/" + id
-        } else {
-            window.location.href = window.location.href + "/" + id
-        }
-    }
-
-    function checkPlayerButton() {
+        
         var scan_type = '{{ type }}'
-        var id = document.getElementById('inputId').value;
         if (scan_type == 'check') {
             checkPlayer(id);
         } else if (scan_type == 'pay') {
@@ -90,6 +79,6 @@
         } else if (scan_type == 'receive') {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/receive/" + id
         }
-        
     }
+
 </script>
