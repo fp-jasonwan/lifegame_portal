@@ -57,8 +57,14 @@
     function onScanSuccess(decodedText, decodedResult) {
         // Handle on success condition with the decoded text or result.
         console.log(`Scan result: ${decodedText}`, decodedResult);
+        var scan_type = '{{ scan_type }}'
+        var baseUrl  = window.location.origin;
         var scanned_user_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
-        checkPlayer(scanned_user_id)
+        if (scan_type == 'pay') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/pay/" + scanned_user_id
+        } else if (scan_type == 'receive') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/receive/" + scanned_user_id
+        }
     }
 
     var html5QrcodeScanner = new Html5QrcodeScanner(
@@ -70,11 +76,10 @@
 <script>
     function checkPlayer(id) {
         var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
-        
-        var scan_type = '{{ type }}'
-        if (scan_type == 'check') {
-            checkPlayer(id);
-        } else if (scan_type == 'pay') {
+        var the_arr = window.location.href.split('/');
+        var baseUrl = the_arr.join('/');
+        console.log(baseUrl);
+        if (scan_type == 'pay') {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/pay/" + id
         } else if (scan_type == 'receive') {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/receive/" + id

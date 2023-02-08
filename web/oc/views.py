@@ -252,6 +252,7 @@ def booth_transaction(request, booth_id, type, user_id=""):
             'booth': booth,
             'user': user,
             'marker': request.user,
+            'scan_type': type,
             'form': form
         }
         return HttpResponse(template.render(context, request))
