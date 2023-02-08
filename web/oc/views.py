@@ -106,7 +106,7 @@ def check_player(request, booth_id="", user_id=""):
     request.session['booth'] = booth.id
     score_translation = {
         'health_score': '健康',
-        'academic_score': '健康',
+        'skill_score': '健康',
         'growth_score': '成長',
         'relationship_score': '健康',
         'joy_score': '開心',
@@ -117,7 +117,7 @@ def check_player(request, booth_id="", user_id=""):
         'booth_scores': booth.get_requirements(),
         'player_scores': player.get_scores(),
         'score_translation': score_translation,
-        'score_types': ['health_score', 'academic_score', 'growth_score', 'relationship_score', 'joy_score']
+        'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'joy_score']
     }
 
     # If the user does not exist, return error

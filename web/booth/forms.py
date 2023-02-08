@@ -32,4 +32,4 @@ class BoothSettingsForm(forms.ModelForm):
         
     class Meta:
         model = Booth
-        fields = ['joy_score', 'health_score', 'growth_score', 'relationship_score', 'academic_score', 'money']
+        fields = ['joy_score', 'health_score', 'growth_score', 'relationship_score', 'skill_score', 'money']

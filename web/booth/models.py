@@ -9,7 +9,7 @@ class BoothRequirement(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     health_score = models.IntegerField(default=0)
-    academic_score = models.IntegerField(default=0)
+    skill_score = models.IntegerField(default=0)
     growth_score = models.IntegerField(default=0)
     relationship_score = models.IntegerField(default=0)
     joy_score = models.IntegerField(default=0)
@@ -18,7 +18,7 @@ class BoothRequirement(models.Model):
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        for score in ['health_score', 'academic_score', 'growth_score', 'relationship_score', 'joy_score']:
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'joy_score']:
             if player_scores[score] < getattr(self, score):
                 failed_list.append(score)
         return failed_list
@@ -29,13 +29,14 @@ class BoothScoring(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    overall_score = models.IntegerField(blank=True, null=True)
     health_score = models.IntegerField(blank=True, null=True)
-    academic_score = models.IntegerField(blank=True, null=True)
+    skill_score = models.IntegerField(blank=True, null=True)
     growth_score = models.IntegerField(blank=True, null=True)
     relationship_score = models.IntegerField(blank=True, null=True)
     joy_score = models.IntegerField(blank=True, null=True)
     money = models.IntegerField(blank=True, null=True)
+    academic_level = models.IntegerField(blank=True, null=True)
+    steps = models.IntegerField(blank=True, null=True)
 
 class Booth(models.Model):
     def __str__(self):
@@ -44,7 +45,7 @@ class Booth(models.Model):
     def get_requirements(self):
         result_dict = {
             'health_score': self.health_score,
-            'academic_score': self.academic_score,
+            'skill_score': self.skill_score,
             'growth_score': self.growth_score,
             'relationship_score': self.relationship_score,
             'joy_score': self.joy_score
@@ -54,7 +55,7 @@ class Booth(models.Model):
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        for score in ['health_score', 'academic_score', 'growth_score', 'relationship_score', 'joy_score']:
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'joy_score']:
             if player_scores[score] < getattr(self, score):
                 failed_list.append(score)
         print(failed_list)
@@ -74,11 +75,13 @@ class Booth(models.Model):
     description = models.TextField(max_length=1000, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     health_score = models.IntegerField(blank=True, null=True)
-    academic_score = models.IntegerField(blank=True, null=True)
+    skill_score = models.IntegerField(blank=True, null=True)
     growth_score = models.IntegerField(blank=True, null=True)
     relationship_score = models.IntegerField(blank=True, null=True)
     joy_score = models.IntegerField(blank=True, null=True)
     money = models.IntegerField(blank=True, null=True)
+    academic_level = models.IntegerField(blank=True, null=True)
+    steps = models.IntegerField(blank=True, null=True)
 
 class Participation(models.Model):
     def __str__(self):

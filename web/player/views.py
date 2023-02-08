@@ -48,7 +48,7 @@ def get_profile_qrcode(request, user_id=""):
 class PlayerParticipationTable(tables.Table):
     record_time = tables.DateTimeColumn(verbose_name= '時間', format='h:i A')
     booth = tables.Column(verbose_name='攤位')
-    overall_score = tables.Column(verbose_name='獲得分數', accessor='score.overall_score')
+    # overall_score = tables.Column(verbose_name='獲得分數', accessor='score.overall_score')
     class Meta:
         model = Participation
         template_name = "django_tables2/bootstrap.html"

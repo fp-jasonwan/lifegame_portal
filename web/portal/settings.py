@@ -108,25 +108,33 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 
 
 # Database
-# Use django-environ to parse the connection string
-DATABASES = {"default": env.db()}
+# # Use django-environ to parse the connection string
+# DATABASES = {"default": env.db()}
 
-# If the flag as been set, configure to use proxy
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-    DATABASES["default"]["HOST"] = "cloudsql-proxy"
-    DATABASES["default"]["PORT"] = 5432
 # # If the flag as been set, configure to use proxy
 # if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-#     DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-#     }
+#     DATABASES["default"]["HOST"] = "cloudsql-proxy"
+#     DATABASES["default"]["PORT"] = 5432
+# # If the flag as been set, configure to use proxy
+# if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+if platform.system() == 'Darwin':
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'lifegame',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': '0.0.0.0',
+        'PORT': '5432',
+    }
+    }
+else:
+    DATABASES = {"default": env.db()}
+
+    # If the flag as been set, configure to use proxy
+    if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+        DATABASES["default"]["HOST"] = "cloudsql-proxy"
+        DATABASES["default"]["PORT"] = 5432
 
 
 # DATABASES = {
