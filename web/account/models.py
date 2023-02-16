@@ -9,6 +9,9 @@ class User(AbstractUser):
     def __str__(self):
         return "{} - {} {}".format(self.id, self.last_name, self.first_name)
 
+    def is_oc(self):
+        return self.user_type in ('oc', 'admin')
+
     def is_player(self):
         return Player.objects.filter(user=self).exists()
 

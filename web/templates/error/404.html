@@ -1,13 +1,33 @@
-{% extends 'home.html' %}
-{% block content %}
-<div class="container-fluid">
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
 
-    <!-- 404 Error Text -->
-    <div class="text-center">
-        <div class="error mx-auto" data-text="404">404</div>
-        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-        <a href="/">← Back to Homepage</a>
+<body>
+<div class="main">
+	
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
+	
+    <div class="subContent" style='background:#b9d7bb'>
+        <div class="contentNews title">404 - Page Not Found</div>
     </div>
-
+	<div class="footer">
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
 </div>
-{% endblock %}
+	
+	
+
+</body>
+</html>

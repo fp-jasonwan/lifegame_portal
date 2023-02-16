@@ -26,15 +26,15 @@
 	<div class="menu">
 		<div class="btnNews">
 			<div class="text">登記玩家</div>
-			<div class="icon"><a href="check_player"><img src="{% static 'images/btnNews.png' %}" alt="News"></a></div>
+			<div class="icon"><a href="check_player"><img src="{% static 'icons/input_booth_score.png' %}" alt="News"></a></div>
 		</div>
 		<div class="btnInfo">
 			<div class="text">登記記錄</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/participations"><img src="{% static 'images/btnTraffic.png' %}" alt="Info"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/participations"><img src="{% static 'icons/booth_record.png' %}" alt="Info"></a></div>
 		</div>
 		<div class="btnStock">
 			<div class="text">攤位設置</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'images/btnProfile.png' %}" alt="Map"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'icons/setting.png' %}" alt="Map"></a></div>
 		</div>
 		<!-- {% if user.user_type == 'instructor' %}
 		<div class="btnStock">
@@ -44,15 +44,15 @@
 		{% endif %} -->
 		<div class="btnIndex">
 			<div class="text">付 款</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/pay"><img src="{% static 'images/btnMaps.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/pay"><img src="{% static 'icons/money_pay.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnMap">
 			<div class="text">收 款</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/receive"><img src="{% static 'images/btnContacts.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/receive"><img src="{% static 'icons/money_receive.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnContact">
 			<div class="text">付款記錄</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transactions"><img src="{% static 'images/btnLogout.png' %}" alt="Map"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transactions"><img src="{% static 'icons/balance_sheet.png' %}" alt="Map"></a></div>
 		</div>
 	</div>
 		

@@ -53,7 +53,7 @@
 </body>
 
 <!-- <script src="{% static 'js/html5-qrcode.min.js' %}"></script> -->
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script src="{% static 'js/html5-qrcode.min.v2.3.0.js' %}" type="text/javascript"></script>
 <script type="text/javascript">
     let app = new Vue({
     //   el: "#vue-app",
@@ -78,6 +78,7 @@
     function onScanSuccess(decodedText, decodedResult) {
         // Handle on success condition with the decoded text or result.
         var scanned_user_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        console.log(scanned_user_id);
         if(Number.isInteger(parseInt(scanned_user_id))) {
             searchPlayer(scanned_user_id);
         } else {

@@ -10,6 +10,7 @@ from player.views import get_profile
 from player.forms import InstructorCommentForm
 from .models import ContactPerson
 from booth.views import show_participation
+from django.contrib.auth.decorators import permission_required
 # Create your views here.
 # Create your views here.
 
@@ -20,6 +21,7 @@ def oc_portal(request):
         return redirect('/404')
     return render(request, 'oc/oc_portal.html')
 
+@permission_required('user.is_oc')
 def search_profile(request, user_id=""):
     # profile = get_object_or_404(Student, user=request.user)
     template = loader.get_template('oc/search_profile.html')
@@ -99,6 +101,7 @@ def scan_player(request, booth_id):
     }
     return HttpResponse(template.render(context, request))
 
+@permission_required('user.is_oc')
 def check_player(request, booth_id="", user_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
     user = get_object_or_404(User, id=user_id)
@@ -109,7 +112,6 @@ def check_player(request, booth_id="", user_id=""):
         'skill_score': '健康',
         'growth_score': '成長',
         'relationship_score': '健康',
-        'joy_score': '開心',
     }
     msg_template = loader.get_template('oc/booth_message.html')
     context = {
@@ -117,7 +119,7 @@ def check_player(request, booth_id="", user_id=""):
         'booth_scores': booth.get_requirements(),
         'player_scores': player.get_scores(),
         'score_translation': score_translation,
-        'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'joy_score']
+        'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']
     }
 
     # If the user does not exist, return error
@@ -235,9 +237,24 @@ def booth_transaction(request, booth_id, type, user_id=""):
                                     })
         if request.method == 'POST':
             if form.is_valid():
-                form.save()
+                # Check balance
                 player = form.cleaned_data['player']
                 booth = form.cleaned_data['booth']
+                type = form.cleaned_data['type']
+                money = form.cleaned_data['money']
+                player_money = player.get_score('money')
+                if type == 'receive':
+                    if money > player_money:
+                        msg_template = loader.get_template('oc/booth_message.html')
+                        context = {
+                            'error_type': 'insufficient_amount',
+                            'message': f"""
+                                玩家金錢不足! 玩家現有金錢為${player_money} < 需求金錢 ${money}
+                            """,
+                            'booth': booth
+                        }
+                        return HttpResponse(msg_template.render(context, request))
+                form.save()
                 transaction = Transaction.objects.filter(
                     booth=booth,
                     player=player

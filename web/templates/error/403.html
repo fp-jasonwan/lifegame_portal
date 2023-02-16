@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="main">
+	
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
+	
+    <div class="subContent" style='background:#b9d7bb'>
+        <div class="contentNews title">403 - Page Not Found</div>
+    </div>
+	<div class="footer">
+		<img src="{% static 'images/footer.png' %}" alt="footer">
+	</div>
+	
+</div>
+	
+	
+
+</body>
+</html>

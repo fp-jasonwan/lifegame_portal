@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 # Create your views here.
 from django_tables2 import SingleTableView
 from .models import Booth, Participation, BoothTraffic, Transaction
-
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 import django_tables2 as tables

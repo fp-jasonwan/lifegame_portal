@@ -6,6 +6,7 @@ from booth.models import Participation, BoothTraffic
 from django.shortcuts import get_object_or_404, render
 import django_tables2 as tables
 from account.models import User
+from django_tables2 import SingleTableView
 
 # Create your views here.
 def get_profile(request, user_id=""):
@@ -59,7 +60,7 @@ class PlayerParticipationTable(tables.Table):
         }
 
 
-class RichList(tables.Table):
+class RichListTable(tables.Table):
     
     record_time = tables.DateTimeColumn(verbose_name= '時間', format='h:i A')
     player = tables.TemplateColumn('<a href="/oc/search_profile/{{record.player.user.id }}">{{record.player}}</a>', verbose_name='玩家')    
@@ -71,9 +72,9 @@ class RichList(tables.Table):
             'class': 'table table-bordered dataTable'
         }
 
-class ParticipationsListView(SingleTableView):
+class RichListView(SingleTableView):
     model = Participation
-    table_class = ParticipationsTable
+    table_class = RichListTable
     template_name = 'booths.html'
 
 # class PlayerParticipationListView(SingleTableView):

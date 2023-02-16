@@ -23,6 +23,7 @@ from account.views import home_page
 from booth.views import BoothsListView, get_booths_map, redirect_zoom
 from oc.views import get_contact
 handler404 = 'main.views.handler404'
+handler403 = 'main.views.handler403'
 
 urlpatterns = [
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),

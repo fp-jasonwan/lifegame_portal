@@ -34,23 +34,33 @@
 				<div class="contentInfo content left">姓名</div>
 				<div class="contentInfo content right">{{ player.user.first_name }} {{ player.user.last_name }}</a></div>
 			</div>
-			<div class="contentInfo content">
-				<div class="contentInfo content left">金錢</div>
-				<div class="contentInfo content right">{{ scores.money }}</a></div>
-			</div>
-			<div class="contentInfo content">
-				<div class="contentInfo content left">總得分</div>
-				<div class="contentInfo content right">{{ scores.total_score }}</a></div>
-			</div>
-
 			<!-- Scores breakdown -->
-			<div class="contentNews title">參與記錄</div>
+			<div class="contentNews title">分數</div>
 
             <div class="contentNews bar">
                 <div class="contentNews bar1"  style="width:60%">攤位</div>
-                <div class="contentNews bar3"  style="width:40%">評分</div>
+                <div class="contentNews bar3"  style="width:40%">分數</div>
             </div>
 			
+			<div class="contentNews content1">
+				<div class="content1" style="width:60%">總得分</div>
+				<div class="content3" style="width:40%">{{ scores.total_score }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:60%">金錢</div>
+				<div class="content3" style="width:40%">{{ scores.money }}</a></div>
+			</div>
+
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">教育程度</div>
+                <div class="content3" style="width:40%"> 
+					{% if scores.academic_level == 1 %} 小學
+					{% elif scores.academic_level == 2 %} 中學
+					{% elif scores.academic_level == 3 %} 文憑
+					{% elif scores.academic_level == 4 %} 大學
+					{% endif %}
+				</div>
+            </div>
 			<div class="contentNews content1">
                 <div class="content1" style="width:60%"> Health Score</div>
                 <div class="content3" style="width:40%"> {{ scores.health_score }}</div>
@@ -67,11 +77,6 @@
                 <div class="content1" style="width:60%"> Relationship Score</div>
                 <div class="content3" style="width:40%"> {{ scores.relationship_score }}</div>
             </div>
-			<div class="contentNews content1">
-                <div class="content1" style="width:60%"> Joy Score</div>
-                <div class="content3" style="width:40%"> {{ scores.joy_score }}</div>
-            </div>
-            
 
 			<!-- Participation records -->
             <div class="contentNews title">參與記錄</div>

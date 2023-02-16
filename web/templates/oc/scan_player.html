@@ -45,7 +45,7 @@
 </div>
 
 </body>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script src="{% static 'js/html5-qrcode.min.v2.3.0.js' %}" type="text/javascript"></script>
 <script type="text/javascript">
     let app = new Vue({
     //   el: "#vue-app",
@@ -53,7 +53,6 @@
         myTitle: '<h1>Hello Vue!</h1>',
       },
     });
-  
     function onScanSuccess(decodedText, decodedResult) {
         // Handle on success condition with the decoded text or result.
         console.log(`Scan result: ${decodedText}`, decodedResult);

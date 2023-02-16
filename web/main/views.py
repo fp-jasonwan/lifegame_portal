@@ -6,6 +6,10 @@ def handler404(request, exception, template_name='error/404.html'):
     print('404')
     return render(request, template_name)
 
+def handler403(request, exception, template_name='error/403.html'):
+    print('403')
+    return render(request, template_name)
+
 
 def handler500(request, exception, template_name='error/500.html'):
     print('500')

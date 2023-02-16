@@ -12,13 +12,12 @@ class BoothRequirement(models.Model):
     skill_score = models.IntegerField(default=0)
     growth_score = models.IntegerField(default=0)
     relationship_score = models.IntegerField(default=0)
-    joy_score = models.IntegerField(default=0)
     money = models.IntegerField(default=0)
 
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'joy_score']:
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
             if player_scores[score] < getattr(self, score):
                 failed_list.append(score)
         return failed_list
@@ -33,7 +32,6 @@ class BoothScoring(models.Model):
     skill_score = models.IntegerField(blank=True, null=True)
     growth_score = models.IntegerField(blank=True, null=True)
     relationship_score = models.IntegerField(blank=True, null=True)
-    joy_score = models.IntegerField(blank=True, null=True)
     money = models.IntegerField(blank=True, null=True)
     academic_level = models.IntegerField(blank=True, null=True)
     steps = models.IntegerField(blank=True, null=True)
@@ -48,14 +46,14 @@ class Booth(models.Model):
             'skill_score': self.skill_score,
             'growth_score': self.growth_score,
             'relationship_score': self.relationship_score,
-            'joy_score': self.joy_score
+            'money': self.money
         }
         return result_dict
 
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'joy_score']:
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
             if player_scores[score] < getattr(self, score):
                 failed_list.append(score)
         print(failed_list)
@@ -78,7 +76,6 @@ class Booth(models.Model):
     skill_score = models.IntegerField(blank=True, null=True)
     growth_score = models.IntegerField(blank=True, null=True)
     relationship_score = models.IntegerField(blank=True, null=True)
-    joy_score = models.IntegerField(blank=True, null=True)
     money = models.IntegerField(blank=True, null=True)
     academic_level = models.IntegerField(blank=True, null=True)
     steps = models.IntegerField(blank=True, null=True)
