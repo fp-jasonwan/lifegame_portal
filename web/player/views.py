@@ -59,6 +59,23 @@ class PlayerParticipationTable(tables.Table):
         }
 
 
+class RichList(tables.Table):
+    
+    record_time = tables.DateTimeColumn(verbose_name= '時間', format='h:i A')
+    player = tables.TemplateColumn('<a href="/oc/search_profile/{{record.player.user.id }}">{{record.player}}</a>', verbose_name='玩家')    
+    class Meta:
+        model = Participation
+        template_name = "django_tables2/bootstrap.html"
+        fields = ("record_time", "player", "score")
+        attrs = {
+            'class': 'table table-bordered dataTable'
+        }
+
+class ParticipationsListView(SingleTableView):
+    model = Participation
+    table_class = ParticipationsTable
+    template_name = 'booths.html'
+
 # class PlayerParticipationListView(SingleTableView):
 #     model = Participation
 #     table_class = PlayerParticipationTable

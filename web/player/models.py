@@ -18,7 +18,6 @@ class BornStatus(models.Model):
     skill_score = models.IntegerField()
     growth_score = models.IntegerField()
     relationship_score = models.IntegerField()
-    joy_score = models.IntegerField()
     money = models.IntegerField()
     academic_level = models.IntegerField()
     steps = models.IntegerField()
@@ -48,27 +47,33 @@ class Player(models.Model):
             'skill_score': self.get_score('skill_score'),
             'growth_score': self.get_score('growth_score'),
             'relationship_score': self.get_score('relationship_score'),
-            'joy_score': self.get_score('joy_score')
+            'joy_score': self.get_score('joy_score'),
+            'academic_level': self.get_score('academic_level')
         }
         print(result_dict)
         result_dict['total_score'] = result_dict['health_score'] + \
                                      result_dict['skill_score'] + \
                                      result_dict['growth_score'] + \
-                                     result_dict['relationship_score'] + \
-                                     result_dict['joy_score'] 
+                                     result_dict['relationship_score'] 
         return result_dict
         
     def get_score(self, score_name):
+        # If Score name does not exist
         if score_name not in self.born_status.__dict__:
             return False
-        score = getattr(self.born_status, score_name)
+
+        score_list = []
+        score_list.append(getattr(self.born_status, score_name))
         participations = Participation.objects.filter(player=self)
         for parti in participations:
             parti_score = getattr(parti.score, score_name)
             if parti_score:
-                score += parti_score
-        if score:
-            return score
+                score_list.append(parti_score)
+        if len(score_list) > 0:
+            if score_name == 'academic_level': # If Score name is academic level, return maximum academic level
+                return max(score_list)
+            else:
+                return sum(score_list)
         else:
             return 0
 
