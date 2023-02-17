@@ -22,6 +22,7 @@ from news.views import NewsListView, get_news
 from account.views import home_page
 from booth.views import BoothsListView, get_booths_map, redirect_zoom
 from oc.views import get_contact
+from player.views import get_rich_list, get_score_list
 handler404 = 'main.views.handler404'
 handler403 = 'main.views.handler403'
 
@@ -38,8 +39,11 @@ urlpatterns = [
     path('booths/', get_booths_map),
     path('booths/<str:booth_id>', redirect_zoom),
     path('contact/', get_contact, name='contact'),
-    path('rules/', TemplateView.as_view(template_name='rules.html'), name='test'),
-    path('404', TemplateView.as_view(template_name='error/404.html'), name='test'),
+    path('rich_list/', get_rich_list),
+    path('score_list/', get_score_list),
+    path('map/', TemplateView.as_view(template_name='map.html'), name='map'),
+    path('rules/', TemplateView.as_view(template_name='rules.html'), name='rules'),
+    path('404', TemplateView.as_view(template_name='error/404.html'), name='404'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

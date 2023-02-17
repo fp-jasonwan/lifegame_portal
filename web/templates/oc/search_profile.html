@@ -33,16 +33,6 @@
             </div>
 		</div>
 	</div>
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="login">
-            <div class="username"><input type="text" id="inputId" name="username" class="usernameBox" placeholder="User ID"></div>
-        </div>	
-
-        <div class="btn"><img src="{% static 'images/btnGo.png' %}" onclick="searchPlayerButton()"></div>
-        
-        <input type="hidden" name="next" value="{{ next }}">
-	</form>
 
 	<div class="footer">
 		

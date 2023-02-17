@@ -13,6 +13,18 @@ from booth.views import show_participation
 from django.contrib.auth.decorators import permission_required
 # Create your views here.
 # Create your views here.
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseForbidden
+
+
+def access_checking(request):
+    if request.user.is_oc() == False:
+        msg_template = loader.get_template('error/error_message.html')
+        context = {
+            'error_type': 'access_denied',
+            'message': 'Access denied!'
+        }
+        return HttpResponse(msg_template.render(context, request))
 
 def oc_portal(request):
     if request.user.is_authenticated == False:
@@ -21,8 +33,9 @@ def oc_portal(request):
         return redirect('/404')
     return render(request, 'oc/oc_portal.html')
 
-@permission_required('user.is_oc')
 def search_profile(request, user_id=""):
+    access_checking(request)
+
     # profile = get_object_or_404(Student, user=request.user)
     template = loader.get_template('oc/search_profile.html')
     context = {

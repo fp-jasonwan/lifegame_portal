@@ -10,6 +10,7 @@ class User(AbstractUser):
         return "{} - {} {}".format(self.id, self.last_name, self.first_name)
 
     def is_oc(self):
+        print(self.user_type in ('oc', 'admin'))
         return self.user_type in ('oc', 'admin')
 
     def is_player(self):

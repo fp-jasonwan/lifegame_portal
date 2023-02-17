@@ -79,7 +79,7 @@
     <div class="subContent">
         
 		<div class="contentInfo">
-            <div class="contentNews title">富豪坊</div>
+            <div class="contentNews title">{{ list_name }}</div>
 			
 			<!-- <div class="contentNews sub">
 				<div class="contentNews subMenu select">政策</div>
@@ -88,13 +88,13 @@
 			</div> -->
 			<div class="contentNews bar">
 				<div class="contentNews bar1" style="width:30%">學生編號</div>
-				<div class="contentNews bar2" style="width:70%">金錢</div>
+				<div class="contentNews bar2" style="width:70%">{{ mark_name }}</div>
 			</div>
             
-            {% for i, r in rich_list.iterrows %}
+            {% for i, r in list.iterrows %}
 			<div class="contentNews content1">
                 <div class="content1" style="width:30%">{{ r.uid }}</div>
-                <div class="content2" style="width:70%">{{ r.total_money }}</div>
+                <div class="content2" style="width:70%">{{ r.mark }}</div>
 			</div>
             {% endfor %}
             <div class="contentNews content1">更新時間：{{ now }}</div>

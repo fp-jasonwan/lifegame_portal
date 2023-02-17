@@ -4,16 +4,15 @@ from django.urls import path, include
 from django.contrib.auth.decorators import login_required, permission_required
 from booth.views import show_participations, get_traffic_record, show_participation, \
                         delete_participation, show_transactions, show_transaction, delete_transaction
+
 urlpatterns = [
-    path('', permission_required('user.is_oc')(oc_portal), name='oc_portal'),
+    path('',oc_portal, name='oc_portal'),
     path('register', register, name="register"),
-    path('search_profile', permission_required('user.is_oc',raise_exception=True)(search_profile), name='search_profile'),
+    path('search_profile',search_profile, name='search_profile'),
     path('search_profile/<int:user_id>', search_profile, name='search_profile_with_id'),
     path('booth_list', list_booth, name='list_booth'),
 
     path('booth/check_player', booth_home, name='booth_home'),
-
-
     path('booth', redirect_to_booth, name='booth_home'),
     path('booth/<str:booth_id>/', booth_home, name='booth_home'),
     path('booth/<str:booth_id>/check_player/<int:user_id>', check_player, name='check_player'),

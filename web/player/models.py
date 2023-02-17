@@ -1,9 +1,12 @@
 from django.db import models
-from booth.models import Participation
+from booth.models import Participation, Transaction
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 # from account.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+
+from django.db.models import Sum, Max, Subquery, Q, F
+import pandas as pd
 
 # Create your models here.
 LIVE_STATUS_CHOICES = [
@@ -76,6 +79,59 @@ class Player(models.Model):
                 return sum(score_list)
         else:
             return 0
+
+    @staticmethod
+    def get_total_score_list():
+        participation_df = pd.DataFrame(Participation.objects \
+            .values(uid=F('player__user__id')) \
+            .annotate(
+                participation_health=Sum('score__health_score'),
+                participation_skill=Sum('score__skill_score'),
+                participation_growth=Sum('score__growth_score'),
+                participation_relationship=Sum('score__relationship_score'),
+                born_health=Max('player__born_status__health_score'),
+                born_skill=Max('player__born_status__skill_score'),
+                born_growth=Max('player__born_status__growth_score'),
+                born_relationship=Max('player__born_status__relationship_score'),
+            )
+        )
+        participation_df.fillna(0, inplace=True)
+        score_df = participation_df.set_index('uid').sum(axis=1).reset_index()
+        score_df.rename(columns={0: 'total_score'}, inplace=True)
+        return score_df
+        # money_df['uid'] = money_df['uid'].astype('str')
+        # return money_df.sort_values('total_money', ascending=False)
+
+    @staticmethod
+    def get_rich_list():
+        born_df = pd.DataFrame(Player.objects \
+        .values(uid=F('user__id')) \
+        .annotate(
+            born_money=Max('born_status__money')
+        )
+        )
+        # born_df.rename(columns={'id': 'player'}, inplace=True)
+        participation_df = pd.DataFrame(Participation.objects \
+            .values(uid=F('player__user__id')) \
+            .annotate(
+                participation_money=Sum('score__money')
+            )
+        )
+        transaction_df = pd.DataFrame(Transaction.objects \
+            .values(uid=F('player__user__id')) \
+            .annotate(
+                receive=Sum('money', filter=Q(type='receive')),
+                pay=Sum('money', filter=Q(type='pay'))
+            )
+        )
+        concat_df = pd.concat([born_df, participation_df, transaction_df])
+        concat_df['total_money'] = concat_df['born_money'].fillna(0) + \
+                                    concat_df['participation_money'].fillna(0) + \
+                                    concat_df['pay'].fillna(0) - \
+                                    concat_df['receive'].fillna(0)
+        money_df = concat_df.groupby('uid', as_index=False)['total_money'].sum()
+        money_df['uid'] = money_df['uid'].astype('str')
+        return money_df.sort_values('total_money', ascending=False)
 
 class InstructorScore(models.Model):
     player = models.OneToOneField(Player, on_delete=models.CASCADE)
