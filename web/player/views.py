@@ -86,9 +86,3 @@ def get_score_list(request):
     }
     return HttpResponse(template.render(context, request))
 
-
-# class PlayerParticipationListView(SingleTableView):
-#     model = Participation
-#     table_class = PlayerParticipationTable
-#     template_name = 'news.html'
- 
