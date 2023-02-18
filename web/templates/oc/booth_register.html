@@ -22,7 +22,7 @@
         <!-- <form action="/oc/booth/{{ booth.id }}/register/{{ user.id }}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
+            <div class="btn"><input src="{% static 'images/btnGo.png' %}" style="height:100px;width:100px" type="image" /></div>
         </form> -->
         
         <form action="/oc/booth/{{ booth.id }}/{{ action_path }}/{{ user.id }}" method="post">
@@ -44,7 +44,7 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <div class="btn"><input src="{% static 'images/btnGo.png' %}" type="image" /></div>
+            <div class="btn"><input src="{% static 'images/btnGo.png' %}" style="height:100px;width:100px" type="image" /></div>
 		</div>
         </form>
         

@@ -82,6 +82,15 @@ class Player(models.Model):
 
     @staticmethod
     def get_total_score_list():
+        born_df = pd.DataFrame(Player.objects \
+            .values(uid=F('user__id')) \
+            .annotate(
+                born_health=Max('born_status__health_score'),
+                born_skill=Max('born_status__skill_score'),
+                born_growth=Max('born_status__growth_score'),
+                born_relationship=Max('born_status__relationship_score'),
+            )
+        ).fillna(0)
         participation_df = pd.DataFrame(Participation.objects \
             .values(uid=F('player__user__id')) \
             .annotate(
@@ -89,14 +98,10 @@ class Player(models.Model):
                 participation_skill=Sum('score__skill_score'),
                 participation_growth=Sum('score__growth_score'),
                 participation_relationship=Sum('score__relationship_score'),
-                born_health=Max('player__born_status__health_score'),
-                born_skill=Max('player__born_status__skill_score'),
-                born_growth=Max('player__born_status__growth_score'),
-                born_relationship=Max('player__born_status__relationship_score'),
             )
-        )
-        participation_df.fillna(0, inplace=True)
-        score_df = participation_df.set_index('uid').sum(axis=1).reset_index()
+        ).fillna(0)
+        score_df = born_df.merge(participation_df, how='left', on='uid')
+        score_df = score_df.set_index('uid').sum(axis=1).reset_index()
         score_df.rename(columns={0: 'total_score'}, inplace=True)
         return score_df
         # money_df['uid'] = money_df['uid'].astype('str')
@@ -105,10 +110,10 @@ class Player(models.Model):
     @staticmethod
     def get_rich_list():
         born_df = pd.DataFrame(Player.objects \
-        .values(uid=F('user__id')) \
-        .annotate(
-            born_money=Max('born_status__money')
-        )
+            .values(uid=F('user__id')) \
+            .annotate(
+                born_money=Max('born_status__money')
+            )
         )
         # born_df.rename(columns={'id': 'player'}, inplace=True)
         participation_df = pd.DataFrame(Participation.objects \
