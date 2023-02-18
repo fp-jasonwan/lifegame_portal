@@ -91,3 +91,4 @@ def get_score_list(request):
 #     model = Participation
 #     table_class = PlayerParticipationTable
 #     template_name = 'news.html'
+ 
