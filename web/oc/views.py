@@ -153,6 +153,7 @@ def check_player(request, booth_id="", user_id=""):
 def register_page(request, booth_id, user_id):
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
+    print(score_options)
     user = get_object_or_404(User, id=user_id)
     template = loader.get_template('oc/booth_register.html')
     
@@ -188,7 +189,7 @@ def register_player(request, booth_id, user_id, participation=""):
         else:
             print("INVALID FORM")
     template = loader.get_template('oc/booth_register.html')
-    
+    print(score_options)
     context = {
         'action_path': 'register', 
         'booth': booth,

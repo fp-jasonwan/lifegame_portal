@@ -7,6 +7,8 @@ from django.forms import ModelForm
 class ParticipationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ParticipationForm, self).__init__(*args, **kwargs)
+        booth = kwargs['initial']['booth']
+        self.fields['score'].queryset = booth.score_options
         for visible in self.visible_fields():
            visible.field.widget.attrs['class'] = 'usernameBox form-control'        
 
