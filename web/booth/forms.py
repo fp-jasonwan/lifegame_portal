@@ -34,4 +34,4 @@ class BoothSettingsForm(forms.ModelForm):
         
     class Meta:
         model = Booth
-        fields = ['health_score', 'growth_score', 'relationship_score', 'skill_score', 'money']
+        fields = ['health_score', 'growth_score', 'relationship_score', 'skill_score', 'academic_level', 'money']
