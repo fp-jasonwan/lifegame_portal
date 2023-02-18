@@ -114,7 +114,6 @@ def scan_player(request, booth_id):
     }
     return HttpResponse(template.render(context, request))
 
-@permission_required('user.is_oc')
 def check_player(request, booth_id="", user_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
     user = get_object_or_404(User, id=user_id)
