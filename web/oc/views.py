@@ -336,10 +336,11 @@ def register_instructor_comment(request, player_id):
 def redirect_to_booth(request):
     return list_booth(request)
 
-def get_contact(request):
+def get_contact(request, user_id=""):
     contacts = ContactPerson.objects.all()
     template = loader.get_template('contact.html')
     context = {
-        'contacts': contacts
+        'contacts': contacts,
+        'user_id': user_id
     }
     return HttpResponse(template.render(context, request))

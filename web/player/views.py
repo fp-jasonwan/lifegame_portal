@@ -25,6 +25,7 @@ def get_profile(request, user_id=""):
     # instructor_score = InstructorScore.objects.filter(player=player).first()
     template = loader.get_template('player/profile.html')
     context = {
+        'user_id': user_id,
         'scores': scores,
         'player': player,
         'participations': participations,
@@ -62,7 +63,7 @@ class PlayerParticipationTable(tables.Table):
             'class': 'table table-bordered dataTable'
         }
 
-def get_rich_list(request):
+def get_rich_list(request, user_id=""):
     template = loader.get_template('ranking.html')
     rich_list_df = Player.get_rich_list()
     rich_list_df.rename(columns={'total_money': 'mark'}, inplace=True)
@@ -70,17 +71,19 @@ def get_rich_list(request):
         'list_name': '富豪榜',
         'mark_name': '金錢',
         'list': rich_list_df.head(10),
+        'user_id': user_id,
         'now': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
     return HttpResponse(template.render(context, request))
 
-def get_score_list(request):
+def get_score_list(request, user_id=""):
     template = loader.get_template('ranking.html')
     score_list_df = Player.get_total_score_list()
     score_list_df.rename(columns={'total_score': 'mark'}, inplace=True)
     context = {
         'list_name': '成就榜',
         'mark_name': '總分',
+        'user_id': user_id,
         'list': score_list_df.head(10),
         'now': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }

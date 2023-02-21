@@ -19,7 +19,7 @@
         </div>
     </a>
     <div class="subContent">
-        <div class="contentInfo">
+        <div class="contentInfo" style="padding-bottom: 0px; margin-bottom: 0px">
             <div class="contentNews title"></div>
 			<div class="contentNews bar">
 				<div class="contentNews bar1" style='width:100%'>掃描QR code</div>
@@ -34,7 +34,35 @@
             
             
         </div>
+
+        <div class="contentInfo" style="padding-bottom: 0px; margin-bottom: 0px">
+            <div class="contentNews title"></div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%'>上載QR code</div>
+			</div>
+            
+            <div id='error_msg' class="contentNews content1" style="color:red;display:none" hidden>
+                Error: unknown QR code
+            </div>
+            <div class="contentNews content1">
+                <div id="reader_image"  style='width:100%'></div> 
+            </div>
+        </div>
         
+        <div class="contentInfo" style="padding-bottom: 0px; margin-bottom: 0px">
+            <div class="contentNews title"></div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%'>輸入學生ID</div>
+			</div>
+            
+            <div class="contentNews content1">
+                
+            <div class="username form-control form_control-user">
+                <input style="border-left: 20px #ade0ff solid; height:47px;" type="text" id="id_username" name="username" class="usernameBox" placeholder="USERNAME"></div>
+                <button style="background-color: #ade0ff; height:47px;" type="button">Click Me!</button>
+            </div>
+            
+        </div>
     </div>
     
 	<div class="footer">
@@ -62,8 +90,24 @@
     }
 
     var html5QrcodeScanner = new Html5QrcodeScanner(
-      "reader", { fps: 10, qrbox: 250 });
+      "reader", { 
+        fps: 10, 
+        qrbox: 250,
+        supportedScanTypes: [
+            Html5QrcodeScanType.SCAN_TYPE_CAMERA
+        ]});
     html5QrcodeScanner.render(onScanSuccess);
+
+
+    var html5QrcodeScannerImage = new Html5QrcodeScanner(
+      "reader_image", { 
+        fps: 10, 
+        qrbox: 250,
+        supportedScanTypes: [
+            Html5QrcodeScanType.SCAN_TYPE_FILE
+        ]
+    });
+    html5QrcodeScannerImage.render(onScanSuccess);
 </script>
 
 

@@ -70,7 +70,12 @@
 </style>
 <body>
 <div class="sub">
+
+	{% if user_id != "" %}
+	<div class="logo"><a href="/player/{{ user_id }}"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% else %}
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% endif %}
 	{% if config.ANNOUNCEMENT != "" %}
 	<div class="contentNews bar">
 		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>

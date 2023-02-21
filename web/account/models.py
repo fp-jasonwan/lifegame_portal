@@ -32,7 +32,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=100)
     nick_name = models.CharField(max_length=100, blank=True, null=True)
     mobile = models.IntegerField(blank=True, null=True )
-    icon = models.ImageField(blank=True, null=True, upload_to='profile/', default='profile/person.png')
+    school = models.CharField(max_length=100, blank=True, null=True)
     def get_last_seen(self):
         if self.is_player():
             last_seen = BoothTraffic.objects.filter(player=self.get_player()).order_by('-record_time').first()

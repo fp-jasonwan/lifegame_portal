@@ -20,45 +20,45 @@
 	<div class="menu">
 		<div class="btnNews">
 			<div class="text">個人資料</div>
-			<div class="icon"><a href="/profile"><img src="{% static 'icons/profile.png' %}" alt="Info"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/profile"><img src="{% static 'icons/profile.png' %}" alt="Info"></a></div>
 		</div>
 
 		<div class="btnInfo">
 			<div class="text">流 程</div>
-			<div class="icon"><a href="/news"><img src="{% static 'icons/rundown.png' %}" alt="News"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/news"><img src="{% static 'icons/rundown.png' %}" alt="News"></a></div>
 		</div>
 
 		<div class="btnStock">
 			<div class="text">地 圖</div>
-			<div class="icon"><a href="/map"><img src="{% static 'icons/map.png' %}" alt="Map"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/map"><img src="{% static 'icons/map.png' %}" alt="Map"></a></div>
 		</div>
 
 		<div class="btnIndex">
 			<div class="text">新 聞</div>
-			<div class="icon"><a href="/news"><img src="{% static 'icons/news.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/news"><img src="{% static 'icons/news.png' %}" alt="Contact"></a></div>
 		</div>
 
 		<div class="btnMap">
 			<div class="text">成就榜</div>
-			<div class="icon"><a href="/score_list"><img src="{% static 'icons/ranking.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/score_list"><img src="{% static 'icons/ranking.png' %}" alt="Contact"></a></div>
 		</div>
 
 		<div class="btnContact">
 			<div class="text">富豪榜</div>
-			<div class="icon"><a href="/rich_list"><img src="{% static 'icons/ranking_money.png' %}" alt="Map"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/rich_list"><img src="{% static 'icons/ranking_money.png' %}" alt="Map"></a></div>
 		</div>
 		<div class="btnIndex">
 			<div class="text">守 則</div>
-			<div class="icon"><a href="/rules"><img src="{% static 'icons/rules.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/rules"><img src="{% static 'icons/rules.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnMap">
 			<div class="text">聯 絡</div>
-			<div class="icon"><a href="/contact"><img src="{% static 'icons/contacts.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/player/{{ user_id }}/contact"><img src="{% static 'icons/contacts.png' %}" alt="Contact"></a></div>
 		</div>
-		<div class="btnContact">
+		<!-- <div class="btnContact">
 			<div class="text">登 出</div>
-			<div class="icon"><a href="/accounts/logout?next=/"><img src="{% static 'images/btnLogout.png' %}" alt="Contact"></a></div>
-		</div>
+			<div class="icon"><a href="accounts/logout?next=/"><img src="{% static 'images/btnLogout.png' %}" alt="Contact"></a></div>
+		</div> -->
 	</div>
 	
 	<div class="footer">

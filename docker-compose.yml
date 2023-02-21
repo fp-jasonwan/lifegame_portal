@@ -23,5 +23,5 @@ services:
       - ./creds.json:/secrets/cloudsql/creds.json
     ports:
       - 127.0.0.1:5432:5432
-    command: /cloud_sql_proxy -instances="alpine-eon-376901:asia-east2:lionsgame"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/creds.json
+    command: /cloud_sql_proxy -instances="peaceful-joy-378401:asia-east2:lifegame"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/creds.json
     restart: always

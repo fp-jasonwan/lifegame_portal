@@ -34,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('account.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
-    path('profile/', include('player.urls')),
+    path('player/<str:user_id>/', include('player.urls')),
     path('news/', get_news),
     path('booths/', get_booths_map),
     path('booths/<str:booth_id>', redirect_zoom),

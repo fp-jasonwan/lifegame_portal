@@ -10,7 +10,11 @@
 
 <body>
 <div class="sub">
+	{% if user_id != "" %}
+	<div class="logo"><a href="/player/{{ user_id }}"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% else %}
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+	{% endif %}
 	{% if config.ANNOUNCEMENT != "" %}
 	<div class="contentNews bar">
 		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
@@ -19,11 +23,6 @@
 	<div class="subContent">
 		<div class="contentInfo">
             <div class="contentNews title">新聞</div>
-			<!-- <div class="contentNews sub">
-				<div class="contentNews subMenu select">政策</div>
-				<div class="contentNews subMenu">經濟</div>
-				<div class="contentNews subMenu">...</div>
-			</div> -->
 			<div class="contentNews bar">
 				<div class="contentNews bar1" style='width:30%'>時間</div>
 				<div class="contentNews bar3" style='width:70%'>內容</div>
