@@ -19,7 +19,7 @@ class MyUserAdmin(UserAdmin):
     form = MyUserChangeForm
     fieldsets = (
         (None, {'fields': ('username', 'password', 'user_type')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'nick_name', 'email', 'mobile', 'icon')}), 
+        ('Personal info', {'fields': ('first_name', 'last_name', 'nick_name', 'email', 'mobile')}), 
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 
         # 'groups', 'user_permissions'
         )}), 

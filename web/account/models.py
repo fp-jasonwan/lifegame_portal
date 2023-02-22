@@ -3,14 +3,15 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from booth.models import BoothTraffic, Booth
 from player.models import Player
+from django.utils.crypto import get_random_string
 # Create your models here.
 
 class User(AbstractUser):
+
     def __str__(self):
         return "{} - {} {}".format(self.id, self.last_name, self.first_name)
 
     def is_oc(self):
-        print(self.user_type in ('oc', 'admin'))
         return self.user_type in ('oc', 'admin')
 
     def is_player(self):
@@ -21,7 +22,10 @@ class User(AbstractUser):
 
     @property
     def player(self):
-        return Player.objects.filter(user=self).first()
+        return Player.objects.filter(
+            user=self,
+            live_status='active'
+        ).first()
 
     user_type = models.CharField(
         max_length=10,
@@ -33,8 +37,12 @@ class User(AbstractUser):
     nick_name = models.CharField(max_length=100, blank=True, null=True)
     mobile = models.IntegerField(blank=True, null=True )
     school = models.CharField(max_length=100, blank=True, null=True)
-    def get_last_seen(self):
-        if self.is_player():
-            last_seen = BoothTraffic.objects.filter(player=self.get_player()).order_by('-record_time').first()
-            return last_seen
-        return None
+    encrypted_id = models.CharField(max_length=32, default=get_random_string(length=32))
+    
+class InstructorGroup(models.Model):
+    instructor = models.ForeignKey(
+        'account.User', 
+        on_delete=models.CASCADE,
+        related_name='instructor'
+    )
+    students = models.ManyToManyField('account.User')
