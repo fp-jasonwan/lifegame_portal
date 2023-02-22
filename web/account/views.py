@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-def home_page(request, user_id=""):
+def home_page(request, encrypted_id=""):
     #you can check user here with request.user
     #example
     try:
@@ -15,7 +15,7 @@ def home_page(request, user_id=""):
             elif request.user.user_type == 'instructor':
                 return render(request, 'oc/home.html', {})
         return render(request, 'player/home.html', {
-                'user_id': user_id
+                'encrypted_id': encrypted_id
         })
     except:
         pass

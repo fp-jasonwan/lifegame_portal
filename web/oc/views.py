@@ -33,18 +33,18 @@ def oc_portal(request):
         return redirect('/404')
     return render(request, 'oc/oc_portal.html')
 
-def search_profile(request, user_id=""):
+def search_profile(request, encrypted_id=""):
     access_checking(request)
 
     # profile = get_object_or_404(Student, user=request.user)
     template = loader.get_template('oc/search_profile.html')
     context = {
     }
-    if user_id == "":
+    if encrypted_id == "":
         return HttpResponse(template.render(context, request))
     else:
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(encrypted_id=encrypted_id)
             print(hasattr(user, 'player'))
             if hasattr(user, 'player') == False:
                 messages.success(request, '查無此玩家!')
@@ -55,8 +55,7 @@ def search_profile(request, user_id=""):
             messages.success(request, '查無此玩家!')
             context['message'] = '查無此玩家!'
             return HttpResponse(template.render(context, request))
-        print(user_id)
-        return get_profile(request, user_id)
+        return get_profile(request, encrypted_id)
         # return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
@@ -114,9 +113,9 @@ def scan_player(request, booth_id):
     }
     return HttpResponse(template.render(context, request))
 
-def check_player(request, booth_id="", user_id=""):
+def check_player(request, booth_id="", encrypted_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(User, encrypted_id=encrypted_id)
     player = user.player
     request.session['booth'] = booth.id
     score_translation = {
@@ -150,11 +149,11 @@ def check_player(request, booth_id="", user_id=""):
         context['message'] = '此玩家不符合攤位要求!'
         return HttpResponse(msg_template.render(context, request))
 
-def register_page(request, booth_id, user_id):
+def register_page(request, booth_id, encrypted_id):
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
     print(score_options)
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(User, encrypted_id=encrypted_id)
     template = loader.get_template('oc/booth_register.html')
     
     context = {
@@ -164,11 +163,11 @@ def register_page(request, booth_id, user_id):
     }
     return HttpResponse(template.render(context, request))
 
-def register_player(request, booth_id, user_id, participation=""):
+def register_player(request, booth_id, encrypted_id, participation=""):
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(User, encrypted_id=encrypted_id)
     player = user.get_player()
     form = ParticipationForm(request.POST or None,
                                 initial={
@@ -228,9 +227,9 @@ def update_booth_settings(request, booth_id):
     return HttpResponse(template.render(context, request))
 
 
-def booth_transaction(request, booth_id, type, user_id=""):
+def booth_transaction(request, booth_id, type, encrypted_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
-    if user_id == "":
+    if encrypted_id == "":
         template = loader.get_template('oc/scan_player.html')
         context = {
             'booth': booth,
@@ -240,7 +239,7 @@ def booth_transaction(request, booth_id, type, user_id=""):
     else:
         request.session['from'] = request.META.get('HTTP_REFERER', '/')
         
-        user = get_object_or_404(User, id=user_id)
+        user = get_object_or_404(User, encrypted_id=encrypted_id)
         form = TransactionForm(request.POST or None,
                                     initial={
                                         'booth': booth,
@@ -336,11 +335,11 @@ def register_instructor_comment(request, player_id):
 def redirect_to_booth(request):
     return list_booth(request)
 
-def get_contact(request, user_id=""):
+def get_contact(request, encrypted_id=""):
     contacts = ContactPerson.objects.all()
     template = loader.get_template('contact.html')
     context = {
         'contacts': contacts,
-        'user_id': user_id
+        'encrypted_id': encrypted_id
     }
     return HttpResponse(template.render(context, request))

@@ -9,15 +9,15 @@ urlpatterns = [
     path('',oc_portal, name='oc_portal'),
     path('register', register, name="register"),
     path('search_profile',search_profile, name='search_profile'),
-    path('search_profile/<int:user_id>', search_profile, name='search_profile_with_id'),
+    path('search_profile/<str:encrypted_id>', search_profile, name='search_profile_with_id'),
     path('booth_list', list_booth, name='list_booth'),
 
     path('booth/check_player', booth_home, name='booth_home'),
     path('booth', redirect_to_booth, name='booth_home'),
     path('booth/<str:booth_id>/', booth_home, name='booth_home'),
-    path('booth/<str:booth_id>/check_player/<int:user_id>', check_player, name='check_player'),
+    path('booth/<str:booth_id>/check_player/<str:encrypted_id>', check_player, name='check_player'),
     path('booth/<str:booth_id>/check_player', scan_player, name='check_player'),
-    path('booth/<str:booth_id>/register/<int:user_id>', register_player, name='register_player'),
+    path('booth/<str:booth_id>/register/<str:encrypted_id>', register_player, name='register_player'),
     path('booth/<str:booth_id>/settings', update_booth_settings, name='update_booth_settings'),
     path('booth/traffics', list_booth, {"type": 'traffics'}, name='booth_traffics'),
     path('booth/participations', list_booth, {"type": 'participations'}, name='booth_participations'),
@@ -32,7 +32,7 @@ urlpatterns = [
     path('booth/<str:booth_id>/transactions/<str:tran_id>/success', show_transaction, name='transaction_record_success'),
     path('booth/<str:booth_id>/transactions/<str:tran_id>/delete', delete_transaction, name='transaction_record_success'),
     path('booth/<str:booth_id>/transaction/<str:type>', booth_transaction, name='transaction_scan'),
-    path('booth/<str:booth_id>/transaction/<str:type>/<int:user_id>', booth_transaction, name='transaction'),
+    path('booth/<str:booth_id>/transaction/<str:type>/<str:encrypted_id>', booth_transaction, name='transaction'),
     
     path('instructor', get_instructor_players, name='instructor_page'),
     path('instructor/register/<str:player_id>', register_instructor_comment, name='instructor_register')

@@ -25,18 +25,12 @@ class BornStatus(models.Model):
     academic_level = models.IntegerField()
     steps = models.IntegerField()
     
-class Education(models.Model):
-    id = models.AutoField(primary_key=True)
-    level = models.IntegerField()
-    name = models.CharField(max_length=50)
-
 class Player(models.Model):
     def __str__(self):
         return "{} - {} {}".format(self.user.id, self.user.first_name, self.user.last_name)
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField('account.User', on_delete=models.CASCADE, null=True, blank=True)
     born_status = models.ForeignKey(BornStatus, on_delete=models.CASCADE, null=True, blank=True)
-    born_education_level = models.ForeignKey(Education, on_delete=models.CASCADE, null=True, blank=True)
     live_status = models.CharField(
         choices=LIVE_STATUS_CHOICES,
         default='active',
@@ -161,7 +155,6 @@ def create_player(instance, created, raw, **kwargs):
     Player.objects.create(
         user = instance,
         born_status=BornStatus.objects.get(id=1),
-        born_education_level=Education.objects.get(id=1),
         live_status='active'
     )
 

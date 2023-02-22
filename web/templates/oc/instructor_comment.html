@@ -20,7 +20,7 @@
                 {% csrf_token %}
                 <!-- <div class="form-group">
                     <label for="exampleFormControlInput1">User ID</label>
-                    <input class="usernameBox form-control" id="user_id" name="user_id" type="number" value="{{ user.id }}" readonly>
+                    <input class="usernameBox form-control" id="encrypted_id" name="encrypted_id" type="number" value="{{ user.id }}" readonly>
                 </div> -->
                 <div class="form-group">
                     <input class="usernameBox form-control" id="score" name="score" type="number" min="1" max="10" placeholder="分數 (1-10)" value="{{ comment.score }}">

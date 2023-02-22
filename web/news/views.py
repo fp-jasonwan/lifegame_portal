@@ -24,7 +24,7 @@ class NewsListView(SingleTableView):
     table_class = NewsTable
     template_name = 'news.html'
 
-def get_news(request, user_id=""):
+def get_news(request, encrypted_id=""):
     # news_category = NewsCategory.objects.all()
     # for cat in news_category:
     currentTime = datetime.datetime.now().time()
@@ -38,6 +38,6 @@ def get_news(request, user_id=""):
     # print(news_list)
     context = {
         'news': news,
-        'user_id': user_id,
+        'encrypted_id': encrypted_id,
     }
     return HttpResponse(template.render(context, request))

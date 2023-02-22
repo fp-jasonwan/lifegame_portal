@@ -10,8 +10,8 @@
 
 <body>
 <div class="sub">
-	{% if user_id != "" %}
-	<div class="logo"><a href="/player/{{ user_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% if encrypted_id != "" %}
+	<div class="logo"><a href="/player/{{ encrypted_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
 	{% else %}
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
 	{% endif %}

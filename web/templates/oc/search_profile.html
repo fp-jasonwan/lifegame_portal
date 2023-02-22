@@ -67,10 +67,10 @@
 
     function onScanSuccess(decodedText, decodedResult) {
         // Handle on success condition with the decoded text or result.
-        var scanned_user_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
-        console.log(scanned_user_id);
-        if(Number.isInteger(parseInt(scanned_user_id))) {
-            searchPlayer(scanned_user_id);
+        var scanned_encrypted_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        console.log(scanned_encrypted_id);
+        if(Number.isInteger(parseInt(scanned_encrypted_id))) {
+            searchPlayer(scanned_encrypted_id);
         } else {
             document.getElementById('error_msg').style.display='block';
         }

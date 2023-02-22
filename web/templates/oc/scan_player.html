@@ -58,11 +58,11 @@
         console.log(`Scan result: ${decodedText}`, decodedResult);
         var scan_type = '{{ scan_type }}'
         var baseUrl  = window.location.origin;
-        var scanned_user_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        var scanned_encrypted_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
         if (scan_type == 'pay') {
-            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/pay/" + scanned_user_id
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/pay/" + scanned_encrypted_id
         } else if (scan_type == 'receive') {
-            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/receive/" + scanned_user_id
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/receive/" + scanned_encrypted_id
         }
     }
 

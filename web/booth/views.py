@@ -27,7 +27,7 @@ class BoothsListView(SingleTableView):
     template_name = 'booths.html'
 
 
-def get_booths_map(request, user_id=""):
+def get_booths_map(request, encrypted_id=""):
     booths = Booth.objects.all()
     categories = [b.description for b in booths]
     categories = list(set(categories))
@@ -53,7 +53,7 @@ def get_booths_map(request, user_id=""):
         # 'booths': booths,
         'categories': categories,
         'booth_dict': booth_dict,
-        'user_id': user_id
+        'encrypted_id': encrypted_id
     }
     return HttpResponse(template.render(context, request))
 
