@@ -10,7 +10,7 @@ from player.views import get_profile
 from player.forms import InstructorCommentForm
 from .models import ContactPerson
 from booth.views import show_participation
-from django.contrib.auth.decorators import permission_required
+from django.db.models import Q
 # Create your views here.
 # Create your views here.
 from django.contrib.auth.decorators import user_passes_test
@@ -28,10 +28,10 @@ def access_checking(request):
 
 def oc_portal(request):
     if request.user.is_authenticated == False:
-        return redirect('/')
+        return redirect('/accounts/login?next=/oc/booth')
     if request.user.user_type == 'student':
         return redirect('/404')
-    return render(request, 'oc/oc_portal.html')
+    return render(request, 'oc/home.html')
 
 def search_profile(request, encrypted_id=""):
     access_checking(request)
@@ -44,7 +44,7 @@ def search_profile(request, encrypted_id=""):
         return HttpResponse(template.render(context, request))
     else:
         try:
-            user = User.objects.get(encrypted_id=encrypted_id)
+            user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
             print(hasattr(user, 'player'))
             if hasattr(user, 'player') == False:
                 messages.success(request, '查無此玩家!')
@@ -60,12 +60,6 @@ def search_profile(request, encrypted_id=""):
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
 
-def register(request):
-    # print(request.__dict__)
-    return "Hi"
-
-def register2(request):
-    return HttpResponseRedirect()
 
 def list_booth(request, type=""):
     booths = Booth.objects.filter(booth_admins__in=[request.user]).order_by('id')
@@ -115,7 +109,7 @@ def scan_player(request, booth_id):
 
 def check_player(request, booth_id="", encrypted_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
-    user = get_object_or_404(User, encrypted_id=encrypted_id)
+    user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
     player = user.player
     request.session['booth'] = booth.id
     score_translation = {
@@ -153,7 +147,7 @@ def register_page(request, booth_id, encrypted_id):
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
     print(score_options)
-    user = get_object_or_404(User, encrypted_id=encrypted_id)
+    user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
     template = loader.get_template('oc/booth_register.html')
     
     context = {
@@ -167,7 +161,7 @@ def register_player(request, booth_id, encrypted_id, participation=""):
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
-    user = get_object_or_404(User, encrypted_id=encrypted_id)
+    user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
     player = user.get_player()
     form = ParticipationForm(request.POST or None,
                                 initial={
@@ -239,7 +233,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
     else:
         request.session['from'] = request.META.get('HTTP_REFERER', '/')
         
-        user = get_object_or_404(User, encrypted_id=encrypted_id)
+        user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
         form = TransactionForm(request.POST or None,
                                     initial={
                                         'booth': booth,

@@ -124,7 +124,7 @@ if platform.system() == 'Darwin':
         'NAME': 'lifegame',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '34.92.37.72',
+        'HOST': '34.173.160.168',
         'PORT': '5432',
     }
     }

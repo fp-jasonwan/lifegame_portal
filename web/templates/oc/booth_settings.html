@@ -11,13 +11,13 @@
 
 <body>
 <div class="sub">
-    <div class="logo"><a href="/"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+    <div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
     <a href='/oc/booth/{{ booth.id }}'>
         <div class="contentNews bar">
             <div class="contentNews bar1" style='width:100%'>{{ booth.id }}</div>
         </div>
     </a>
-    <div class="subContent" style='background:#b9d7bb'>
+    <div class="subContent" style='background:white'>
         
         <form action="/oc/booth/{{ booth.id }}/settings" method="post">
         {% csrf_token %}
@@ -37,7 +37,7 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <div class="btn"><input src="{% static 'images/btnGo.png' %}" style="height:100px;width:100px" type="image" /></div>
+            <div class="btn"><input src="{% static 'images/yolo.png' %}" style="height:100px;width:100px" type="image" /></div>
 		</div>
         </form>
         
@@ -46,7 +46,7 @@
        
 	<div class="footer">
 		
-		<img src="{% static 'images/footer.png' %}" alt="footer">
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
 	</div>
 	 
 </div>

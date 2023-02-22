@@ -1,22 +1,29 @@
 from django.shortcuts import render, redirect
-
+from django.template import loader
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from .models import User
 def home_page(request, encrypted_id=""):
     #you can check user here with request.user
     #example
     try:
+        if encrypted_id != "":
+            user = get_object_or_404(User, encrypted_id=encrypted_id)
+            return render(request, 'player/home.html', {
+                'encrypted_id': encrypted_id,
+                'user': user
+            })
         if request.user.is_authenticated and request.user.is_active:
-
-            # if request.user.user_type == 'student':
-            #     return render(request, 'player/home.html', {})
             if request.user.user_type == 'oc':
                 return render(request, 'oc/home.html', {})
             elif request.user.user_type == 'admin':
                 return render(request, 'oc/home.html', {})
-            elif request.user.user_type == 'instructor':
-                return render(request, 'oc/home.html', {})
-        return render(request, 'player/home.html', {
-                'encrypted_id': encrypted_id
-        })
+        
+        template = loader.get_template('error/error_message.html')
+        context = {
+            "message": "歡迎來到人生之旅"
+        }
+        return HttpResponse(template.render(context, request))
     except:
         pass
     return render(request, 'login.html', {})

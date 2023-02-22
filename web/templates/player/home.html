@@ -55,6 +55,12 @@
 			<div class="text">聯 絡</div>
 			<div class="icon"><a href="/player/{{ encrypted_id }}/contact"><img src="{% static 'icons/contacts.png' %}" alt="Contact"></a></div>
 		</div>
+		{% if is_instructor == True  %}
+		<div class="btnStock">
+			<div class="text">導 師</div>
+			<div class="icon"><a href="/player/{{ encrypted_id }}/instructor"><img src="{% static 'icons/map.png' %}" alt="Map"></a></div>
+		</div>
+		{% endif %}
 		<!-- <div class="btnContact">
 			<div class="text">登 出</div>
 			<div class="icon"><a href="accounts/logout?next=/"><img src="{% static 'images/btnLogout.png' %}" alt="Contact"></a></div>
@@ -63,7 +69,7 @@
 	
 	<div class="footer">
 		
-		<img src="{% static 'ximages/footer.png' %}" alt="footer">
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
 	</div>
 	
 </div>

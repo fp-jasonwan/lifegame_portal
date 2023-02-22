@@ -27,15 +27,24 @@ class BornStatus(models.Model):
     
 class Player(models.Model):
     def __str__(self):
-        return "{} - {} {}".format(self.user.id, self.user.first_name, self.user.last_name)
+        if self.active:
+            return "{} - {} {}".format(self.user.id, self.user.first_name, self.user.last_name)
+        else:
+            return "{} - {} {} (inactive)".format(self.user.id, self.user.first_name, self.user.last_name)
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # This code only happens if the objects is
+            # not in the database yet. Otherwise it would
+            # have pk
+            user = self.user
+            Player.objects.filter(user=user).update(active=False)
+        super(Player, self).save(*args, **kwargs)
+
     id = models.AutoField(primary_key=True)
-    user = models.OneToOneField('account.User', on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey('account.User', on_delete=models.CASCADE, null=True, blank=True)
     born_status = models.ForeignKey(BornStatus, on_delete=models.CASCADE, null=True, blank=True)
-    live_status = models.CharField(
-        choices=LIVE_STATUS_CHOICES,
-        default='active',
-        max_length=8
-    )
+    active = models.BooleanField(default=True)
 
     def get_scores(self):
         result_dict = {
@@ -155,7 +164,7 @@ def create_player(instance, created, raw, **kwargs):
     Player.objects.create(
         user = instance,
         born_status=BornStatus.objects.get(id=1),
-        live_status='active'
+        active=True
     )
 
 

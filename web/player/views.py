@@ -5,7 +5,7 @@ from .models import Player, InstructorScore
 from booth.models import Participation, BoothTraffic, Transaction
 from django.shortcuts import get_object_or_404, render
 import django_tables2 as tables
-from account.models import User
+from account.models import User, InstructorGroup
 from django_tables2 import SingleTableView
 from django.db.models import Sum, Max, Subquery, Q
 import pandas as pd
@@ -16,7 +16,7 @@ def get_profile(request, encrypted_id=""):
     if encrypted_id == "":
         player = request.user.player
     else:
-        user = User.objects.get(encrypted_id=encrypted_id)
+        user = get_object_or_404(User, encrypted_id=encrypted_id)
         player = user.player
         # player = Player.objects.get(player_id=player_id)
     scores = player.get_scores()
@@ -89,3 +89,20 @@ def get_score_list(request, encrypted_id=""):
     }
     return HttpResponse(template.render(context, request))
 
+def get_instructor_students(request, encrypted_id=""):
+    user = get_object_or_404(User, encrypted_id=encrypted_id)
+    template = loader.get_template('instructor_students.html')
+    if user.user_type == 'instructor':
+        group = get_object_or_404(InstructorGroup, instructor=user)
+        context = {
+            'group_id': group.id,
+            'students': group.students.all(),
+            'players': group.get_player()
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        template = loader.get_template('error/error_message.html')
+        context = {
+            "message": "此用戶並不是導師。如有錯誤請聯絡IT小組"
+        }
+        return HttpResponse(template.render(context, request))

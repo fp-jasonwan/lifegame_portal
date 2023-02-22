@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from account.models import User
+from account.models import User, InstructorGroup
 # Register your models here.
 
 # class CustomUserAdmin(UserAdmin):
@@ -18,7 +18,7 @@ class MyUserChangeForm(UserChangeForm):
 class MyUserAdmin(UserAdmin):
     form = MyUserChangeForm
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'user_type')}),
+        (None, {'fields': ('username', 'password', 'user_type', 'encrypted_id')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'nick_name', 'email', 'mobile')}), 
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 
         # 'groups', 'user_permissions'
@@ -33,3 +33,4 @@ class MyUserAdmin(UserAdmin):
     # )
 
 admin.site.register(User, MyUserAdmin)
+admin.site.register(InstructorGroup)

@@ -18,13 +18,13 @@ class User(AbstractUser):
         return Player.objects.filter(user=self).exists()
 
     def get_player(self):
-        return Player.objects.filter(user=self).first()
+        return Player.objects.filter(user=self, active=True).first()
 
     @property
     def player(self):
         return Player.objects.filter(
             user=self,
-            live_status='active'
+            active=True
         ).first()
 
     user_type = models.CharField(
@@ -40,6 +40,10 @@ class User(AbstractUser):
     encrypted_id = models.CharField(max_length=32, default=get_random_string(length=32))
     
 class InstructorGroup(models.Model):
+    def get_player(self):
+        players = Player.objects.filter(user__in=self.students.all()).order_by('-active')
+        return players
+
     instructor = models.ForeignKey(
         'account.User', 
         on_delete=models.CASCADE,

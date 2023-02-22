@@ -106,7 +106,7 @@ body{ background-color: #c1e1de; margin: 0; padding: 0}
 
 
 
-.contentNews.title{color:#d85e2d; font-weight: bold; font-size: 18px;padding: 20px 20px 10px 20px;margin-bottom: 0px;}
+.contentNews.title{color:#d85e2d; font-weight: bold; font-size: 18px;padding: 20px 20px 20px 20px;margin-bottom: 0px;}
 .contentNews.sub{color:#333; font-weight: bold; font-size: 18px;padding: 5px 20px 0px 20px;margin-bottom: 0px;    display: table;  width: 100%;    margin-top: 0;-ms-box-sizing: border-box;    box-sizing: border-box;  }
 .contentNews.subMenu{ float:left; padding: 5px 15px 5px 15px; background-color: #eeeeee; margin-right: 5px; font-weight: normal;}
 

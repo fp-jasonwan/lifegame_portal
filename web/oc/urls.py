@@ -1,5 +1,5 @@
 from .views import oc_portal, search_profile, list_booth, booth_home,scan_player, check_player, register_player, register_page, get_instructor_players, register_instructor_comment
-from .views import register, redirect_to_booth, update_booth_settings, booth_transaction
+from .views import redirect_to_booth, update_booth_settings, booth_transaction
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required, permission_required
 from booth.views import show_participations, get_traffic_record, show_participation, \
@@ -7,7 +7,6 @@ from booth.views import show_participations, get_traffic_record, show_participat
 
 urlpatterns = [
     path('',oc_portal, name='oc_portal'),
-    path('register', register, name="register"),
     path('search_profile',search_profile, name='search_profile'),
     path('search_profile/<str:encrypted_id>', search_profile, name='search_profile_with_id'),
     path('booth_list', list_booth, name='list_booth'),
