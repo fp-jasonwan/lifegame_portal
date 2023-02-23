@@ -13,11 +13,13 @@ def home_page(request, encrypted_id=""):
                 'encrypted_id': encrypted_id,
                 'user': user
             })
-        if request.user.is_authenticated and request.user.is_active:
+        print(request.user.is_authenticated)
+        print(request.user.user_type)
+        if request.user.is_authenticated:
             if request.user.user_type == 'oc':
-                return render(request, 'oc/home.html', {})
+                return redirect('/oc')
             elif request.user.user_type == 'admin':
-                return render(request, 'oc/home.html', {})
+                return redirect('/oc')
         
         template = loader.get_template('error/error_message.html')
         context = {

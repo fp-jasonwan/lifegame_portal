@@ -43,13 +43,13 @@ if CLOUDRUN_SERVICE_URL:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 else:
     ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS.append('lionslifegame.app')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.a.run.app']
+CSRF_TRUSTED_ORIGINS = ['https://*.a.run.app', "https://lionslifegame.app", "https://www.lionslifegame.app", "https://*.lionslifegame.app"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -124,7 +124,7 @@ if platform.system() == 'Darwin':
         'NAME': 'lifegame',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '34.173.160.168',
+        'HOST': '34.80.51.182',
         'PORT': '5432',
     }
     }

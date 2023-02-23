@@ -10,7 +10,12 @@
 
 <body>
 <div class="sub">
+	
+	{% if encrypted_id != "" %}
+	<div class="logo"><a href="/player/{{ encrypted_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% else %}
 	<div class="logo"><a href="/"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% endif %}
 	<div class="subContent">
 		<div class="contentInfo">
             <div class="contentNews title"></div>

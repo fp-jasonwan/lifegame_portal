@@ -97,7 +97,8 @@ def get_instructor_students(request, encrypted_id=""):
         context = {
             'group_id': group.id,
             'students': group.students.all(),
-            'players': group.get_player()
+            'players': group.get_player(),
+            'encrypted_id': encrypted_id
         }
         return HttpResponse(template.render(context, request))
     else:

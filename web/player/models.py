@@ -53,7 +53,6 @@ class Player(models.Model):
             'skill_score': self.get_score('skill_score'),
             'growth_score': self.get_score('growth_score'),
             'relationship_score': self.get_score('relationship_score'),
-            'joy_score': self.get_score('joy_score'),
             'academic_level': self.get_score('academic_level')
         }
         print(result_dict)
@@ -111,7 +110,9 @@ class Player(models.Model):
                 participation_relationship=Sum('score__relationship_score'),
             )
         ).fillna(0)
-        score_df = born_df.merge(participation_df, how='left', on='uid')
+        score_df = born_df.copy()
+        if len(participation_df) > 0:
+            score_df = score_df.merge(participation_df, how='left', on='uid')
         score_df = score_df.set_index('uid').sum(axis=1).reset_index()
         score_df.rename(columns={0: 'total_score'}, inplace=True)
         return score_df
@@ -141,10 +142,11 @@ class Player(models.Model):
             )
         )
         concat_df = pd.concat([born_df, participation_df, transaction_df])
-        concat_df['total_money'] = concat_df['born_money'].fillna(0) + \
-                                    concat_df['participation_money'].fillna(0) + \
-                                    concat_df['pay'].fillna(0) - \
-                                    concat_df['receive'].fillna(0)
+        concat_df['total_money'] = concat_df['born_money'].fillna(0) 
+        if len(participation_df) > 0:
+            concat_df['total_money'] += concat_df['participation_money'].fillna(0)
+        if len(transaction_df) > 0:
+            concat_df['total_money'] +=  concat_df['pay'].fillna(0) - concat_df['receive'].fillna(0)
         money_df = concat_df.groupby('uid', as_index=False)['total_money'].sum()
         money_df['uid'] = money_df['uid'].astype('str')
         return money_df.sort_values('total_money', ascending=False)

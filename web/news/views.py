@@ -25,17 +25,9 @@ class NewsListView(SingleTableView):
     template_name = 'news.html'
 
 def get_news(request, encrypted_id=""):
-    # news_category = NewsCategory.objects.all()
-    # for cat in news_category:
     currentTime = datetime.datetime.now().time()
     news = News.objects.filter().order_by('time').all()
     template = loader.get_template('news.html')
-    # news_list = {}
-    # for n in news_category:
-    #     n2 = News.objects.filter(category=n).all()
-    #     print(n)
-    #     news_list[n] = n2
-    # print(news_list)
     context = {
         'news': news,
         'encrypted_id': encrypted_id,
