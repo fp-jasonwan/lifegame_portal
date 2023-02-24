@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from booth.models import Booth, Participation, BoothScoring, Transaction
+from booth.models import Booth, Participation, BoothScoring, Transaction, BoothTraffic
 from booth.forms import ParticipationForm, BoothSettingsForm, TransactionForm
 from account.models import User
 from django.contrib import messages
@@ -45,21 +45,30 @@ def search_profile(request, encrypted_id=""):
     else:
         try:
             if encrypted_id.isnumeric():
-                user = get_object_or_404(User, id=encrypted_id)
+                user = get_object_or_404(User, id=int(encrypted_id))
+                player = user.player
+            elif len(encrypted_id) < 10:
+                id = int(encrypted_id[:3])
+                user = get_object_or_404(User, id=id)
+                player = user.player
             else:
                 user = get_object_or_404(User, encrypted_id=encrypted_id)
-
-            print(hasattr(user, 'player'))
-            if hasattr(user, 'player') == False:
-                messages.success(request, '查無此玩家!')
-                context['message'] = '查無此玩家!'
-                return HttpResponse(template.render(context, request))
-            player = user.player
+                player = user.player
         except:
             messages.success(request, '查無此玩家!')
             context['message'] = '查無此玩家!'
             return HttpResponse(template.render(context, request))
-        return get_profile(request, encrypted_id)
+        scores = player.get_scores()
+        participations = Participation.objects.filter(player=player).all().order_by('-record_time')
+        # instructor_score = InstructorScore.objects.filter(player=player).first()
+        template = loader.get_template('player/profile.html')
+        context = {
+            'scores': scores,
+            'player': player,
+            'participations': participations,
+        }
+        return HttpResponse(template.render(context, request))
+        # return get_profile(request, encrypted_id)
         # return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
     return HttpResponse(template.render(context, request))
     # return HttpResponse("You're voting on question %s." % question_id)
@@ -239,7 +248,7 @@ def update_booth_settings(request, booth_id):
 def booth_transaction(request, booth_id, type, encrypted_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
     if encrypted_id == "":
-        template = loader.get_template('oc/scan_player.html')
+        template = loader.get_template('oc/check_player.html')
         context = {
             'booth': booth,
             'scan_type': type

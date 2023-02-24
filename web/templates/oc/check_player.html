@@ -80,6 +80,7 @@
 </body>
 <script src="{% static 'js/html5-qrcode.min.v2.3.0.js' %}" type="text/javascript"></script>
 <script type="text/javascript">
+    var scan_type = '{{ scan_type }}'
     let app = new Vue({
     //   el: "#vue-app",
       data: {
@@ -134,22 +135,36 @@
 
 
 <script>
+    // function checkPlayer(id) {
+    //     var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
+    //     console.log('check');
+    //     if (lastSegment != 'check_player') {
+    //         var the_arr = window.location.href.split('/');
+    //         the_arr.pop();
+    //         var baseUrl = the_arr.join('/');
+    //         window.location.href = baseUrl + "/" + id
+    //     } else {
+    //         window.location.href = window.location.href + "/" + id
+    //     }
+    // }
     function checkPlayer(id) {
         var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
-        console.log('check');
-        if (lastSegment != 'check_player') {
-            var the_arr = window.location.href.split('/');
-            the_arr.pop();
-            var baseUrl = the_arr.join('/');
-            window.location.href = baseUrl + "/" + id
+        var the_arr = window.location.href.split('/');
+        var baseUrl  = window.location.origin;
+        console.log(id);
+        console.log(lastSegment);
+        var scan_type = '{{ scan_type }}'
+        if (scan_type == 'pay') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/pay/" + id
+        } else if (scan_type == 'receive') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/receive/" + id
         } else {
-            window.location.href = window.location.href + "/" + id
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/check_player/" + id
         }
     }
 
     function checkPlayerButton() {
         var id = document.getElementById('inputId').value;
-        
         checkPlayer(id);
     }
 </script>

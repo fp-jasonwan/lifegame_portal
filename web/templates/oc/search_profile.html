@@ -19,7 +19,7 @@
     </div>
 
     <div class="subContent">
-		<div class="contentInfo">
+        <div class="contentInfo" style="padding-bottom: 0px; margin-bottom: 0px">
             <div class="contentNews title"></div>
 			<div class="contentNews bar">
 				<div class="contentNews bar1" style='width:100%'>掃描QR code</div>
@@ -31,8 +31,44 @@
             <div class="contentNews content1">
                 <div id="reader"  style='width:100%'></div> 
             </div>
-		</div>
-	</div>
+            
+            
+        </div>
+
+        <div class="contentInfo" style="padding-bottom: 0px; margin-bottom: 0px">
+            <div class="contentNews title"></div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%'>上載QR code</div>
+			</div>
+            
+            <div id='error_msg_image' class="contentNews content1" style="color:red;display:none" hidden>
+                Error: unknown QR code
+            </div>
+            <div class="contentNews content1">
+                <div id="reader_image"  style='width:100%'></div> 
+            </div>
+        </div>
+        
+        <div class="contentInfo" style="padding-bottom: 0px; margin-bottom: 0px">
+            <div class="contentNews title"></div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%' id>輸入學生ID</div>
+			</div>
+            
+            <div id='error_msg_input' class="contentNews content1" style="color:red; display:None" hidden>
+                請輸入學生ID
+            </div>
+            <div class="contentNews content1">
+                
+            <div class="username form-control form_control-user">
+                <input style="border-left: 20px #ade0ff solid; height:47px;" type="text" id="inputId" name="username" class="usernameBox" placeholder="學生ID"></div>
+                <!-- <button style="background-color: #ade0ff; height:47px;" type="button" onclick="checkPlayerButton()">Click Me!</button> -->
+                <input src="{% static 'images/yolo.png' %}" style="height:50px;width:50px" type="image"  onclick="searchPlayerButton()"/>
+            </div>
+            
+            <div class="contentNews title"></div>
+        </div>
+    </div>
 
 	<div class="footer">
 		
@@ -51,10 +87,55 @@
         myTitle: '<h1>Hello Vue!</h1>',
       },
     });
+  
+    function onScanSuccess(decodedText, decodedResult) {
+        // Handle on success condition with the decoded text or result.
+        console.log(`Scan result: ${decodedText}`, decodedResult);
+        var scanned_encrypted_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        searchPlayer(scanned_encrypted_id)
+    }
 
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", { 
+        fps: 10, 
+        qrbox: 250,
+        supportedScanTypes: [
+            Html5QrcodeScanType.SCAN_TYPE_CAMERA
+        ]});
+        const html5QrCode = new Html5Qrcode("reader");
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+        /* handle success */
+        var scanned_encrypted_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        searchPlayer(scanned_encrypted_id)
+    };
+    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+    // If you want to prefer back camera
+    html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+    function onScanSuccessImage(decodedText, decodedResult) {
+        
+        // Handle on success condition with the decoded text or result.
+        console.log(`Scan result: ${decodedText}`, decodedResult);
+        var scanned_encrypted_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
+        searchPlayer(scanned_encrypted_id)
+    }
+
+    var html5QrcodeScannerImage = new Html5QrcodeScanner(
+      "reader_image", { 
+        fps: 10, 
+        qrbox: 250,
+        supportedScanTypes: [
+            Html5QrcodeScanType.SCAN_TYPE_FILE
+        ]
+    });
+    html5QrcodeScannerImage.render(onScanSuccessImage);
+    // html5QrcodeScanner.render(onScanSuccess);
+</script>
+<script type="text/javascript">
     function searchPlayer(id) {
+        console.log(id)
         var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
-        console.log('check');
         if (lastSegment != 'search_profile') {
             var the_arr = window.location.href.split('/');
             the_arr.pop();
@@ -76,13 +157,9 @@
         }
     }
 
-    var html5QrcodeScanner = new Html5QrcodeScanner(
-      "reader", 
-      { fps: 10, 
-        qrbox: 250,
-    },
-      );
-    html5QrcodeScanner.render(onScanSuccess);
-
+    function searchPlayerButton() {
+        var id = document.getElementById('inputId').value;
+        searchPlayer(id);
+    }
   </script>
 </html>
