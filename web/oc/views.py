@@ -44,7 +44,11 @@ def search_profile(request, encrypted_id=""):
         return HttpResponse(template.render(context, request))
     else:
         try:
-            user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
+            if encrypted_id.isnumeric():
+                user = get_object_or_404(User, id=encrypted_id)
+            else:
+                user = get_object_or_404(User, encrypted_id=encrypted_id)
+
             print(hasattr(user, 'player'))
             if hasattr(user, 'player') == False:
                 messages.success(request, '查無此玩家!')
@@ -109,7 +113,10 @@ def scan_player(request, booth_id):
 
 def check_player(request, booth_id="", encrypted_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
-    user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
+    if encrypted_id.isnumeric():
+        user = get_object_or_404(User, id=encrypted_id)
+    else:
+        user = get_object_or_404(User, encrypted_id=encrypted_id)
     player = user.player
     request.session['booth'] = booth.id
     score_translation = {
@@ -117,6 +124,7 @@ def check_player(request, booth_id="", encrypted_id=""):
         'skill_score': '健康',
         'growth_score': '成長',
         'relationship_score': '健康',
+        'money': '金錢'
     }
     msg_template = loader.get_template('oc/booth_message.html')
     context = {
@@ -147,7 +155,10 @@ def register_page(request, booth_id, encrypted_id):
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
     print(score_options)
-    user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
+    if encrypted_id.isnumeric():
+        user = get_object_or_404(User, id=encrypted_id)
+    else:
+        user = get_object_or_404(User, encrypted_id=encrypted_id)
     template = loader.get_template('oc/booth_register.html')
     
     context = {
@@ -161,7 +172,11 @@ def register_player(request, booth_id, encrypted_id, participation=""):
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
-    user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
+
+    if encrypted_id.isnumeric():
+        user = get_object_or_404(User, id=encrypted_id)
+    else:
+        user = get_object_or_404(User, encrypted_id=encrypted_id)
     player = user.get_player()
     form = ParticipationForm(request.POST or None,
                                 initial={
@@ -233,7 +248,10 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
     else:
         request.session['from'] = request.META.get('HTTP_REFERER', '/')
         
-        user = get_object_or_404(User, Q(encrypted_id=encrypted_id) | Q(id=encrypted_id))
+        if encrypted_id.isnumeric():
+            user = get_object_or_404(User, id=encrypted_id)
+        else:
+            user = get_object_or_404(User, encrypted_id=encrypted_id)
         form = TransactionForm(request.POST or None,
                                     initial={
                                         'booth': booth,
