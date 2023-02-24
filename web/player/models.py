@@ -28,9 +28,9 @@ class BornStatus(models.Model):
 class Player(models.Model):
     def __str__(self):
         if self.active:
-            return "{} - {} {}".format(self.user.id, self.user.first_name, self.user.last_name)
+            return "{}{}".format(self.user.last_name, self.user.first_name)
         else:
-            return "{} - {} {} (inactive)".format(self.user.id, self.user.first_name, self.user.last_name)
+            return "{}{} (inactive)".format(self.user.last_name, self.user.first_name)
     
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -93,6 +93,7 @@ class Player(models.Model):
     @staticmethod
     def get_total_score_list():
         born_df = pd.DataFrame(Player.objects \
+            .filter(user__user_type = 'student') \
             .values(uid=F('user__id')) \
             .annotate(
                 born_health=Max('born_status__health_score'),
@@ -102,6 +103,7 @@ class Player(models.Model):
             )
         ).fillna(0)
         participation_df = pd.DataFrame(Participation.objects \
+            .filter(player__user__user_type = 'student') \
             .values(uid=F('player__user__id')) \
             .annotate(
                 participation_health=Sum('score__health_score'),
@@ -122,6 +124,7 @@ class Player(models.Model):
     @staticmethod
     def get_rich_list():
         born_df = pd.DataFrame(Player.objects \
+            .filter(user__user_type = 'student') \
             .values(uid=F('user__id')) \
             .annotate(
                 born_money=Max('born_status__money')
@@ -129,12 +132,14 @@ class Player(models.Model):
         )
         # born_df.rename(columns={'id': 'player'}, inplace=True)
         participation_df = pd.DataFrame(Participation.objects \
+            .filter(player__user__user_type = 'student') \
             .values(uid=F('player__user__id')) \
             .annotate(
                 participation_money=Sum('score__money')
             )
         )
         transaction_df = pd.DataFrame(Transaction.objects \
+            .filter(player__user__user_type = 'student') \
             .values(uid=F('player__user__id')) \
             .annotate(
                 receive=Sum('money', filter=Q(type='receive')),

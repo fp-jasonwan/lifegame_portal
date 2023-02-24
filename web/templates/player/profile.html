@@ -22,10 +22,16 @@
 		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
 	</div>
 	{% endif %}
+
+	{% if is_instructor %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'><a href='/player/{{ encrypted_id }}/instructor'> 組別{{ group_id }}</a></div>
+	</div>
+	{% endif %}
 	<div class="subContent">
 		<div class="titleInfo">
 			<div class="infoIcon"><img src="{% static 'images/info.png' %}" alt="logo"></div>
-			<div class="infotext">{{ player.user }}</div>
+			<div class="infotext">{{ player }}</div>
 			<div class="iconHome"></div>
 	
 		</div>
@@ -33,11 +39,15 @@
 			<div class="contentInfo title">個人資料</div>
 			<div class="contentInfo content">
 				<div class="contentInfo content left">學生編號</div>
-				<div class="contentInfo content right">{{ player.user.id }}</div>
+				<div class="contentInfo content right">{{ player.user.get_id }}</div>
 			</div>
 			<div class="contentInfo content">
 				<div class="contentInfo content left">姓名</div>
-				<div class="contentInfo content right">{{ player.user.first_name }} {{ player.user.last_name }}</a></div>
+				<div class="contentInfo content right">{{ player.user.last_name }}{{ player.user.first_name }}</a></div>
+			</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left">學校</div>
+				<div class="contentInfo content right">{{ player.user.school }}</a></div>
 			</div>
 			<!-- Scores breakdown -->
 			<div class="contentNews title">分數</div>

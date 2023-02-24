@@ -38,7 +38,8 @@
                 <div class="contentNews content1">
                     <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                     {% if field.name == "booth" or field.name == "player" or field.name == "marker" %}
-                        <div class="content2" style="width:70%">{{ field }}</div>
+                        <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
+                        <div class="content2" style="display:None">{{ field }}</div>
                     {% else %}
                         <div class="content2" style="width:70%">{{ field }}</div>
                     {% endif %}

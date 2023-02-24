@@ -8,7 +8,7 @@ from news.views import NewsListView, get_news
 from account.views import home_page
 from booth.views import BoothsListView, get_booths_map, redirect_zoom
 from oc.views import get_contact
-from player.views import get_rich_list, get_score_list, get_instructor_students
+from player.views import get_rich_list, get_score_list, get_instructor_students, instructor_get_player
 
 urlpatterns = [
     path('profile', get_profile, name='profile_by_userid'),
@@ -24,5 +24,6 @@ urlpatterns = [
     path('score_list/', get_score_list),
     path('map/', TemplateView.as_view(template_name='map.html'), name='map'),
     path('rules/', TemplateView.as_view(template_name='rules.html'), name='rules'),
-    path('instructor/', get_instructor_students, name='instructor_students')
+    path('instructor/', get_instructor_students, name='instructor_students'),
+    path('instructor/<str:player_id>', instructor_get_player, name='instructor_get_player')
 ]

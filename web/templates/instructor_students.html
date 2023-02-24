@@ -20,12 +20,11 @@
 		<div class="contentInfo">
             <div class="contentNews title"></div>
 			<div class="contentNews bar">
-				<div class="contentNews bar1" style='width:100%'>組別{{ group_id }}</div>
+				<div class="contentNews bar1" style='width:100%'><a href='/player/{{ encrypted_id }}/instructor'> 組別{{ group_id }}</a></div>
 			</div>
-            
             {% for player in players %}
 			<div class="contentNews content1">
-				<div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/{{ type }}'> {{ player }}</a> </div>
+				<div class="content2" style='width:100%'><a href='/player/{{ encrypted_id }}/instructor/{{ player.id }}'> {{ player }}</a> </div>
 			</div>
             {% endfor %}
 		</div>

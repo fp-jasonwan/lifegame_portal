@@ -107,3 +107,25 @@ def get_instructor_students(request, encrypted_id=""):
             "message": "此用戶並不是導師。如有錯誤請聯絡IT小組"
         }
         return HttpResponse(template.render(context, request))
+    
+
+def instructor_get_player(request, encrypted_id, player_id):
+    instructor = get_object_or_404(User, encrypted_id=encrypted_id)
+    group = get_object_or_404(InstructorGroup, instructor=instructor)
+    player = get_object_or_404(Player, id=player_id)
+        # player = Player.objects.get(player_id=player_id)
+    scores = player.get_scores()
+    participations = Participation.objects.filter(player=player).all().order_by('-record_time')
+    visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
+    # instructor_score = InstructorScore.objects.filter(player=player).first()
+    template = loader.get_template('player/profile.html')
+    context = {
+        'group_id': group.id,
+        'encrypted_id': encrypted_id,
+        'scores': scores,
+        'player': player,
+        'participations': participations,
+        'visits': visits,
+        'is_instructor': True
+    }
+    return HttpResponse(template.render(context, request))

@@ -20,12 +20,29 @@ class User(AbstractUser):
     def get_player(self):
         return Player.objects.filter(user=self, active=True).first()
 
+    def get_instructor_group(self):
+        if self.user_type == 'student':
+            grp = InstructorGroup.objects.filter(students=self).first()
+            return grp.id
+        elif self.user_type == 'instructor':
+            grp = InstructorGroup.objects.get(instructor=self).first()
+            return grp.id
+
+    def get_id(self):
+        instructor_group_id = self.get_instructor_group()
+        return f"{self.id:03d}{self.school_code}_{instructor_group_id}"
+
     @property
     def player(self):
         return Player.objects.filter(
             user=self,
             active=True
         ).first()
+
+    @property
+    def full_id(self):
+        instructor_group_id = self.get_instructor_group()
+        return f"{self.id:03d}{self.school_code}_{instructor_group_id}"
 
     user_type = models.CharField(
         max_length=10,
@@ -38,6 +55,7 @@ class User(AbstractUser):
     mobile = models.IntegerField(blank=True, null=True )
     school = models.CharField(max_length=100, blank=True, null=True)
     encrypted_id = models.CharField(max_length=32, default=get_random_string(length=32))
+    school_code = models.CharField(max_length=2, blank=True, null=True)
     
 class InstructorGroup(models.Model):
     def get_player(self):

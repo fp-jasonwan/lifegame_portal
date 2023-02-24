@@ -13,17 +13,16 @@ def home_page(request, encrypted_id=""):
                 'encrypted_id': encrypted_id,
                 'user': user
             })
-        print(request.user.is_authenticated)
-        print(request.user.user_type)
-        if request.user.is_authenticated:
-            if request.user.user_type == 'oc':
-                return redirect('/oc')
-            elif request.user.user_type == 'admin':
-                return redirect('/oc')
-        
+        if request.user:
+            if request.user.is_authenticated:
+                if request.user.user_type == 'oc':
+                    return redirect('/oc')
+                elif request.user.user_type == 'admin':
+                    return redirect('/oc')
+            
         template = loader.get_template('error/error_message.html')
         context = {
-            "message": "歡迎來到人生之旅"
+            "message": "歡迎來到人生之旅，請使用手機掃描QR Code查看你的資料"
         }
         return HttpResponse(template.render(context, request))
     except:

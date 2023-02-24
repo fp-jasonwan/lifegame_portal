@@ -55,7 +55,7 @@
 			<div class="text">聯 絡</div>
 			<div class="icon"><a href="/player/{{ encrypted_id }}/contact"><img src="{% static 'icons/contacts.png' %}" alt="Contact"></a></div>
 		</div>
-		{% if is_instructor == True  %}
+		{% if user.user_type == 'instructor'  %}
 		<div class="btnStock">
 			<div class="text">導 師</div>
 			<div class="icon"><a href="/player/{{ encrypted_id }}/instructor"><img src="{% static 'icons/map.png' %}" alt="Map"></a></div>
