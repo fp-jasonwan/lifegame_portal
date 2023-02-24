@@ -46,7 +46,11 @@
 				<div class="contentInfo content right">{{ player.user.last_name }}{{ player.user.first_name }}</a></div>
 			</div>
 			<div class="contentInfo content">
+				{% if player.user.user_type == 'student' %}
 				<div class="contentInfo content left">學校</div>
+				{% else %}
+				<div class="contentInfo content left">屬會</div>
+				{% endif %}
 				<div class="contentInfo content right">{{ player.user.school }}</a></div>
 			</div>
 			<!-- Scores breakdown -->

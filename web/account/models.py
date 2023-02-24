@@ -25,7 +25,7 @@ class User(AbstractUser):
             grp = InstructorGroup.objects.filter(students=self).first()
             return grp.id
         elif self.user_type == 'instructor':
-            grp = InstructorGroup.objects.get(instructor=self).first()
+            grp = InstructorGroup.objects.get(instructor=self)
             return grp.id
 
     def get_id(self):
@@ -46,7 +46,8 @@ class User(AbstractUser):
 
     user_type = models.CharField(
         max_length=10,
-        choices=(('student', 'student'), ('oc', 'oc'),('admin', 'admin'), ('instructor', 'instructor')),
+        choices=(('student', 'student'), ('oc', 'oc'),('admin', 'admin'), ('instructor', 'instructor'),
+                 ('vip', 'vip')),
         blank=True, null=True
         )
     first_name = models.CharField(max_length=100)
