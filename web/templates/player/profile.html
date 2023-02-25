@@ -38,7 +38,7 @@
 		<div class="contentInfo">
 			<div class="contentInfo title">個人資料</div>
 			<div class="contentInfo content">
-				<div class="contentInfo content left">學生編號</div>
+				<div class="contentInfo content left">編號</div>
 				<div class="contentInfo content right">{{ player.user.get_id }}</div>
 			</div>
 			<div class="contentInfo content">
@@ -130,7 +130,11 @@
 	
 	
 	<div class="footer">
-		
+		{% if encrypted_id %}
+		<div><a href="/player/{{ encrypted_id }}"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% else %}
+		<div><a href="/"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% endif %}
 		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
 	</div>
 	

@@ -7,7 +7,7 @@ def home_page(request, encrypted_id=""):
     #you can check user here with request.user
     #example
     try:
-        if encrypted_id != "":
+        if encrypted_id:
             user = get_object_or_404(User, encrypted_id=encrypted_id)
             return render(request, 'player/home.html', {
                 'encrypted_id': encrypted_id,
