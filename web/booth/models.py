@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 # from player.models import Player
 
 # Create your models here.
@@ -18,6 +19,7 @@ class BoothRequirement(models.Model):
         failed_list = []
         player_scores = player.get_scores()
         for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
+            print(score, datetime.datetime.now())
             if player_scores[score] < getattr(self, score):
                 failed_list.append(score)
         return failed_list
@@ -56,7 +58,6 @@ class Booth(models.Model):
         for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
             if player_scores[score] < getattr(self, score):
                 failed_list.append(score)
-        print(failed_list)
         return failed_list
 
     id = models.CharField(max_length=10, primary_key=True)
@@ -84,6 +85,9 @@ class Participation(models.Model):
     def __str__(self):
         return "{} - {} {}".format(self.booth.name, self.player.user.nick_name, self.player.user.last_name)
 
+    def get_time(self):
+        return self.record_time.strftime("%H:%S")
+    
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE)

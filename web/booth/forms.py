@@ -3,12 +3,14 @@ from account.models import User
 from booth.models import Booth, BoothScoring, Participation, Transaction
 from player.models import Player
 from django.forms import ModelForm
+import datetime
 
 class ParticipationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ParticipationForm, self).__init__(*args, **kwargs)
         booth = kwargs['initial']['booth']
-        self.fields['score'].queryset = booth.score_options
+        print('loading', datetime.datetime.now())
+        # self.fields['score'].queryset = booth.score_options
         for visible in self.visible_fields():
            visible.field.widget.attrs['class'] = 'usernameBox form-control'        
 

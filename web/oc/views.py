@@ -15,7 +15,7 @@ from django.db.models import Q
 # Create your views here.
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseForbidden
-
+import datetime
 
 def access_checking(request):
     if request.user.is_oc() == False:
@@ -121,11 +121,13 @@ def scan_player(request, booth_id):
     return HttpResponse(template.render(context, request))
 
 def check_player(request, booth_id="", encrypted_id=""):
+    print('checkpoint 1: ', datetime.datetime.now())
     booth = get_object_or_404(Booth, id=booth_id)
     if encrypted_id.isnumeric():
         user = get_object_or_404(User, id=encrypted_id)
     else:
         user = get_object_or_404(User, encrypted_id=encrypted_id)
+    print('checkpoint 2: ', datetime.datetime.now())
     player = user.player
     request.session['booth'] = booth.id
     score_translation = {
@@ -151,7 +153,9 @@ def check_player(request, booth_id="", encrypted_id=""):
         return HttpResponse(msg_template.render(context, request))
     
     # Check player eligibility
+    print('checkpoint 3: ', datetime.datetime.now())
     eligibility = booth.check_player(player)
+    print('checkpoint 4: ', datetime.datetime.now())
     if len(eligibility) == 0:
         return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id)) 
     else:
@@ -182,10 +186,13 @@ def register_player(request, booth_id, encrypted_id, participation=""):
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
 
+    print('register checkpoint 1: ', datetime.datetime.now())
     if encrypted_id.isnumeric():
         user = get_object_or_404(User, id=encrypted_id)
     else:
         user = get_object_or_404(User, encrypted_id=encrypted_id)
+    
+    print('register checkpoint 2: ', datetime.datetime.now())
     player = user.get_player()
     form = ParticipationForm(request.POST or None,
                                 initial={
@@ -205,8 +212,13 @@ def register_player(request, booth_id, encrypted_id, participation=""):
             return HttpResponseRedirect(f'/oc/booth/{booth.id}/participations/{participation.id}/success')
         else:
             print("INVALID FORM")
-    template = loader.get_template('oc/booth_register.html')
-    print(score_options)
+    template = loader.get_template('oc/booth_register2.html')
+    print('register checkpoint 3: ', datetime.datetime.now())
+
+    # reduce options in the fields
+    form.fields['booth'].queryset = Booth.objects.filter(id=booth.id)
+    form.fields['player'].queryset = Player.objects.filter(id=player.id)
+    form.fields['marker'].queryset = User.objects.filter(id=request.user.id)
     context = {
         'action_path': 'register', 
         'booth': booth,
@@ -215,6 +227,7 @@ def register_player(request, booth_id, encrypted_id, participation=""):
         'score_options': score_options,
         'form': form
     }
+    print('register checkpoint 4: ', datetime.datetime.now())
     return HttpResponse(template.render(context, request))
 
 
@@ -297,6 +310,10 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                 print("INVALID FORM")
         template = loader.get_template('oc/booth_register.html')
         
+        # reduce options in the fields
+        form.fields['booth'].queryset = Booth.objects.filter(id=booth.id)
+        form.fields['player'].queryset = Player.objects.filter(id=user.get_player().id)
+        form.fields['marker'].queryset = User.objects.filter(id=request.user.id)
         context = {
             'action_path': f'transaction/{type}',
             'booth': booth,

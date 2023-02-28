@@ -66,11 +66,6 @@
 				<div class="content3" style="width:40%">{{ scores.total_score }}</a></div>
 			</div>
 			<div class="contentNews content1">
-				<div class="content1" style="width:60%">金錢</div>
-				<div class="content3" style="width:40%">{{ scores.money }}</a></div>
-			</div>
-
-			<div class="contentNews content1">
                 <div class="content1" style="width:60%">教育程度</div>
                 <div class="content3" style="width:40%"> 
 					{% if scores.academic_level == 1 %} 小學
@@ -81,19 +76,28 @@
 				</div>
             </div>
 			<div class="contentNews content1">
-                <div class="content1" style="width:60%"> Health Score</div>
+				<div class="content1" style="width:60%">出生狀態</div>
+				<div class="content3" style="width:40%">{{ player.born_status.name }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:60%">金錢</div>
+				<div class="content3" style="width:40%">{{ scores.money }}</a></div>
+			</div>
+
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">健康指數</div>
                 <div class="content3" style="width:40%"> {{ scores.health_score }}</div>
             </div>
 			<div class="contentNews content1">
-                <div class="content1" style="width:60%"> Academic Score</div>
+                <div class="content1" style="width:60%">投能指數</div>
                 <div class="content3" style="width:40%"> {{ scores.skill_score }}</div>
             </div>
 			<div class="contentNews content1">
-                <div class="content1" style="width:60%"> Growth Score</div>
+                <div class="content1" style="width:60%">成長指數</div>
                 <div class="content3" style="width:40%"> {{ scores.growth_score }}</div>
             </div>
 			<div class="contentNews content1">
-                <div class="content1" style="width:60%"> Relationship Score</div>
+                <div class="content1" style="width:60%">關係指數</div>
                 <div class="content3" style="width:40%"> {{ scores.relationship_score }}</div>
             </div>
 
@@ -101,14 +105,16 @@
             <div class="contentNews title">參與記錄</div>
 
             <div class="contentNews bar">
-                <div class="contentNews bar1"  style="width:60%">攤位</div>
-                <div class="contentNews bar3"  style="width:40%">評分</div>
+                <div class="contentNews bar1"  style="width:50%">攤位</div>
+                <div class="contentNews bar3"  style="width:30%">評分</div>
+                <div class="contentNews bar3"  style="width:20%">時間</div>
             </div>
             
             {% for participation in participations %}
             <div class="contentNews content1">
-                <div class="content1" style="width:60%"> {{ participation.booth }}</div>
-                <div class="content3" style="width:40%"> {{ participation.score }}</div>
+                <div class="content1" style="width:50%; font-size:12px"> {{ participation.booth }}</div>
+                <div class="content3" style="width:30%; font-size:12px"> {{ participation.score }}</div>
+                <div class="content3" style="width:20%; font-size:12px"> {{ participation.get_time }}</div>
             </div>
             {% endfor %}
 

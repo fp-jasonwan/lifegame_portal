@@ -42,6 +42,7 @@ urlpatterns = [
     path('rich_list/', get_rich_list),
     path('score_list/', get_score_list),
     path('map/', TemplateView.as_view(template_name='map.html'), name='map'),
+    path('rundown/', TemplateView.as_view(template_name='rundown.html'), name='rundown'),
     path('rules/', TemplateView.as_view(template_name='rules.html'), name='rules'),
     path('404', TemplateView.as_view(template_name='error/404.html'), name='404'),
 ]

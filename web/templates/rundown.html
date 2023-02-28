@@ -1,0 +1,49 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+
+	{% if encrypted_id %}
+	<div class="logo"><a href="/player/{{ encrypted_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% else %}
+	<div class="logo"><a href="/"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% endif %}
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
+	<div class="subContent">
+		<div class="contentContact">
+			<div class="contentInfo title">流程</div>
+			<div class="contentInfo content">
+				<a href="{% static 'images/map.jpeg' %}"><img src="{% static 'images/map.jpeg' %}" style="width:100%"/></a>
+			</div>
+		</div>
+		</div>
+	</div>
+	
+	
+	<div class="footer">
+		{% if encrypted_id %}
+		<div><a href="/player/{{ encrypted_id }}"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% else %}
+		<div><a href="/"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% endif %}
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
+	</div>
+	
+</div>
+	
+	
+
+</body>
+</html>

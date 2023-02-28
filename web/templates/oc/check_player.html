@@ -139,18 +139,6 @@
 
 
 <script>
-    // function checkPlayer(id) {
-    //     var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
-    //     console.log('check');
-    //     if (lastSegment != 'check_player') {
-    //         var the_arr = window.location.href.split('/');
-    //         the_arr.pop();
-    //         var baseUrl = the_arr.join('/');
-    //         window.location.href = baseUrl + "/" + id
-    //     } else {
-    //         window.location.href = window.location.href + "/" + id
-    //     }
-    // }
     function checkPlayer(id) {
         var lastSegment = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
         var the_arr = window.location.href.split('/');
@@ -169,6 +157,8 @@
 
     function checkPlayerButton() {
         var id = document.getElementById('inputId').value;
-        checkPlayer(id);
+        if (id.length > 0) {
+            checkPlayer(id);
+        }
     }
 </script>
