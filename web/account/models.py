@@ -7,9 +7,10 @@ from django.utils.crypto import get_random_string
 # Create your models here.
 
 class User(AbstractUser):
-
+    class Meta:
+        ordering = ['id']
     def __str__(self):
-        return "{} - {} {}".format(self.id, self.last_name, self.first_name)
+        return "{} - {} {}".format('{:03d}'.format(self.id), self.last_name, self.first_name)
 
     def is_oc(self):
         return self.user_type in ('oc', 'admin')

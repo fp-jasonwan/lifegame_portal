@@ -269,11 +269,18 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
         return HttpResponse(template.render(context, request))
     else:
         request.session['from'] = request.META.get('HTTP_REFERER', '/')
-        
-        if encrypted_id.isnumeric():
-            user = get_object_or_404(User, id=encrypted_id)
-        else:
-            user = get_object_or_404(User, encrypted_id=encrypted_id)
+        try:
+            if encrypted_id[:3].isnumeric():
+                user = get_object_or_404(User, id=encrypted_id[:3])
+            else:
+                user = get_object_or_404(User, encrypted_id=encrypted_id)
+        except:
+            template = loader.get_template('oc/booth_message.html')
+            context = {
+                'booth': booth,
+                'message': '查無此玩家!'
+            }
+            return HttpResponse(template.render(context, request))
         form = TransactionForm(request.POST or None,
                                     initial={
                                         'booth': booth,

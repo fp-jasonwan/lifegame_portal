@@ -43,8 +43,15 @@ class Player(models.Model):
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey('account.User', on_delete=models.CASCADE, null=True, blank=True)
-    born_status = models.ForeignKey(BornStatus, on_delete=models.CASCADE, null=True, blank=True)
     active = models.BooleanField(default=True)
+    born_health_score = models.IntegerField()
+    born_skill_score = models.IntegerField()
+    born_growth_score = models.IntegerField()
+    born_relationship_score = models.IntegerField()
+    born_money = models.IntegerField()
+    born_academic_level = models.IntegerField()
+    born_steps = models.IntegerField()
+    born_defect = models.CharField(max_length=100, blank=True, null=True)
 
     def get_scores(self):
         result_dict = {
@@ -63,12 +70,8 @@ class Player(models.Model):
         return result_dict
         
     def get_score(self, score_name):
-        # If Score name does not exist
-        if score_name not in self.born_status.__dict__:
-            return False
-
         score_list = []
-        score_list.append(getattr(self.born_status, score_name))
+        score_list.append(getattr(self, 'born_' + score_name))
         # participations
         participations = Participation.objects.filter(player=self)
         for parti in participations:
@@ -96,10 +99,10 @@ class Player(models.Model):
             .filter(user__user_type = 'student') \
             .values(uid=F('user__id')) \
             .annotate(
-                born_health=Max('born_status__health_score'),
-                born_skill=Max('born_status__skill_score'),
-                born_growth=Max('born_status__growth_score'),
-                born_relationship=Max('born_status__relationship_score'),
+                born_health=Max('born_health_score'),
+                born_skill=Max('born_skill_score'),
+                born_growth=Max('born_growth_score'),
+                born_relationship=Max('born_relationship_score'),
             )
         ).fillna(0)
         participation_df = pd.DataFrame(Participation.objects \
@@ -127,7 +130,7 @@ class Player(models.Model):
             .filter(user__user_type = 'student') \
             .values(uid=F('user__id')) \
             .annotate(
-                born_money=Max('born_status__money')
+                born_money=Max('born_money')
             )
         )
         # born_df.rename(columns={'id': 'player'}, inplace=True)
@@ -170,8 +173,15 @@ def create_player(instance, created, raw, **kwargs):
 
     Player.objects.create(
         user = instance,
-        born_status=BornStatus.objects.get(id=1),
-        active=True
+        active=True,
+        born_health_score = 0,
+        born_skill_score = 0,
+        born_growth_score = 0,
+        born_relationship_score = 0,
+        born_money = 0,
+        born_academic_level = 0,
+        born_steps = 0,
+        born_defect = ''
     )
 
 
