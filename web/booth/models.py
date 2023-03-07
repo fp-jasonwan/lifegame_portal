@@ -42,7 +42,8 @@ class BoothScoring(models.Model):
 
 class Booth(models.Model):
     def __str__(self):
-        return f"{self.id} - {self.name}"
+        
+        return f"{self.id[:2]} - {self.name}"
 
     def get_requirements(self):
         result_dict = {

@@ -185,14 +185,11 @@ def register_player(request, booth_id, encrypted_id, participation=""):
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
-
-    print('register checkpoint 1: ', datetime.datetime.now())
+    print(score_options)
     if encrypted_id.isnumeric():
         user = get_object_or_404(User, id=encrypted_id)
     else:
         user = get_object_or_404(User, encrypted_id=encrypted_id)
-    
-    print('register checkpoint 2: ', datetime.datetime.now())
     player = user.get_player()
     form = ParticipationForm(request.POST or None,
                                 initial={
@@ -219,6 +216,7 @@ def register_player(request, booth_id, encrypted_id, participation=""):
     form.fields['booth'].queryset = Booth.objects.filter(id=booth.id)
     form.fields['player'].queryset = Player.objects.filter(id=player.id)
     form.fields['marker'].queryset = User.objects.filter(id=request.user.id)
+    form.fields['score'].queryset = booth.score_options.all()
     context = {
         'action_path': 'register', 
         'booth': booth,

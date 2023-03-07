@@ -20,12 +20,12 @@
             
             {% for booth in booths %}
 			<div class="contentNews content1">
-				<div class="content1" style='width:15%'>{{ booth.id }}</a> </div>
+				<!-- <div class="content1" style='width:15%'></a> </div> -->
 				{% if type == "" %}
-					<div class="content2" style='width:85%'><a href='/oc/booth/{{ booth.id }}'> {{ booth.name }}</a> </div>
+					<div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}'>{{ booth.id }}</a> </div>
 				{% else %}
 
-					<div class="content2" style='width:85%'><a href='/oc/booth/{{ booth.id }}/{{ type }}'> {{ booth.name }}</a> </div>
+					<div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/{{ type }}'>{{ booth.id }}</a> </div>
 				{% endif %}
 			</div>
             {% endfor %}
