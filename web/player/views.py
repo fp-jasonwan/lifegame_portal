@@ -13,25 +13,29 @@ import datetime
 
 # Create your views here.
 def get_profile(request, encrypted_id=""):
-    if encrypted_id == "":
-        player = request.user.player
+    user = get_object_or_404(User, encrypted_id=encrypted_id)
+    player = user.player
+    if player:
+        scores = player.get_scores()
+        participations = Participation.objects.filter(player=player).all().order_by('-record_time')
+        visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
+        # instructor_score = InstructorScore.objects.filter(player=player).first()
+        template = loader.get_template('player/profile.html')
+        context = {
+            'encrypted_id': encrypted_id,
+            'scores': scores,
+            'player': player,
+            'participations': participations,
+            'visits': visits,
+        }
+        return HttpResponse(template.render(context, request))
     else:
-        user = get_object_or_404(User, encrypted_id=encrypted_id)
-        player = user.player
-        # player = Player.objects.get(player_id=player_id)
-    scores = player.get_scores()
-    participations = Participation.objects.filter(player=player).all().order_by('-record_time')
-    visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
-    # instructor_score = InstructorScore.objects.filter(player=player).first()
-    template = loader.get_template('player/profile.html')
-    context = {
-        'encrypted_id': encrypted_id,
-        'scores': scores,
-        'player': player,
-        'participations': participations,
-        'visits': visits,
-    }
-    return HttpResponse(template.render(context, request))
+        template = loader.get_template('error/error_message.html')
+        context = {
+            "message": "玩家的角色已經死亡／失效，請到大禮堂"
+        }
+        return HttpResponse(template.render(context, request))
+
     # return HttpResponse("You're voting on question %s." % question_id)
     
 

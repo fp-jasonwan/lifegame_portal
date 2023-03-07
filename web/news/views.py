@@ -24,12 +24,20 @@ class NewsListView(SingleTableView):
     table_class = NewsTable
     template_name = 'news.html'
 
-def get_news(request, encrypted_id=""):
+def get_news(request, encrypted_id="", category=''):
+    news_category = NewsCategory.objects.all()
+    if category != '':
+        selected_category = NewsCategory.objects.filter(name=category)
+        news = News.objects.filter(category=selected_category).order_by('time').all()
+    else:
+        news = News.objects.filter().order_by('time').all()
     currentTime = datetime.datetime.now().time()
-    news = News.objects.filter().order_by('time').all()
+    
     template = loader.get_template('news.html')
     context = {
+        'news_category': news_category,
         'news': news,
         'encrypted_id': encrypted_id,
+        'now': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
     return HttpResponse(template.render(context, request))

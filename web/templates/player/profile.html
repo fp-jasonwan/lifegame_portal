@@ -53,12 +53,56 @@
 				{% endif %}
 				<div class="contentInfo content right">{{ player.user.school }}</a></div>
 			</div>
+			<!-- born status -->
+			<div class="contentNews title">出生狀態</div>
+
+            <div class="contentNews bar">
+                <div class="contentNews bar1"  style="width:60%">分數類別</div>
+                <div class="contentNews bar3"  style="width:40%">得分</div>
+            </div>
+			
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">教育程度</div>
+                <div class="content3" style="width:40%"> 
+					{% if player.born_academic_level == 1 %} 小學
+					{% elif player.born_academic_level == 2 %} 中學
+					{% elif player.born_academic_level == 3 %} 文憑
+					{% elif player.born_academic_level == 4 %} 大學
+					{% endif %}
+				</div>
+            </div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:60%">金錢</div>
+				<div class="content3" style="width:40%">{{ player.born_money }}</a></div>
+			</div>
+
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">健康指數</div>
+                <div class="content3" style="width:40%"> {{ player.born_health_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">技能指數</div>
+                <div class="content3" style="width:40%"> {{ player.born_skill_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">成長指數</div>
+                <div class="content3" style="width:40%"> {{ player.born_growth_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">關係指數</div>
+                <div class="content3" style="width:40%"> {{ player.born_relationship_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">特殊狀況</div>
+                <div class="content3" style="width:40%"> {{ player.born_defict }}</div>
+            </div>
+
 			<!-- Scores breakdown -->
 			<div class="contentNews title">分數</div>
 
             <div class="contentNews bar">
-                <div class="contentNews bar1"  style="width:60%">攤位</div>
-                <div class="contentNews bar3"  style="width:40%">分數</div>
+                <div class="contentNews bar1"  style="width:60%">分數類別</div>
+                <div class="contentNews bar3"  style="width:40%">得分</div>
             </div>
 			
 			<div class="contentNews content1">
@@ -109,7 +153,7 @@
             {% for participation in participations %}
             <div class="contentNews content1">
                 <div class="content1" style="width:50%; font-size:12px"> {{ participation.booth }}</div>
-                <div class="content3" style="width:30%; font-size:12px"> {{ participation.score }}</div>
+                <div class="content3" style="width:30%; font-size:12px"> {{ participation.score.display_name }}</div>
                 <div class="content3" style="width:20%; font-size:12px"> {{ participation.get_time }}</div>
             </div>
             {% endfor %}

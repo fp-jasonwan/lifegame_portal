@@ -120,9 +120,8 @@ class Player(models.Model):
             score_df = score_df.merge(participation_df, how='left', on='uid')
         score_df = score_df.set_index('uid').sum(axis=1).reset_index()
         score_df.rename(columns={0: 'total_score'}, inplace=True)
+        score_df = score_df.sort_values('total_score', ascending=False)
         return score_df
-        # money_df['uid'] = money_df['uid'].astype('str')
-        # return money_df.sort_values('total_money', ascending=False)
 
     @staticmethod
     def get_rich_list():

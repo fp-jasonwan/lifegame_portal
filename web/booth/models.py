@@ -9,6 +9,7 @@ class BoothRequirement(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
+    display_name = models.CharField(max_length=100)
     health_score = models.IntegerField(default=0)
     skill_score = models.IntegerField(default=0)
     growth_score = models.IntegerField(default=0)
@@ -30,6 +31,7 @@ class BoothScoring(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
+    display_name = models.CharField(max_length=50)
     health_score = models.IntegerField(blank=True, null=True)
     skill_score = models.IntegerField(blank=True, null=True)
     growth_score = models.IntegerField(blank=True, null=True)
