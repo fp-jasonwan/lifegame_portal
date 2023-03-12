@@ -88,7 +88,7 @@
     elm.addEventListener('click', function() {
     var ask = confirm('你確認要把此記錄刪除?');
     if (ask && objectID) {
-        window.location.replace("/oc/booth/{{ booth.id }}/participations/{{ participation.id }}/delete");
+        window.location.replace("/oc/booth/{{ booth.id }}/transactions/{{ transaction.id }}/delete");
     } else {
         resultDiv.textContent = "User cancelled the dialog box...";
     }
