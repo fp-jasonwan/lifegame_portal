@@ -15,9 +15,10 @@ class PlayerForm(forms.ModelForm):
     #   fields = ("nbr", "store", "created", "last_change")
 
 class PlayerAdmin(admin.ModelAdmin):
-    search_fields = ['user']
+    list_per_page = 10
+    search_fields = ['user__id']
     form = PlayerForm
-    ordering = ['user']
+    ordering = ['user__id']
     
 
 admin.site.register(Player, PlayerAdmin)

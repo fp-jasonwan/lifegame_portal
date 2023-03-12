@@ -9,8 +9,9 @@ from django.utils.crypto import get_random_string
 class User(AbstractUser):
     class Meta:
         ordering = ['id']
+
     def __str__(self):
-        return "{} - {} {}".format('{:03d}'.format(self.id), self.last_name, self.first_name)
+        return "{}{} - {} {}".format('{:03d}'.format(self.id), self.school_code, self.last_name, self.first_name)
 
     def is_oc(self):
         return self.user_type in ('oc', 'admin')
@@ -26,7 +27,7 @@ class User(AbstractUser):
             grp = InstructorGroup.objects.filter(students=self).first()
             return grp.id
         elif self.user_type == 'instructor':
-            grp = InstructorGroup.objects.get(instructor=self)
+            grp = InstructorGroup.objects.filter(instructor=self).first()
             return grp.id
 
     def get_id(self):
@@ -67,9 +68,5 @@ class InstructorGroup(models.Model):
         players = Player.objects.filter(user__in=self.students.all()).order_by('-active')
         return players
 
-    instructor = models.ForeignKey(
-        'account.User', 
-        on_delete=models.CASCADE,
-        related_name='instructor'
-    )
-    students = models.ManyToManyField('account.User')
+    instructor = models.ManyToManyField('account.User', related_name='instructor')
+    students = models.ManyToManyField('account.User', related_name='student')

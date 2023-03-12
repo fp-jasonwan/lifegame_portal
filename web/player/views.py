@@ -32,7 +32,7 @@ def get_profile(request, encrypted_id=""):
     else:
         template = loader.get_template('error/error_message.html')
         context = {
-            "message": "玩家的角色已經死亡／失效，請到大禮堂"
+            "message": "玩家的角色已經死亡，請到禮堂1尋求協助"
         }
         return HttpResponse(template.render(context, request))
 

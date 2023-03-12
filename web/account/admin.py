@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from account.models import User, InstructorGroup
+from player.models import Player
 # Register your models here.
 
 # class CustomUserAdmin(UserAdmin):
@@ -15,7 +16,14 @@ class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
 
+class PlayerInline(admin.StackedInline):
+    model = Player
+
 class MyUserAdmin(UserAdmin):
+    list_per_page = 10
+    list_display = ('id', 'school',)
+    search_fields = ('id','first_name', 'last_name', 'school')
+    ordering = ('id',)
     form = MyUserChangeForm
     fieldsets = (
         (None, {'fields': ('username', 'password', 'user_type', 'encrypted_id')}),
@@ -23,8 +31,11 @@ class MyUserAdmin(UserAdmin):
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 
         # 'groups', 'user_permissions'
         )}), 
-        ('Important dates', {'fields': ('last_login', 'date_joined')})
+        ('Important dates', {'fields': ('last_login', 'date_joined', )}),
     )
+    # inlines = [
+    #     PlayerInline,
+    # ]
     # fieldsets =  (
     #     (None, {
     #         'fields': ('user_type', 'nick_name', 'icon',),

@@ -86,7 +86,7 @@ class Booth(models.Model):
 
 class Participation(models.Model):
     def __str__(self):
-        return "{} - {} {}".format(self.booth.name, self.player.user.nick_name, self.player.user.last_name)
+        return "{} - {}".format(self.booth.name, self.player.user.get_id())
 
     def get_time(self):
         return self.record_time.strftime("%H:%S")
