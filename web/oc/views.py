@@ -16,6 +16,13 @@ from django.db.models import Q
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseForbidden
 import datetime
+score_translation = {
+        'health_score': '健康',
+        'skill_score': '健康',
+        'growth_score': '成長',
+        'relationship_score': '健康',
+        'money': '金錢'
+    }
 
 def access_checking(request):
     if request.user.is_oc() == False:
@@ -130,13 +137,6 @@ def check_player(request, booth_id="", encrypted_id=""):
     print('checkpoint 2: ', datetime.datetime.now())
     player = user.player
     request.session['booth'] = booth.id
-    score_translation = {
-        'health_score': '健康',
-        'skill_score': '健康',
-        'growth_score': '成長',
-        'relationship_score': '健康',
-        'money': '金錢'
-    }
     msg_template = loader.get_template('oc/booth_message.html')
     context = {
         'booth': booth,
@@ -153,9 +153,7 @@ def check_player(request, booth_id="", encrypted_id=""):
         return HttpResponse(msg_template.render(context, request))
     
     # Check player eligibility
-    print('checkpoint 3: ', datetime.datetime.now())
     eligibility = booth.check_player(player)
-    print('checkpoint 4: ', datetime.datetime.now())
     if len(eligibility) == 0:
         return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id)) 
     else:
@@ -182,6 +180,15 @@ def register_page(request, booth_id, encrypted_id):
     return HttpResponse(template.render(context, request))
 
 def register_player(request, booth_id, encrypted_id, participation=""):
+    def check_score(player, score):
+        player_scores = player.get_scores()
+        failed_list = []
+        for s in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
+            if getattr(score, s) < 0: # Only check score with negative value
+                if player_scores[s] < abs(getattr(score, s)):
+                    failed_list.append(s)
+        return failed_list
+
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = [option for option in booth.score_options.all()]
@@ -199,9 +206,27 @@ def register_player(request, booth_id, encrypted_id, participation=""):
                                 })
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
             player = form.cleaned_data['player']
             booth = form.cleaned_data['booth']
+            score = form.cleaned_data['score']
+            # check if score less than deduct mark
+            checking = check_score(player, score)
+            print(checking)
+            if len(checking) > 0:
+                msg_template = loader.get_template('oc/booth_message.html')
+                print(score)
+                context = {
+                    'booth': booth,
+                    'booth_scores': score.__dict__,
+                    'player_scores': player.get_scores(),
+                    'score_translation': score_translation,
+                    'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money'],
+                    'eligibility': checking,
+                    'error_type': 'not_eligible',
+                    'message': '此玩家不符合攤位要求!'
+                }
+                return HttpResponse(msg_template.render(context, request))
+            form.save()
             participation = Participation.objects.filter(
                 booth=booth,
                 player=player
