@@ -22,7 +22,7 @@ class PlayerInline(admin.StackedInline):
 class MyUserAdmin(UserAdmin):
     list_per_page = 10
     list_display = ('id', 'school',)
-    search_fields = ('id','first_name', 'last_name', 'school')
+    search_fields = ('username','first_name', 'last_name', 'school')
     ordering = ('id',)
     form = MyUserChangeForm
     fieldsets = (

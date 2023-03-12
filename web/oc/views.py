@@ -184,9 +184,10 @@ def register_player(request, booth_id, encrypted_id, participation=""):
         player_scores = player.get_scores()
         failed_list = []
         for s in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
-            if getattr(score, s) < 0: # Only check score with negative value
-                if player_scores[s] < abs(getattr(score, s)):
-                    failed_list.append(s)
+            if getattr(score, s):
+                if getattr(score, s) < 0: # Only check score with negative value
+                    if player_scores[s] < abs(getattr(score, s) or 0):
+                        failed_list.append(s)
         return failed_list
 
     request.session['from'] = request.META.get('HTTP_REFERER', '/')

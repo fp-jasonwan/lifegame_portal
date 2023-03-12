@@ -86,7 +86,7 @@ class Booth(models.Model):
 
 class Participation(models.Model):
     def __str__(self):
-        return "{} - {}".format(self.booth.name, self.player.user.get_id())
+        return "{} - {} at {}".format(self.booth.name, self.player.user.get_id(), self.record_time.strftime("%Y%m%d %H:%M:%S"))
 
     def get_time(self):
         return self.record_time.strftime("%H:%S")
@@ -102,9 +102,9 @@ class Participation(models.Model):
 class Transaction(models.Model):
     def __str__(self):
         if self.type == 'pay':
-            return f'{self.booth} paid ${self.money} to {self.player}'
+            return f'{self.booth} paid ${self.money} to {self.player} at {self.record_time}'
         if self.type == 'receive':
-            return f'{self.booth} received ${self.money} from {self.player}'
+            return f'{self.booth} received ${self.money} from {self.player} at {self.record_time}'
         return ""
 
     id = models.AutoField(primary_key=True)
