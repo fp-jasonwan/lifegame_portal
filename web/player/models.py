@@ -78,18 +78,21 @@ class Player(models.Model):
         for parti in participations:
             parti_score = getattr(parti.score, score_name)
             if parti_score:
+                print(parti, score_name, parti_score)
                 score_list.append(parti_score)
         # transactions
-        transactions = Transaction.objects.filter(player=self)
-        for t in transactions:
-            if t.type == 'receive':
-                score_list.append(t.money * -1)
-            if t.type == 'pay':
-                score_list.append(t.money)
+        if score_name == 'money':
+            transactions = Transaction.objects.filter(player=self)
+            for t in transactions:
+                if t.type == 'receive':
+                    score_list.append(t.money * -1)
+                if t.type == 'pay':
+                    score_list.append(t.money)
         if len(score_list) > 0:
             if score_name == 'academic_level': # If Score name is academic level, return maximum academic level
                 return max(score_list)
             else:
+                print(score_list)
                 return sum(score_list)
         else:
             return 0
