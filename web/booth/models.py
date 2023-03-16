@@ -89,7 +89,7 @@ class Participation(models.Model):
         return "{} - {} at {}".format(self.booth.name, self.player.user.get_id(), self.record_time.strftime("%Y%m%d %H:%M:%S"))
 
     def get_time(self):
-        return self.record_time.strftime("%H:%S")
+        return self.record_time.strftime("%d/%m %H:%S")
     
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
@@ -106,6 +106,15 @@ class Transaction(models.Model):
         if self.type == 'receive':
             return f'{self.booth} received ${self.money} from {self.player} at {self.record_time}'
         return ""
+
+    def get_time(self):
+        return self.record_time.strftime("%d/%m %H:%S")
+        
+    def get_amount(self):
+        if self.type == 'pay':
+            return self.money
+        else:
+            return self.money * -1
 
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)

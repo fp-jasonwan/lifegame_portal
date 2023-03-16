@@ -145,32 +145,36 @@
             <div class="contentNews title">參與記錄</div>
 
             <div class="contentNews bar">
-                <div class="contentNews bar1"  style="width:50%">攤位</div>
-                <div class="contentNews bar3"  style="width:30%">評分</div>
-                <div class="contentNews bar3"  style="width:20%">時間</div>
+                <div class="contentNews bar1"  style="width:30%">時間</div>
+                <div class="contentNews bar3"  style="width:40%">攤位</div>
+                <div class="contentNews bar3"  style="width:20%">評分</div>
             </div>
             
             {% for participation in participations %}
             <div class="contentNews content1">
-                <div class="content1" style="width:50%; font-size:12px"> {{ participation.booth }}</div>
+                <div class="content3" style="width:30%; font-size:12px"> {{ participation.get_time }}</div>
+                <div class="content1" style="width:40%; font-size:12px"> {{ participation.booth }}</div>
                 <div class="content3" style="width:30%; font-size:12px"> {{ participation.score.display_name }}</div>
-                <div class="content3" style="width:20%; font-size:12px"> {{ participation.get_time }}</div>
             </div>
             {% endfor %}
 
 
-            <!-- <div class="contentNews title">瀏覽記錄</div>
+			<!-- Transaction records -->
+            <div class="contentNews title">參與記錄</div>
+
             <div class="contentNews bar">
-                <div class="contentNews bar1">時間</div>
-                <div class="contentNews bar2">攤位</div>
+                <div class="contentNews bar3"  style="width:30%">時間</div>
+                <div class="contentNews bar1"  style="width:40%">攤位</div>
+                <div class="contentNews bar3"  style="width:30%">金錢</div>
             </div>
             
-            {% for v in visits %}
+            {% for transaction in transactions %}
             <div class="contentNews content1">
-                <div class="content1"> {{ v.record_time|time:"h:i" }}</div>
-                <div class="content2"> {{ v.booth }}</div>
+                <div class="content3" style="width:30%; font-size:12px"> {{ transaction.get_time }}</div>
+                <div class="content1" style="width:40%; font-size:12px"> {{ transaction.booth }}</div>
+                <div class="content3" style="width:30%; font-size:12px"> {{ transaction.get_amount }}</div>
             </div>
-            {% endfor %} -->
+            {% endfor %}
 		</div>
 	</div>
 	

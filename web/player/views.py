@@ -18,6 +18,7 @@ def get_profile(request, encrypted_id=""):
     if player:
         scores = player.get_scores()
         participations = Participation.objects.filter(player=player).all().order_by('-record_time')
+        transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
         visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
         # instructor_score = InstructorScore.objects.filter(player=player).first()
         template = loader.get_template('player/profile.html')
@@ -26,6 +27,7 @@ def get_profile(request, encrypted_id=""):
             'scores': scores,
             'player': player,
             'participations': participations,
+            'transactions': transactions,
             'visits': visits,
         }
         return HttpResponse(template.render(context, request))
