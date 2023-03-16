@@ -25,10 +25,13 @@ class User(AbstractUser):
     def get_instructor_group(self):
         if self.user_type == 'student':
             grp = InstructorGroup.objects.filter(students=self).first()
-            return grp.id
+            if grp: 
+                return grp.id
         elif self.user_type == 'instructor':
             grp = InstructorGroup.objects.filter(instructor=self).first()
-            return grp.id
+            if grp:
+                return grp.id
+        return ""
 
     def get_id(self):
         instructor_group_id = self.get_instructor_group()
@@ -46,8 +49,7 @@ class User(AbstractUser):
 
     @property
     def full_id(self):
-        instructor_group_id = self.get_instructor_group()
-        return f"{self.id:03d}{self.school_code}_{instructor_group_id}"
+        return self.get_id()
 
     user_type = models.CharField(
         max_length=10,

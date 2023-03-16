@@ -105,7 +105,7 @@ class Transaction(models.Model):
             return f'{self.booth} paid ${self.money} to {self.player} at {self.record_time}'
         if self.type == 'receive':
             return f'{self.booth} received ${self.money} from {self.player} at {self.record_time}'
-        return ""
+        return False
 
     def get_time(self):
         return self.record_time.strftime("%d/%m %H:%S")
