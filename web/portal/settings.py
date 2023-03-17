@@ -45,7 +45,7 @@ else:
     ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS.append('lionslifegame.app')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ['*']
 
@@ -213,6 +213,13 @@ CONSTANCE_ADDITIONAL_FIELDS = {
             ("closing", "Closing")
         )
     }],
+    'room': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': (
+            ("yes", "yes"),
+            ("no", "no"),
+        )
+    }],
 }
 
 
@@ -222,5 +229,6 @@ CONSTANCE_CONFIG = {
     'HALL_LINK': ('', '禮堂連結'),
     'GAME_MODE': ('opening', 'Select game mode', 'game_mode'),
     'SHARING_LINK': ('', ''),
-    'RULES': ('', '')
+    'RULES': ('', ''),
+    'room': ('', 'room start', 'room')
 }
