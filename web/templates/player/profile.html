@@ -55,7 +55,7 @@
 			</div>
 			<!-- born status -->
 			<div class="contentNews title">出生狀態</div>
-
+			{% if config.GAME_MODE == "start" %}
             <div class="contentNews bar">
                 <div class="contentNews bar1"  style="width:60%">分數類別</div>
                 <div class="contentNews bar3"  style="width:40%">得分</div>
@@ -96,10 +96,14 @@
                 <div class="content1" style="width:60%">特殊狀況</div>
                 <div class="content3" style="width:40%"> {{ player.born_defect }}</div>
             </div>
-
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
 			<!-- Scores breakdown -->
 			<div class="contentNews title">分數</div>
-
+			{% if config.GAME_MODE == "start" %}
             <div class="contentNews bar">
                 <div class="contentNews bar1"  style="width:60%">分數類別</div>
                 <div class="contentNews bar3"  style="width:40%">得分</div>
@@ -141,9 +145,15 @@
                 <div class="content3" style="width:40%"> {{ scores.relationship_score }}</div>
             </div>
 
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
 			<!-- Participation records -->
             <div class="contentNews title">參與記錄</div>
-
+			
+			{% if config.GAME_MODE == "start" %}
             <div class="contentNews bar">
                 <div class="contentNews bar1"  style="width:30%">時間</div>
                 <div class="contentNews bar3"  style="width:40%">攤位</div>
@@ -157,11 +167,16 @@
                 <div class="content3" style="width:30%; font-size:12px"> {{ participation.score.display_name }}</div>
             </div>
             {% endfor %}
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
 
 
 			<!-- Transaction records -->
             <div class="contentNews title">交易記錄</div>
-
+			{% if config.GAME_MODE == "start" %}
             <div class="contentNews bar">
                 <div class="contentNews bar3"  style="width:30%">時間</div>
                 <div class="contentNews bar1"  style="width:40%">攤位</div>
@@ -175,6 +190,11 @@
                 <div class="content3" style="width:30%; font-size:12px"> {{ transaction.get_amount }}</div>
             </div>
             {% endfor %}
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
 		</div>
 	</div>
 	
