@@ -45,7 +45,7 @@ else:
     ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS.append('lionslifegame.app')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 
@@ -108,15 +108,6 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 
 
 # Database
-# # Use django-environ to parse the connection string
-# DATABASES = {"default": env.db()}
-
-# # If the flag as been set, configure to use proxy
-# if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-#     DATABASES["default"]["HOST"] = "cloudsql-proxy"
-#     DATABASES["default"]["PORT"] = 5432
-# # If the flag as been set, configure to use proxy
-# if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
 if platform.system() == 'Darwin':
     DATABASES = {
     'default': {

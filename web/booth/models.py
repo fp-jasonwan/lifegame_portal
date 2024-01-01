@@ -19,10 +19,10 @@ class BoothRequirement(models.Model):
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
-            print(score, datetime.datetime.now())
-            if player_scores[score] < getattr(self, score):
-                failed_list.append(score)
+        # for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
+        #     print(score, datetime.datetime.now())
+        #     if player_scores[score] < getattr(self, score):
+        #         failed_list.append(score)
         return failed_list
 
 class BoothScoring(models.Model):
@@ -58,9 +58,9 @@ class Booth(models.Model):
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
-            if player_scores[score] < getattr(self, score):
-                failed_list.append(score)
+        # for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
+        #     if player_scores[score] < getattr(self, score):
+        #         failed_list.append(score)
         return failed_list
 
     id = models.CharField(max_length=10, primary_key=True)

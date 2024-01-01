@@ -57,26 +57,6 @@ def get_booths_map(request, encrypted_id=""):
     }
     return HttpResponse(template.render(context, request))
 
-def redirect_zoom(request, booth_id):
-    request.session['from'] = request.META.get('HTTP_REFERER', '/')
-    booth = Booth.objects.get(id=booth_id)
-    if request.user.is_player():
-        if booth.is_active:
-            traffic = BoothTraffic(
-                booth = booth,
-                player = request.user.get_player()
-            )
-            traffic.save()
-            response = redirect(booth.url)
-            return response
-        else:
-
-            messages.error(request, '此攤位已經爆滿!')
-            return HttpResponseRedirect("/booths")
-    else:
-        response = redirect(booth.url)
-        return response
-
 
 class TrafficTable(tables.Table):
     def __init__(self, *args, **kwargs):

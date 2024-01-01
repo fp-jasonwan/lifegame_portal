@@ -14,17 +14,7 @@ LIVE_STATUS_CHOICES = [
     ('inactive', 'inactive')
 ]
 
-class BornStatus(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200)
-    health_score = models.IntegerField()
-    skill_score = models.IntegerField()
-    growth_score = models.IntegerField()
-    relationship_score = models.IntegerField()
-    money = models.IntegerField()
-    academic_level = models.IntegerField()
-    steps = models.IntegerField()
-    
+
 class Player(models.Model):
     def __str__(self):
         if self.active:
