@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from news.views import NewsListView, get_news
 from account.views import home_page
-from booth.views import BoothsListView, get_booths_map, redirect_zoom
+from booth.views import BoothsListView, get_booths_map
 from oc.views import get_contact
 from player.views import get_rich_list, get_score_list
 handler404 = 'main.views.handler404'
@@ -37,7 +37,6 @@ urlpatterns = [
     path('player/<str:encrypted_id>/', include('player.urls')),
     path('news/', get_news),
     path('booths/', get_booths_map),
-    path('booths/<str:booth_id>', redirect_zoom),
     path('contact/', get_contact, name='contact'),
     path('rich_list/', get_rich_list),
     path('score_list/', get_score_list),

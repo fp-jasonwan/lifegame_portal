@@ -6,7 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from news.views import NewsListView, get_news
 from account.views import home_page
-from booth.views import BoothsListView, get_booths_map, redirect_zoom
+from booth.views import BoothsListView, get_booths_map
 from oc.views import get_contact
 from player.views import get_rich_list, get_score_list, get_instructor_students, instructor_get_player
 
