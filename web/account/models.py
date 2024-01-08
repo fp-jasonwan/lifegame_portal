@@ -6,6 +6,9 @@ from player.models import Player
 from django.utils.crypto import get_random_string
 # Create your models here.
 
+def generate_encrypted_string():
+    return get_random_string(32)
+
 class User(AbstractUser):
     class Meta:
         ordering = ['id']
@@ -62,7 +65,7 @@ class User(AbstractUser):
     nick_name = models.CharField(max_length=100, blank=True, null=True)
     mobile = models.IntegerField(blank=True, null=True )
     school = models.CharField(max_length=100, blank=True, null=True)
-    encrypted_id = models.CharField(max_length=32, default=get_random_string(length=32))
+    encrypted_id = models.CharField(max_length=32, default=generate_encrypted_string)
     school_code = models.CharField(max_length=2, blank=True, null=True)
     
 class InstructorGroup(models.Model):
