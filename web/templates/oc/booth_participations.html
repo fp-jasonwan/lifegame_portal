@@ -96,7 +96,7 @@
 			<div class="contentNews content1">
                 <div class="content1" style="width:20%"><a href="/oc/booth/{{ booth.id }}/participations/{{ participation.id }}">{{ participation.id }}</a></div>
                 <div class="content2" style="width:60%"> {{ participation.player }}</div>
-                <div class="content3" style="width:20%"> {{ participation.record_time|time:"h:i" }}</a></div>
+                <div class="content3" style="width:20%"> {{ participation.record_time|time:"H:i" }}</a></div>
 			</div>
             {% endfor %}
             

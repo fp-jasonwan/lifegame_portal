@@ -39,9 +39,9 @@ class User(AbstractUser):
     def get_id(self):
         instructor_group_id = self.get_instructor_group()
         if instructor_group_id:
-            return f"{self.id:03d}{self.school_code}_{instructor_group_id}"
+            return f"{self.id:03d}"
         else:
-            return f"{self.id:03d}{self.school_code}"
+            return f"{self.id:03d}"
 
     @property
     def player(self):

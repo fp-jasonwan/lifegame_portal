@@ -130,13 +130,11 @@ def scan_player(request, booth_id):
     return HttpResponse(template.render(context, request))
 
 def check_player(request, booth_id="", encrypted_id=""):
-    print('checkpoint 1: ', datetime.datetime.now())
     booth = get_object_or_404(Booth, id=booth_id)
     if encrypted_id.isnumeric():
         user = get_object_or_404(User, id=encrypted_id)
     else:
         user = get_object_or_404(User, encrypted_id=encrypted_id)
-    print('checkpoint 2: ', datetime.datetime.now())
     player = user.player
     request.session['booth'] = booth.id
     msg_template = loader.get_template('oc/booth_message.html')
@@ -214,7 +212,7 @@ def register_player(request, booth_id, encrypted_id, participation=""):
             score = form.cleaned_data['score']
             # check if score less than deduct mark
             checking = check_score(player, score)
-            print(checking)
+            print("checking ", checking)
             if len(checking) > 0:
                 msg_template = loader.get_template('oc/booth_message.html')
                 print(score)
@@ -328,7 +326,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                         context = {
                             'error_type': 'insufficient_amount',
                             'message': f"""
-                                玩家金錢不足! 玩家現有金錢為${player_money} < 需求金錢 ${money}
+                                玩家金錢不足! 玩家現有金錢為${player_money} 
                             """,
                             'booth': booth
                         }
@@ -360,7 +358,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
 
 def get_instructor_players(request):
     instructor = request.user
-    players = Player.objects.filter(instructor=instructor).all()
+    players = Player.objects.all()
     for p in players:
         p.__dict__['comment_added'] = InstructorScore.objects.filter(player=p).count() > 0
     template = loader.get_template('oc/instructor.html')

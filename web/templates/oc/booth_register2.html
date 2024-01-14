@@ -30,11 +30,15 @@
 
             {% for field in form %}
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">{{ field.label_tag }}</div>
-                    {% if field.name == "booth" or field.name == "player" or field.name == "marker" %}
+                    {% if field.name == "player" %}
+                        <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                         <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
                         <div class="content2" style="display:None">{{ field }}</div>
+                    {% elif field.name == "booth" or field.name == "marker" %}
+                        <div class="content2" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
+                        <div class="content2" style="display:None">{{ field }}</div>
                     {% else %}
+                        <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                         <div class="content2" style="width:70%">{{ field }}</div>
                     {% endif %}
                 </div>

@@ -108,14 +108,14 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 
 
 # Database
-if platform.system() == 'Darwin':
+if platform.system() == 'Windows':
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'lifegame',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '34.80.51.182',
+        'HOST': '34.96.204.88',
         'PORT': '5432',
     }
     }

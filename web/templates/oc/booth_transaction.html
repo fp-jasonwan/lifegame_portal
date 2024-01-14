@@ -28,24 +28,24 @@
         <div class="contentInfo">
             <div class="contentNews title">{{ message }}</div>
 			<div class="contentNews bar">
-				<div class="contentNews bar1" style="width:30%">玩家</div>
-				<div class="contentNews bar2" style="width:70%">時間</div>
+				<div class="contentNews bar1" style="width:30%"></div>
+				<div class="contentNews bar2" style="width:70%"></div>
 			</div>
 
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Booth: </div>
+                    <div class="content1" style="width:30%">攤位</div>
                         <div class="content2" style="width:70%">{{ transaction.booth.name }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Player: </div>
+                    <div class="content1" style="width:30%">玩家</div>
                         <div class="content2" style="width:70%">{{ transaction.player }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Record time</div>
-                        <div class="content2" style="width:70%">{{ transaction.record_time }}</div>
+                    <div class="content1" style="width:30%">記錄時間</div>
+                        <div class="content2" style="width:70%">{{ transaction.record_time|time:"H:i" }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Type</div>
+                    <div class="content1" style="width:30%"></div>
                         <div class="content2" style="width:70%">{{ transaction.type }}</div>
                 </div>
                 <div class="contentNews content1">
@@ -56,7 +56,7 @@
                     <div class="content1" style="width:30%">Remarks</div>
                         <div class="content2" style="width:70%">{{ transaction.remarks }}</div>
                 </div>
-                <div class="contentNews content1">
+                <div class="contentNews content1" style="display:None">
                     <div class="content1" style="width:30%">Marker</div>
                         <div class="content2" style="width:70%">{{ transaction.marker }}</div>
                 </div>

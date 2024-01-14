@@ -18,7 +18,7 @@ LIVE_STATUS_CHOICES = [
 class Player(models.Model):
     def __str__(self):
         if self.active:
-            return "{} {}{}".format(self.user.get_id(), self.user.last_name, self.user.first_name)
+            return "{} {} {}".format(self.user.get_id(), self.user.first_name, self.user.last_name)
         else:
             return "{} (inactive)".format(self.user.get_id())
             # return "{}{} (inactive)".format(self.user.last_name, self.user.first_name)

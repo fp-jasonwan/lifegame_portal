@@ -58,9 +58,10 @@ class Booth(models.Model):
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        # for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
-        #     if player_scores[score] < getattr(self, score):
-        #         failed_list.append(score)
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
+            print(score)
+            if player_scores[score] < getattr(self, score, 0):
+                failed_list.append(score)
         return failed_list
 
     id = models.CharField(max_length=10, primary_key=True)
@@ -92,19 +93,19 @@ class Participation(models.Model):
         return self.record_time.strftime("%d/%m %H:%S")
     
     id = models.AutoField(primary_key=True)
-    booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
-    player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
-    record_time = models.DateTimeField(auto_now_add=True, blank=True)
-    score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE)
-    remarks = models.TextField(max_length=1000, null=True, blank=True)
-    marker = models.ForeignKey('account.User', on_delete=models.CASCADE)
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
+    player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
+    record_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="時間")
+    score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE, verbose_name="分數")
+    remarks = models.TextField(max_length=1000, null=True, blank=True, verbose_name="評語")
+    marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
 
 class Transaction(models.Model):
     def __str__(self):
         if self.type == 'pay':
-            return f'{self.booth} paid ${self.money} to {self.player} at {self.record_time}'
+            return f'付款${self.money}予玩家{self.player.user.id}'
         if self.type == 'receive':
-            return f'{self.booth} received ${self.money} from {self.player} at {self.record_time}'
+            return f'從玩家{self.player.user.id}收取${self.money}'
         return False
 
     def get_time(self):
@@ -117,15 +118,20 @@ class Transaction(models.Model):
             return self.money * -1
 
     id = models.AutoField(primary_key=True)
-    booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
-    player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
-    type = models.CharField(max_length=10, choices=(
-        ('pay', 'pay'), ('receive', 'receive')
-    ))
-    record_time = models.DateTimeField(auto_now_add=True, blank=True)
-    money = models.IntegerField()
-    remarks = models.TextField(max_length=1000, null=True, blank=True)
-    marker = models.ForeignKey('account.User', on_delete=models.CASCADE)
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
+    player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
+    type = models.CharField(
+        max_length=10, 
+        choices=(
+            ('pay', '付款'), ('receive', '收款')
+        )
+        , verbose_name="交易類型"
+    )
+    record_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="時間")
+    money = models.IntegerField(verbose_name="金錢")
+    remarks = models.TextField(max_length=1000, null=True, blank=True, verbose_name="備註")
+    marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
+
 
 class BoothTraffic(models.Model):
     def is_participated(self):

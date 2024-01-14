@@ -42,3 +42,6 @@ gcloud secrets add-iam-policy-binding django_app_settings \
 gcloud secrets describe django_app_settings
 
 6. 
+
+### LOCAL
+$env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\wanyi\git\lifegame_portal\creds.json"
