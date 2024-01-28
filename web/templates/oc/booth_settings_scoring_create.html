@@ -14,28 +14,23 @@
     <div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
     <a href='/oc/booth/{{ booth.id }}'>
         <div class="contentNews bar">
-            <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }}</div>
         </div>
     </a>
-    
     <div class="subContent" style='background:white'>
-        <form action="/oc/booth/{{ booth.id }}/{{ action_path }}/{{ user.id }}" method="post">
+        <form action="/oc/booth/{{ booth.id }}/settings/create" method="post">
         {% csrf_token %}
         <div class="contentInfo">
-            <div class="contentNews title">登記玩家</div>
+            <div class="contentNews title">攤位分數選項</div>
 			<div class="contentNews bar">
-				<div class="contentNews bar1" style="width:30%">玩家</div>
-				<div class="contentNews bar2" style="width:70%">時間</div>
+				<div class="contentNews bar1" style="width:30%">指標</div>
+				<div class="contentNews bar2" style="width:70%">分數</div>
 			</div>
-
             {% for field in form %}
                 <div class="contentNews content1">
-                    {% if field.name == "player" %}
-                        <div class="content1" style="width:30%">{{ field.label_tag }}</div>
-                        <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
-                        <div class="content2" style="display:None">{{ field }}</div>
-                    {% elif field.name == "booth" or field.name == "marker" %}
-                        <div class="content2" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
+                    
+                    {% if field.name == "booth" or field.name == "active" %}
+                        <div class="content1" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
                         <div class="content2" style="display:None">{{ field }}</div>
                     {% else %}
                         <div class="content1" style="width:30%">{{ field.label_tag }}</div>
@@ -59,3 +54,13 @@
 </div>
 
 </body>
+
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert("{{ message }}");
+        window.location.href = "/oc/booth/{{ booth.id }}/traffics";
+    </script>  
+
+    {% endfor %}
+{% endif %}

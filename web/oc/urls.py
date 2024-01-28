@@ -1,5 +1,7 @@
 from .views import oc_portal, search_profile, list_booth, booth_home,scan_player, check_player, register_player, register_page, get_instructor_players, register_instructor_comment
-from .views import redirect_to_booth, update_booth_settings, booth_transaction
+from .views import redirect_to_booth, \
+    update_booth_settings, update_booth_settings_requirement, booth_transaction, \
+    update_booth_settings_scoring, create_booth_settings_scoring
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required, permission_required
 from booth.views import show_participations, get_traffic_record, show_participation, \
@@ -17,7 +19,14 @@ urlpatterns = [
     path('booth/<str:booth_id>/check_player/<str:encrypted_id>', check_player, name='check_player'),
     path('booth/<str:booth_id>/check_player', scan_player, name='check_player'),
     path('booth/<str:booth_id>/register/<str:encrypted_id>', register_player, name='register_player'),
+
+    # Booth settings
     path('booth/<str:booth_id>/settings', update_booth_settings, name='update_booth_settings'),
+    path('booth/<str:booth_id>/settings/requirement', update_booth_settings_requirement, name='update_booth_settings'),
+    path('booth/<str:booth_id>/settings/<int:score_id>', update_booth_settings_scoring, name='update_booth_scoring'),
+    path('booth/<str:booth_id>/settings/create', create_booth_settings_scoring, name='create_booth_scoring'),
+
+
     path('booth/traffics', list_booth, {"type": 'traffics'}, name='booth_traffics'),
     path('booth/participations', list_booth, {"type": 'participations'}, name='booth_participations'),
     path('booth/<str:booth_id>/participations', show_participations, name='booth_participations'),

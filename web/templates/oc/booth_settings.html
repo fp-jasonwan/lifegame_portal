@@ -17,36 +17,38 @@
             <div class="contentNews bar1" style='width:100%'>{{ booth.id }}</div>
         </div>
     </a>
-    <div class="subContent" style='background:white'>
-        攤位設置已停用！如有需要更改攤位設置，請聯絡IT小組
-        <!-- <form action="/oc/booth/{{ booth.id }}/settings" method="post">
-        {% csrf_token %}
-        <div class="contentInfo">
-            <div class="contentNews title">攤位要求</div>
-			<div class="contentNews bar">
-				<div class="contentNews bar1" style="width:30%">指標</div>
-				<div class="contentNews bar2" style="width:70%">分數要求</div>
-			</div>
-            {% for field in form %}
-                <div class="contentNews content1">
-                    <div class="content1" style="width:30%">{{ field.label_tag }}</div>
-                    {% if field.name == "booth" or field.name == "player" or field.name == "marker" %}
-                        <div class="content2" style="width:70%">{{ field|attr:'disabled="true"' }}</div>
-                    {% else %}
-                        <div class="content2" style="width:70%">{{ field }}</div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-            <div class="btn"><input src="{% static 'images/yolo.png' %}" style="height:100px;width:100px" type="image" /></div>
-		</div>
-        </form> -->
         
+    <div class="subContent" style='background:white'>
+        
+        <div class="contentNews title"></div>
+        
+		<div class="contentInfo">
+            <div class="contentNews bar">
+                <div class="contentNews bar1">攤位要求</div>
+            </div>
+            <div class="contentNews content1">
+                <div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/settings/requirement'>更改攤位要求</a> </div>
+            </div>
+        </div>
+        
+		<div class="contentInfo">
+            <div class="contentNews bar">
+                <div class="contentNews bar1" style='width:90%; text-align: left;'>分數選項</div>
+                <div class="contentNews bar1"><a href='/oc/booth/{{ booth.id }}/settings/create'>增加</a></div>
+            </div>
+            {% for s in booth_scores %}
+            <div class="contentNews content1">
+                <div class="content1" style='width:15%'></a> </div>
+                <div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/settings/{{ s.id  }}'>{{ s }}</a> </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
        
 	<div class="footer">
 		
-		<div><a href="/"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
 		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
 	</div>
 	 

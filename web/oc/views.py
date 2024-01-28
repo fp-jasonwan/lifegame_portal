@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from booth.models import Booth, Participation, BoothScoring, Transaction, BoothTraffic
-from booth.forms import ParticipationForm, BoothSettingsForm, TransactionForm
+from booth.forms import ParticipationForm, BoothSettingsForm, BoothScoringForm, TransactionForm
 from account.models import User
 from django.contrib import messages
 from player.models import Player, InstructorScore
@@ -164,8 +164,7 @@ def check_player(request, booth_id="", encrypted_id=""):
 
 def register_page(request, booth_id, encrypted_id):
     booth = get_object_or_404(Booth, id=booth_id)
-    score_options = [option for option in booth.score_options.all()]
-    print(score_options)
+    score_options = BoothScoring.objects.filter(booth=booth, active=True).all()
     if encrypted_id.isnumeric():
         user = get_object_or_404(User, id=encrypted_id)
     else:
@@ -192,8 +191,7 @@ def register_player(request, booth_id, encrypted_id, participation=""):
 
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
-    score_options = [option for option in booth.score_options.all()]
-    print(score_options)
+    score_options = BoothScoring.objects.filter(booth=booth, active=True).all()
     if encrypted_id.isnumeric():
         user = get_object_or_404(User, id=encrypted_id)
     else:
@@ -242,7 +240,7 @@ def register_player(request, booth_id, encrypted_id, participation=""):
     form.fields['booth'].queryset = Booth.objects.filter(id=booth.id)
     form.fields['player'].queryset = Player.objects.filter(id=player.id)
     form.fields['marker'].queryset = User.objects.filter(id=request.user.id)
-    form.fields['score'].queryset = booth.score_options.all()
+    form.fields['score'].queryset = BoothScoring.objects.filter(booth = booth, active=True)
     context = {
         'action_path': 'register', 
         'booth': booth,
@@ -256,6 +254,80 @@ def register_player(request, booth_id, encrypted_id, participation=""):
 
 
 def update_booth_settings(request, booth_id):
+    request.session['from'] = request.META.get('HTTP_REFERER', '/')
+    booth = get_object_or_404(Booth, id=booth_id)
+    booth_scores = BoothScoring.objects.filter(booth=booth, active=True).all()
+    template = loader.get_template('oc/booth_settings.html')
+    
+    context = {
+        'booth': booth,
+        'booth_scores': booth_scores,
+    }
+    return HttpResponse(template.render(context, request))
+
+def update_booth_settings_scoring(request, booth_id, score_id):
+    request.session['from'] = request.META.get('HTTP_REFERER', '/')
+    booth = get_object_or_404(Booth, id=booth_id)
+    booth_scoring = get_object_or_404(BoothScoring, id=score_id)
+    # if Booth.objects.filter(booth=booth).exists():
+    instance = booth_scoring
+    form = BoothScoringForm(request.POST or None, instance=instance)
+    
+    if request.method == 'POST':
+        if form.is_valid():
+            new_booth_score = BoothScoring(**form.cleaned_data)
+            new_booth_score.save()
+            
+            # original score inactive
+            old_score = form.save(commit=False)
+            old_score.active = False
+            old_score.save()
+            msg_template = loader.get_template('oc/booth_message.html')
+            context = {
+                'booth': booth,
+                'message': '成功更新攤位要求!'
+            }
+            return HttpResponse(msg_template.render(context, request))
+        else:
+            print(form.errors)
+            print("INVALID FORM")
+    template = loader.get_template('oc/booth_settings_scoring.html')
+    
+    context = {
+        'booth': booth,
+        'booth_scoring': booth_scoring,
+        'form': form
+    }
+    return HttpResponse(template.render(context, request))
+
+def create_booth_settings_scoring(request, booth_id):
+    request.session['from'] = request.META.get('HTTP_REFERER', '/')
+    booth = get_object_or_404(Booth, id=booth_id)
+    form = BoothScoringForm(request.POST or None,
+        initial = {'booth': booth}
+    )
+    
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            msg_template = loader.get_template('oc/booth_message.html')
+            context = {
+                'booth': booth,
+                'message': '成功更新攤位要求!'
+            }
+            return HttpResponse(msg_template.render(context, request))
+        else:
+            print(form.errors)
+            print("INVALID FORM")
+    template = loader.get_template('oc/booth_settings_scoring_create.html')
+    
+    context = {
+        'booth': booth,
+        'form': form
+    }
+    return HttpResponse(template.render(context, request))
+
+def update_booth_settings_requirement(request, booth_id):
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     booth = get_object_or_404(Booth, id=booth_id)
     # if Booth.objects.filter(booth=booth).exists():
@@ -273,14 +345,13 @@ def update_booth_settings(request, booth_id):
             return HttpResponse(msg_template.render(context, request))
         else:
             print("INVALID FORM")
-    template = loader.get_template('oc/booth_settings.html')
+    template = loader.get_template('oc/booth_settings_requirement.html')
     
     context = {
         'booth': booth,
         'form': form
     }
     return HttpResponse(template.render(context, request))
-
 
 def booth_transaction(request, booth_id, type, encrypted_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
@@ -320,7 +391,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                 type = form.cleaned_data['type']
                 money = form.cleaned_data['money']
                 player_money = player.get_score('money')
-                if type == 'receive':
+                if type in ('receive', 'deposit'):
                     if money > player_money:
                         msg_template = loader.get_template('oc/booth_message.html')
                         context = {
@@ -339,7 +410,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                 return HttpResponseRedirect(f'/oc/booth/{booth.id}/transactions/{transaction.id}/success')
             else:
                 print("INVALID FORM")
-        template = loader.get_template('oc/booth_register.html')
+        template = loader.get_template('oc/booth_register_transaction.html')
         
         # reduce options in the fields
         form.fields['booth'].queryset = Booth.objects.filter(id=booth.id)

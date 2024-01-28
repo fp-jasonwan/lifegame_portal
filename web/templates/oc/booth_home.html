@@ -36,12 +36,6 @@
 			<div class="text">攤位設置</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'icons/setting.png' %}" alt="Map"></a></div>
 		</div>
-		<!-- {% if user.user_type == 'instructor' %}
-		<div class="btnStock">
-			<div class="text">學 員</div>
-			<div class="icon"><a href="/oc/instructor"><img src="{% static 'images/btnInfo.png' %}" alt="Map"></a></div>
-		</div>
-		{% endif %} -->
 		<div class="btnIndex">
 			<div class="text">付 款</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/pay"><img src="{% static 'icons/money_pay.png' %}" alt="Contact"></a></div>
@@ -54,10 +48,22 @@
 			<div class="text">交易記錄</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transactions"><img src="{% static 'icons/balance_sheet.png' %}" alt="Map"></a></div>
 		</div>
+
+		<!-- BANK -->
+		{% if booth.name == 'bank' %}
+		<div class="btnIndex">
+			<div class="text">存 款</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/pay"><img src="{% static 'icons/money_pay.png' %}" alt="Contact"></a></div>
+		</div>
+		<div class="btnMap">
+			<div class="text">提 款</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/receive"><img src="{% static 'icons/money_receive.png' %}" alt="Contact"></a></div>
+		</div>
+		{% endif %}
 	</div>
 		
 	<div class="footer">
-		<div><a href="/"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
 		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
 	</div>
 

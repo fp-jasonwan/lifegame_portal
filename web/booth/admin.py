@@ -10,7 +10,7 @@ admin.site.register(BoothTraffic)
 
 class BoothAdmin(admin.ModelAdmin):
     list_display = ('id', 'booth_in_charge', 'name', 'health_score','skill_score', 'growth_score', 'relationship_score', 'money')
-    filter_horizontal = ('booth_admins', 'score_options')
+    filter_horizontal = ('booth_admins',)
 admin.site.register(Booth, BoothAdmin)
 
 

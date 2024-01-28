@@ -14,7 +14,7 @@
 	{% if encrypted_id %}
 	<div class="logo"><a href="/player/{{ encrypted_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
 	{% else %}
-	<div class="logo"><a href="/"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	<div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
 	{% endif %}
 	{% if config.ANNOUNCEMENT != "" %}
 	<div class="contentNews bar">
@@ -124,7 +124,7 @@
 		{% if encrypted_id %}
 		<div><a href="/player/{{ encrypted_id }}"><h4 style="text-align: center;">返回主目錄</h4></a></div>
 		{% else %}
-		<div><a href="/"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
 		{% endif %}
 		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
 	</div>
