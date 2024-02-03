@@ -103,14 +103,14 @@ class Participation(models.Model):
     def get_player_participation(player):
         player_participations = Participation.objects.filter(player=player)
         return player_participations.aggregate(
-            health_score = Sum(F('score__health_score')) + Max(F('player__born_health_score')),
-            skill_score = Sum(F('score__skill_score')) + Max(F('player__born_skill_score')),
-            growth_score = Sum(F('score__growth_score')) + Max(F('player__born_growth_score')),
-            relationship_score = Sum(F('score__relationship_score')) + Max(F('player__born_relationship_score')),
-            money = Sum(F('score__relationship_score')) + Max(F('player__born_money')),
-            academic_level = Max(Greatest(F('score__academic_level'), F('player__born_academic_level'))),
-            steps = Sum(F('score__steps')) + Max(F('player__born_steps')),
-            flat = Sum(F('score__flat')),
+            health_score = Coalesce(Sum(F('score__health_score')),0) + Coalesce(Max(F('player__born_health_score')),0),
+            skill_score = Coalesce(Sum(F('score__skill_score')),0) + Coalesce(Max(F('player__born_skill_score')),0),
+            growth_score = Coalesce(Sum(F('score__growth_score')),0) + Coalesce(Max(F('player__born_growth_score')),0),
+            relationship_score = Coalesce(Sum(F('score__relationship_score')),0) + Coalesce(Max(F('player__born_relationship_score')),0),
+            money = Coalesce(Sum(F('score__relationship_score')),0) + Coalesce(Max(F('player__born_money')),0),
+            academic_level = Coalesce(Max(Greatest(F('score__academic_level'), F('player__born_academic_level'))),1),
+            steps = Coalesce(Sum(F('score__steps')),0) + Coalesce(Max(F('player__born_steps')),0),
+            flat = Coalesce(Sum(F('score__flat')),0),
         )
 
     id = models.AutoField(primary_key=True)

@@ -116,7 +116,7 @@ if platform.system() == 'Windows':
         'NAME': 'lifegame',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '34.96.204.88',
+        'HOST': '104.154.249.55',
         'PORT': '5432',
     }
     }
