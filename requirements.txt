@@ -21,3 +21,4 @@ google-cloud-storage
 gunicorn
 django-widget-tweaks 
 pandas
+django-extensions
