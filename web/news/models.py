@@ -14,7 +14,5 @@ class News(models.Model):
         on_delete=models.CASCADE, 
         null=True, blank=True)
     title = models.CharField(max_length=100)
-    url =  models.CharField(max_length=200)
     message = models.TextField(max_length=200)
-    date = models.DateField()
-    time = models.TimeField()
+    date = models.DateTimeField(verbose_name='發怖時間')

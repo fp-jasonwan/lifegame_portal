@@ -33,27 +33,27 @@
 			</div>
 
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Booth: </div>
+                    <div class="content1" style="width:30%">攤位</div>
                         <div class="content2" style="width:70%">{{ participation.booth.name }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Player: </div>
+                    <div class="content1" style="width:30%">玩家</div>
                         <div class="content2" style="width:70%">{{ participation.player }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Record time</div>
-                        <div class="content2" style="width:70%">{{ participation.record_time|time:"d/m H:i" }}</div>
+                    <div class="content1" style="width:30%">記錄時間</div>
+                        <div class="content2" style="width:70%">{{ participation.record_time|date:"d M H:i" }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Score</div>
+                    <div class="content1" style="width:30%">分數</div>
                         <div class="content2" style="width:70%">{{ participation.score }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Remarks</div>
+                    <div class="content1" style="width:30%">備註</div>
                         <div class="content2" style="width:70%">{{ participation.remarks }}</div>
                 </div>
                 <div class="contentNews content1">
-                    <div class="content1" style="width:30%">Marker</div>
+                    <div class="content1" style="width:30%">評分員</div>
                         <div class="content2" style="width:70%">{{ participation.marker }}</div>
                 </div>
             

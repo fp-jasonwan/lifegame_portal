@@ -390,14 +390,26 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                 booth = form.cleaned_data['booth']
                 type = form.cleaned_data['type']
                 money = form.cleaned_data['money']
-                player_money = player.get_score('money')
                 if type in ('receive', 'deposit'):
+                    player_money = player.get_score('money')
                     if money > player_money:
                         msg_template = loader.get_template('oc/booth_message.html')
                         context = {
                             'error_type': 'insufficient_amount',
                             'message': f"""
-                                玩家金錢不足! 玩家現有金錢為${player_money} 
+                                玩家金錢不足! 玩家現有現金為${player_money} 
+                            """,
+                            'booth': booth
+                        }
+                        return HttpResponse(msg_template.render(context, request))
+                if type in ('withdrawal'): 
+                    player_deposit = player.get_score('deposit')
+                    if money > player_deposit:
+                        msg_template = loader.get_template('oc/booth_message.html')
+                        context = {
+                            'error_type': 'insufficient_amount',
+                            'message': f"""
+                                玩家銀行不足! 玩家現有銀行存款為${player_deposit} 
                             """,
                             'booth': booth
                         }

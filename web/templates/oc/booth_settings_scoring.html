@@ -32,6 +32,11 @@
                     {% if field.name == "booth" or field.name == "active" %}
                         <div class="content1" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
                         <div class="content2" style="display:None">{{ field }}</div>
+                    {% elif field.name == "flat" %}
+                        {% if 'C4' in booth.id %}
+                            <div class="content2" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
+                            <div class="content2" style="display:None">{{ field }}</div>
+                        {% endif %}
                     {% else %}
                         <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                         <div class="content2" style="width:70%">{{ field }}</div>

@@ -22,18 +22,9 @@
 	{% endif %}
 	<div class="subContent">
 		<div class="contentInfo">
-            <div class="contentNews title">新聞</div>
-			<div class="contentNews bar">
-				<div class="contentNews bar1" style='width:30%'>時間</div>
-				<div class="contentNews bar3" style='width:70%'>內容</div>
-			</div>
-            
-            {% for new in news %}
-			<div class="contentNews content1">
-				<div class="content1" style='width:30%'> {{ new.date|date:"d M" }}</div>
-				<div class="content3" style='width:70%'>{{ new.title }}</div>
-			</div>
-            {% endfor %}
+            <div class="contentNews title">{{ news.title }}</div>
+			<div class="contentNews content">{{ news.message }}</div>
+			<div class="contentNews content">{{ news.date|date:"d M" }}</div>
      
 		</div>
 	</div>

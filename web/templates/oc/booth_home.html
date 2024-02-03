@@ -20,7 +20,7 @@
 
 	<a href='/oc/booth/{{ booth.id }}'>
 		<div class="contentNews bar">
-			<div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+			<div class="contentNews bar1" style='width:100%'>{{ booth }}</div>
 		</div>
 	</a>
 	<div class="menu">
@@ -50,14 +50,14 @@
 		</div>
 
 		<!-- BANK -->
-		{% if booth.name == 'bank' %}
+		{% if 'G1' in booth.id %}
 		<div class="btnIndex">
 			<div class="text">存 款</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/pay"><img src="{% static 'icons/money_pay.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/deposit"><img src="{% static 'icons/money_pay.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnMap">
 			<div class="text">提 款</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/receive"><img src="{% static 'icons/money_receive.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/withdrawal"><img src="{% static 'icons/money_receive.png' %}" alt="Contact"></a></div>
 		</div>
 		{% endif %}
 	</div>

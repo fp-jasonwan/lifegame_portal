@@ -64,9 +64,13 @@
         var baseUrl  = window.location.origin;
         var scanned_encrypted_id = decodedText.substring(decodedText.lastIndexOf('/') + 1);
         if (scan_type == 'pay') {
-            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/pay/" + scanned_encrypted_id
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/pay/" + id
         } else if (scan_type == 'receive') {
-            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/receive/" + scanned_encrypted_id
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/receive/" + id
+        } else if (scan_type == 'deposit') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/deposit/" + id
+        } else if (scan_type == 'withdrawal') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/withdrawal/" + id
         }
     }
 
@@ -86,6 +90,10 @@
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/pay/" + id
         } else if (scan_type == 'receive') {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/receive/" + id
+        } else if (scan_type == 'deposit') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/deposit/" + id
+        } else if (scan_type == 'withdrawal') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/withdrawal/" + id
         }
     }
 

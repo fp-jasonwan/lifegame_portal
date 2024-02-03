@@ -153,6 +153,10 @@
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/pay/" + id
         } else if (scan_type == 'receive') {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/receive/" + id
+        } else if (scan_type == 'deposit') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/deposit/" + id
+        } else if (scan_type == 'withdrawal') {
+            window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/withdrawal/" + id
         } else {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/check_player/" + id
         }

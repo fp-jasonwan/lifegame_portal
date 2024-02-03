@@ -53,54 +53,7 @@
 				{% endif %}
 				<div class="contentInfo content right">{{ player.user.school }}</a></div>
 			</div>
-			<!-- born status -->
-			<div class="contentNews title">出生狀態</div>
-			{% if config.GAME_MODE == "start" %}
-            <div class="contentNews bar">
-                <div class="contentNews bar1"  style="width:60%">分數類別</div>
-                <div class="contentNews bar3"  style="width:40%">得分</div>
-            </div>
 			
-			<div class="contentNews content1">
-                <div class="content1" style="width:60%">教育程度</div>
-                <div class="content3" style="width:40%"> 
-					{% if player.born_academic_level == 1 %} 小學
-					{% elif player.born_academic_level == 2 %} 中學
-					{% elif player.born_academic_level == 3 %} 文憑
-					{% elif player.born_academic_level == 4 %} 大學
-					{% endif %}
-				</div>
-            </div>
-			<div class="contentNews content1">
-				<div class="content1" style="width:60%">金錢</div>
-				<div class="content3" style="width:40%">{{ player.born_money }}</a></div>
-			</div>
-
-			<div class="contentNews content1">
-                <div class="content1" style="width:60%">健康指數</div>
-                <div class="content3" style="width:40%"> {{ player.born_health_score }}</div>
-            </div>
-			<div class="contentNews content1">
-                <div class="content1" style="width:60%">技能指數</div>
-                <div class="content3" style="width:40%"> {{ player.born_skill_score }}</div>
-            </div>
-			<div class="contentNews content1">
-                <div class="content1" style="width:60%">成長指數</div>
-                <div class="content3" style="width:40%"> {{ player.born_growth_score }}</div>
-            </div>
-			<div class="contentNews content1">
-                <div class="content1" style="width:60%">關係指數</div>
-                <div class="content3" style="width:40%"> {{ player.born_relationship_score }}</div>
-            </div>
-			<div class="contentNews content1">
-                <div class="content1" style="width:60%">特殊狀況</div>
-                <div class="content3" style="width:40%"> {{ player.born_defect }}</div>
-            </div>
-			{% else %}
-			<div class="contentNews content1">
-                遊戲尚未開始
-            </div>
-			{% endif %}
 			<!-- Scores breakdown -->
 			<div class="contentNews title">分數</div>
 			{% if config.GAME_MODE == "start" %}
@@ -114,20 +67,13 @@
 				<div class="content3" style="width:40%">{{ scores.total_score }}</a></div>
 			</div>
 			<div class="contentNews content1">
-                <div class="content1" style="width:60%">教育程度</div>
-                <div class="content3" style="width:40%"> 
-					{% if scores.academic_level == 1 %} 小學
-					{% elif scores.academic_level == 2 %} 中學
-					{% elif scores.academic_level == 3 %} 文憑
-					{% elif scores.academic_level == 4 %} 大學
-					{% endif %}
-				</div>
-            </div>
-			<div class="contentNews content1">
-				<div class="content1" style="width:60%">金錢</div>
+				<div class="content1" style="width:60%">現金</div>
 				<div class="content3" style="width:40%">{{ scores.money }}</a></div>
 			</div>
-
+			<div class="contentNews content1">
+				<div class="content1" style="width:60%">銀行存款</div>
+				<div class="content3" style="width:40%">{{ scores.deposit }}</a></div>
+			</div>
 			<div class="contentNews content1">
                 <div class="content1" style="width:60%">健康指數</div>
                 <div class="content3" style="width:40%"> {{ scores.health_score }}</div>
@@ -144,12 +90,72 @@
                 <div class="content1" style="width:60%">關係指數</div>
                 <div class="content3" style="width:40%"> {{ scores.relationship_score }}</div>
             </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:60%">教育程度</div>
+                <div class="content3" style="width:40%"> 
+					{% if scores.academic_level == 1 %} 小學
+					{% elif scores.academic_level == 2 %} 中學
+					{% elif scores.academic_level == 3 %} 文憑
+					{% elif scores.academic_level == 4 %} 大學
+					{% endif %}
+				</div>
+            </div>
 
 			{% else %}
 			<div class="contentNews content1">
                 遊戲尚未開始
             </div>
 			{% endif %}
+
+		<!-- born status -->
+		<div class="contentNews title">出生狀態</div>
+		{% if config.GAME_MODE == "start" %}
+		<div class="contentNews bar">
+			<div class="contentNews bar1"  style="width:60%">分數類別</div>
+			<div class="contentNews bar3"  style="width:40%">得分</div>
+		</div>
+
+		<div class="contentNews content1">
+			<div class="content1" style="width:60%">教育程度</div>
+			<div class="content3" style="width:40%"> 
+				{% if player.born_academic_level == 1 %} 小學
+				{% elif player.born_academic_level == 2 %} 中學
+				{% elif player.born_academic_level == 3 %} 文憑
+				{% elif player.born_academic_level == 4 %} 大學
+				{% endif %}
+			</div>
+		</div>
+		<div class="contentNews content1">
+			<div class="content1" style="width:60%">金錢</div>
+			<div class="content3" style="width:40%">{{ player.born_money }}</a></div>
+		</div>
+
+		<div class="contentNews content1">
+			<div class="content1" style="width:60%">健康指數</div>
+			<div class="content3" style="width:40%"> {{ player.born_health_score }}</div>
+		</div>
+		<div class="contentNews content1">
+			<div class="content1" style="width:60%">技能指數</div>
+			<div class="content3" style="width:40%"> {{ player.born_skill_score }}</div>
+		</div>
+		<div class="contentNews content1">
+			<div class="content1" style="width:60%">成長指數</div>
+			<div class="content3" style="width:40%"> {{ player.born_growth_score }}</div>
+		</div>
+		<div class="contentNews content1">
+			<div class="content1" style="width:60%">關係指數</div>
+			<div class="content3" style="width:40%"> {{ player.born_relationship_score }}</div>
+		</div>
+		<div class="contentNews content1">
+			<div class="content1" style="width:60%">特殊狀況</div>
+			<div class="content3" style="width:40%"> {{ player.born_defect }}</div>
+		</div>
+		{% else %}
+		<div class="contentNews content1">
+			遊戲尚未開始
+		</div>
+		{% endif %}
+
 			<!-- Participation records -->
             <div class="contentNews title">參與記錄</div>
 			

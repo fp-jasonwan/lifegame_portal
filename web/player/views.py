@@ -72,7 +72,8 @@ class PlayerParticipationTable(tables.Table):
 def get_rich_list(request, encrypted_id=""):
     template = loader.get_template('ranking.html')
     rich_list_df = Player.get_rich_list()
-    rich_list_df.rename(columns={'total_money': 'mark'}, inplace=True)
+    rich_list_df.rename(columns={'money': 'mark'}, inplace=True)
+    print(rich_list_df.head(10))
     context = {
         'list_name': '富豪榜',
         'mark_name': '金錢',

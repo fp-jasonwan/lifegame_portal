@@ -1,8 +1,8 @@
 from django.db import models
 import datetime
-from django.db.models import Avg, Count, Min, Sum, F, Q
+from django.db.models import Avg, Count, Min, Max, Sum, F, Q
 from django.db.models import Value, IntegerField
-from django.db.models.functions import Coalesce
+from django.db.models.functions import Coalesce, Greatest
 
 # from player.models import Player
 
@@ -23,17 +23,15 @@ class BoothRequirement(models.Model):
     def check_player(self, player):
         failed_list = []
         player_scores = player.get_scores()
-        # for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
-        #     print(score, datetime.datetime.now())
-        #     if player_scores[score] < getattr(self, score):
-        #         failed_list.append(score)
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money', 'academic_level']:
+            if player_scores[score] < getattr(self, score):
+                failed_list.append(score)
         return failed_list
 
 
 class Booth(models.Model):
     def __str__(self):
-        
-        return f"{self.id[:2]} - {self.name}"
+        return f"{self.id[:2]} {self.name}"
 
     def get_requirements(self):
         result_dict = {
@@ -54,7 +52,7 @@ class Booth(models.Model):
                 failed_list.append(score)
         return failed_list
 
-    id = models.CharField(max_length=10, primary_key=True)
+    id = models.CharField(max_length=20, primary_key=True)
     booth_in_charge = models.ForeignKey(
         'account.User', 
         related_name='booth_in_charge', 
@@ -62,7 +60,7 @@ class Booth(models.Model):
         null=True, blank=True
     )
     booth_admins = models.ManyToManyField('account.User', related_name='booth_admins', blank=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='攤位名稱')
     # score_options = models.ManyToManyField(BoothScoring, related_name='booth_scores', blank=True)
     description = models.TextField(max_length=1000, null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -78,13 +76,9 @@ class Booth(models.Model):
 class BoothScoring(models.Model):
     def __str__(self):
         return self.name
-    #     if self.active: 
-    #         return self.name 
-    #     else:
-    #         return self.name + ' (inactive)'
 
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='分數名稱')
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
     health_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='健康分數')
     skill_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='技能分數')
@@ -105,6 +99,20 @@ class Participation(models.Model):
     def get_time(self):
         return self.record_time.strftime("%d/%m %H:%S")
     
+    @staticmethod
+    def get_player_participation(player):
+        player_participations = Participation.objects.filter(player=player)
+        return player_participations.aggregate(
+            health_score = Sum(F('score__health_score')) + Max(F('player__born_health_score')),
+            skill_score = Sum(F('score__skill_score')) + Max(F('player__born_skill_score')),
+            growth_score = Sum(F('score__growth_score')) + Max(F('player__born_growth_score')),
+            relationship_score = Sum(F('score__relationship_score')) + Max(F('player__born_relationship_score')),
+            money = Sum(F('score__relationship_score')) + Max(F('player__born_money')),
+            academic_level = Max(Greatest(F('score__academic_level'), F('player__born_academic_level'))),
+            steps = Sum(F('score__steps')) + Max(F('player__born_steps')),
+            flat = Sum(F('score__flat')),
+        )
+
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
@@ -128,12 +136,6 @@ class Transaction(models.Model):
     def get_time(self):
         return self.record_time.strftime("%d/%m %H:%S")
         
-    def get_amount(self):
-        if self.type == 'pay':
-            return self.money
-        else:
-            return self.money * -1
-
     @staticmethod
     def get_player_transactions(player):
         player_trx = Transaction.objects.filter(player=player)
@@ -145,9 +147,10 @@ class Transaction(models.Model):
         )
         withdrawal_deposit = Coalesce(Sum(F('money'), filter=Q(type='withdrawal')), Value(0))
         return player_trx.aggregate(
-            cash = pay - receive - deposit + withdrawal_money,
+            money = pay - receive - deposit + withdrawal_money,
             deposit = deposit - withdrawal_deposit,
         )
+
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
@@ -163,7 +166,7 @@ class Transaction(models.Model):
     )
     record_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="時間")
     money = models.IntegerField(verbose_name="金錢", default=0)
-    interest_rate = models.FloatField(verbose_name='利率', default=0)
+    interest_rate = models.FloatField(verbose_name='利率', default=0, blank=True)
     remarks = models.TextField(max_length=1000, null=True, blank=True, verbose_name="備註")
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
 

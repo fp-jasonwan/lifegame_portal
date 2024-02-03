@@ -4,7 +4,7 @@ from player.views import get_profile
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from news.views import NewsListView, get_news
+from news.views import NewsListView, get_news, get_news_content
 from account.views import home_page
 from booth.views import BoothsListView, get_booths_map
 from oc.views import get_contact
@@ -19,6 +19,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('django.contrib.auth.urls')),
     path('news/', get_news),
+    path('news/<str:news_id>', get_news_content),
     path('contact/', get_contact, name='contact'),
     path('rich_list/', get_rich_list),
     path('score_list/', get_score_list),

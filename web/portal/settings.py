@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'qr_code',
     "storages",
     'widget_tweaks',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
