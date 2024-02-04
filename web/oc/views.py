@@ -85,6 +85,7 @@ def search_profile(request, encrypted_id=""):
 
 def list_booth(request, type=""):
     booths = Booth.objects.filter(booth_admins__in=[request.user]).order_by('id')
+    print(booths)
     # profile = get_object_or_404(Student, user=request.user)
     if type == 'traffics':
         url_base = '/oc/booth/%s/traffics'
@@ -101,8 +102,10 @@ def list_booth(request, type=""):
             'type': type
         }
         return HttpResponse(template.render(context, request))
+    
     if len(booths) == 1:
-        return redirect(url_base % (booths[0].id))
+        return redirect('/oc/booth/' + str(booths[0].id))
+        # return redirect(url_base + '/booth/' % (booths[0].id))
     else:
         return redirect('404')
 
