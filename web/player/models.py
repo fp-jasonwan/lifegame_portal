@@ -7,6 +7,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from booth.models import Transaction, Participation
 from django.db.models import Sum, Max, Subquery, Q, F
 import pandas as pd
+import pytz
+from datetime import datetime
 
 # Create your models here.
 LIVE_STATUS_CHOICES = [
@@ -131,7 +133,7 @@ class InstructorScore(models.Model):
     player = models.OneToOneField(Player, on_delete=models.CASCADE)
     score = models.IntegerField(default=0, validators=[MaxValueValidator(10), MinValueValidator(0)])
     comments = models.TextField(max_length=1000, null=True, blank=True)
-    record_time = models.DateTimeField(auto_now_add=True, blank=True)
+    record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True)
 
 
 def create_player(instance, created, raw, **kwargs):

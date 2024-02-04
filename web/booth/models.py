@@ -3,6 +3,8 @@ import datetime
 from django.db.models import Avg, Count, Min, Max, Sum, F, Q
 from django.db.models import Value, IntegerField
 from django.db.models.functions import Coalesce, Greatest
+from datetime import datetime
+import pytz
 
 # from player.models import Player
 
@@ -89,7 +91,7 @@ class BoothScoring(models.Model):
     academic_level = models.IntegerField(blank=True, null=True, default=0, verbose_name='學歷')
     steps = models.IntegerField(blank=True, null=True, default=0, verbose_name='步數')
     flat = models.IntegerField(blank=True, null=True, default=0, verbose_name='樓宇')
-    record_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="時間")
+    record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True, verbose_name="時間")
     active = models.BooleanField(default=True)
 
 
@@ -127,7 +129,7 @@ class Participation(models.Model):
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
-    record_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="時間")
+    record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True, verbose_name="時間")
     score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE, verbose_name="分數")
     remarks = models.TextField(max_length=1000, null=True, blank=True, verbose_name="評語")
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
@@ -147,6 +149,7 @@ class Transaction(models.Model):
     def get_time(self):
         return self.record_time.strftime("%d/%m %H:%S")
         
+    
     @staticmethod
     def get_player_transactions(player):
         player_trx = Transaction.objects.filter(player=player)
@@ -162,6 +165,26 @@ class Transaction(models.Model):
             deposit = deposit - withdrawal_deposit,
         )
 
+    def get_money(self):
+        if self.type == 'pay':
+            return self.money
+        elif self.type == 'receive':
+            return self.money * -1
+        elif self.type == 'withdrawal':
+            return self.money * (1 + self.interest_rate)
+        elif self.type == 'deposit':
+            return self.money * -1
+        else:
+            return 0
+    
+    def get_deposit(self):
+        if self.type == 'withdrawal':
+            return self.money * -1
+        elif self.type == 'deposit':
+            return self.money 
+        else:
+            return 0
+
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
@@ -175,7 +198,11 @@ class Transaction(models.Model):
         )
         , verbose_name="交易類型"
     )
-    record_time = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="時間")
+    record_time = models.DateTimeField(
+        default=datetime.now(pytz.timezone('Asia/Hong_Kong')), 
+        blank=True, 
+        verbose_name="時間"
+    )
     money = models.IntegerField(verbose_name="金錢", default=0)
     interest_rate = models.FloatField(verbose_name='利率', default=0, blank=True)
     remarks = models.TextField(max_length=1000, null=True, blank=True, verbose_name="備註")
@@ -192,4 +219,4 @@ class BoothTraffic(models.Model):
     # user = models.ForeignKey('account.User', on_delete=models.CASCADE)
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
-    record_time = models.DateTimeField(auto_now_add=True, blank=True)
+    record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True)
