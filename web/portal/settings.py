@@ -49,7 +49,12 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.a.run.app', "https://lionslifegame.app", "https://www.lionslifegame.app", "https://*.lionslifegame.app"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.a.run.app', 
+    "https://lionslifegame.web.app", 
+    "https://www.lionslifegame.web.app", 
+    "https://*.lionslifegame.web.app"
+    ]
 # Application definition
 
 INSTALLED_APPS = [
