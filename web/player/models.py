@@ -68,7 +68,19 @@ class Player(models.Model):
             'deposit': transactions['deposit'],
             'academic_level': participations['academic_level']
         }
-        print(result_dict)
+
+        # academic level text
+        if participations['academic_level']==1: 
+            result_dict['academic_level_text'] = '小學畢業'
+        elif participations['academic_level']==2: 
+            result_dict['academic_level_text'] = '中學畢業'
+        elif participations['academic_level']==3: 
+            result_dict['academic_level_text'] = '大專畢業'
+        elif participations['academic_level']==4: 
+            result_dict['academic_level_text'] = '大學畢業'
+        else:
+            result_dict['academic_level_text'] = ''
+
         result_dict['total_score'] = result_dict['health_score'] + \
                                      result_dict['skill_score'] + \
                                      result_dict['growth_score'] + \
@@ -77,31 +89,6 @@ class Player(models.Model):
         
     def get_score(self, score_name):
         return self.get_scores()[score_name]
-        # score_list = []
-        # score_list.append(getattr(self, 'born_' + score_name))
-        # # participations
-        # participations = Participation.objects.filter(player=self)
-        # for parti in participations:
-        #     parti_score = getattr(parti.score, score_name)
-        #     if parti_score:
-        #         print(parti, score_name, parti_score)
-        #         score_list.append(parti_score)
-        # # transactions
-        # if score_name == 'money':
-        #     transactions = Transaction.objects.filter(player=self)
-        #     for t in transactions:
-        #         if t.type == 'receive':
-        #             score_list.append(t.money * -1)
-        #         if t.type == 'pay':
-        #             score_list.append(t.money)
-        # if len(score_list) > 0:
-        #     if score_name == 'academic_level': # If Score name is academic level, return maximum academic level
-        #         return max(score_list)
-        #     else:
-        #         print(score_list)
-        #         return sum(score_list)
-        # else:
-        #     return 0
 
     @staticmethod
     def get_total_score_list():
@@ -140,38 +127,6 @@ class Player(models.Model):
                                         .values('player') \
                                         .annotate(money=Sum('score__money')))
         return participation_df.sort_values('money', ascending=False)
-        # born_df = pd.DataFrame(Player.objects \
-        #     .filter(user__user_type = 'student') \
-        #     .values(uid=F('user__id')) \
-        #     .annotate(
-        #         born_money=Max('born_money')
-        #     )
-        # )
-        # # born_df.rename(columns={'id': 'player'}, inplace=True)
-        # participation_df = pd.DataFrame(Participation.objects \
-        #     .filter(player__user__user_type = 'student') \
-        #     .values(uid=F('player__user__id')) \
-        #     .annotate(
-        #         participation_money=Sum('score__money')
-        #     )
-        # )
-        # transaction_df = pd.DataFrame(Transaction.objects \
-        #     .filter(player__user__user_type = 'student') \
-        #     .values(uid=F('player__user__id')) \
-        #     .annotate(
-        #         receive=Sum('money', filter=Q(type='receive')),
-        #         pay=Sum('money', filter=Q(type='pay'))
-        #     )
-        # )
-        # concat_df = pd.concat([born_df, participation_df, transaction_df])
-        # concat_df['total_money'] = concat_df['born_money'].fillna(0) 
-        # if len(participation_df) > 0:
-        #     concat_df['total_money'] += concat_df['participation_money'].fillna(0)
-        # if len(transaction_df) > 0:
-        #     concat_df['total_money'] +=  concat_df['pay'].fillna(0) - concat_df['receive'].fillna(0)
-        # money_df = concat_df.groupby('uid', as_index=False)['total_money'].sum()
-        # money_df['uid'] = money_df['uid'].astype('str')
-        # return money_df.sort_values('total_money', ascending=False)
 
 class InstructorScore(models.Model):
     player = models.OneToOneField(Player, on_delete=models.CASCADE)

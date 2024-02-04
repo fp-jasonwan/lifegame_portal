@@ -102,16 +102,26 @@ class Participation(models.Model):
     @staticmethod
     def get_player_participation(player):
         player_participations = Participation.objects.filter(player=player)
-        return player_participations.aggregate(
-            health_score = Coalesce(Sum(F('score__health_score')),0) + Coalesce(Max(F('player__born_health_score')),0),
-            skill_score = Coalesce(Sum(F('score__skill_score')),0) + Coalesce(Max(F('player__born_skill_score')),0),
-            growth_score = Coalesce(Sum(F('score__growth_score')),0) + Coalesce(Max(F('player__born_growth_score')),0),
-            relationship_score = Coalesce(Sum(F('score__relationship_score')),0) + Coalesce(Max(F('player__born_relationship_score')),0),
-            money = Coalesce(Sum(F('score__relationship_score')),0) + Coalesce(Max(F('player__born_money')),0),
-            academic_level = Coalesce(Max(Greatest(F('score__academic_level'), F('player__born_academic_level'))),1),
-            steps = Coalesce(Sum(F('score__steps')),0) + Coalesce(Max(F('player__born_steps')),0),
+        participation_scores = player_participations.aggregate(
+            health_score = Coalesce(Sum(F('score__health_score')),0),
+            skill_score = Coalesce(Sum(F('score__skill_score')),0),
+            growth_score = Coalesce(Sum(F('score__growth_score')),0),
+            relationship_score = Coalesce(Sum(F('score__relationship_score')),0),
+            money = Coalesce(Sum(F('score__relationship_score')),0),
+            academic_level = Coalesce(Max(F('score__academic_level')),1),
+            steps = Coalesce(Sum(F('score__steps')),0),
             flat = Coalesce(Sum(F('score__flat')),0),
         )
+        return {
+            'health_score': participation_scores['health_score'] + player.born_health_score,
+            'skill_score': participation_scores['skill_score'] + player.born_skill_score,
+            'growth_score': participation_scores['growth_score'] + player.born_growth_score,
+            'relationship_score': participation_scores['relationship_score'] + player.born_relationship_score,
+            'money': participation_scores['money'] + player.born_money,
+            'academic_level': max(participation_scores['academic_level'], player.born_academic_level),
+            'steps': participation_scores['steps'] + player.born_steps,
+            'flat': participation_scores['flat'],
+        }
 
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
