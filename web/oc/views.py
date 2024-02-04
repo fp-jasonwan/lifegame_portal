@@ -104,7 +104,7 @@ def list_booth(request, type=""):
         return HttpResponse(template.render(context, request))
     
     if len(booths) == 1:
-        return redirect(url_base + '/booth/' + str(booths[0].id))
+        return redirect('/oc/booth/' + str(booths[0].id))
         # return redirect(url_base + '/booth/' % (booths[0].id))
     else:
         return redirect('404')
