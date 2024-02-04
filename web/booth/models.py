@@ -48,8 +48,9 @@ class Booth(models.Model):
         player_scores = player.get_scores()
         for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
             print(score)
-            if player_scores[score] < getattr(self, score, 0):
-                failed_list.append(score)
+            if getattr(self, score, 0):
+                if player_scores[score] < getattr(self, score, 0):
+                    failed_list.append(score)
         return failed_list
 
     id = models.CharField(max_length=20, primary_key=True)

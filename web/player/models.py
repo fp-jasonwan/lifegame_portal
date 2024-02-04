@@ -58,7 +58,6 @@ class Player(models.Model):
     def get_scores(self):
         participations = Participation.get_player_participation(self)
         transactions = Transaction.get_player_transactions(self)
-        participations['money'] = participations['money'] + transactions['money']
         result_dict = {
             'health_score': participations['health_score'],
             'skill_score': participations['skill_score'],
