@@ -87,12 +87,12 @@ def list_booth(request, type=""):
     booths = Booth.objects.filter(booth_admins__in=[request.user]).order_by('id')
     print(booths)
     # profile = get_object_or_404(Student, user=request.user)
-    if type == 'traffics':
-        url_base = '/oc/booth/%s/traffics'
-    elif type == 'participations':
-        url_base = '/oc/booth/%s/participations'
-    else:
-        url_base = '/oc/booth/%s'
+    # if type == 'traffics':
+    #     url_base = '/oc/booth/%s/traffics'
+    # elif type == 'participations':
+    #     url_base = '/oc/booth/%s/participations'
+    # else:
+    #     url_base = '/oc/booth/%s'
 
     if len(booths) > 1:
         template = loader.get_template('oc/booth_list.html')
@@ -105,7 +105,6 @@ def list_booth(request, type=""):
     
     if len(booths) == 1:
         return redirect('/oc/booth/' + str(booths[0].id))
-        # return redirect(url_base + '/booth/' % (booths[0].id))
     else:
         return redirect('404')
 
