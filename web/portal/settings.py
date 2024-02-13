@@ -47,15 +47,15 @@ ALLOWED_HOSTS.append('lionslifegame.web.app')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['*']
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.a.run.app', 
-    "https://lionslifegame.web.app", 
-    "https://www.lionslifegame.web.app", 
-    "https://*.lionslifegame.web.app",
-    'http://127.0.0.1'
-    ]
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['*']
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://*.a.run.app', 
+#     "https://lionslifegame.web.app", 
+#     "https://www.lionslifegame.web.app", 
+#     "https://*.lionslifegame.web.app",
+#     'http://127.0.0.1'
+#     ]
 # Application definition
 
 INSTALLED_APPS = [
