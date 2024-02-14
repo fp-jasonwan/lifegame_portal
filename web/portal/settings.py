@@ -52,7 +52,7 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = False
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
 CSRF_TRUSTED_ORIGINS = [
     'https://*.a.run.app', 
     "https://lionslifegame.web.app", 
