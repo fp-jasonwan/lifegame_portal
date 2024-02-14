@@ -61,6 +61,10 @@ CSRF_TRUSTED_ORIGINS = [
     # "https://*.lionslifegame.web.app",
     # 'http://127.0.0.1'
     ]
+CSRF_COOKIE_DOMAIN = [
+    ".web.app", 
+    ".firebaseapp.com",
+]
 # Application definition
 
 INSTALLED_APPS = [
