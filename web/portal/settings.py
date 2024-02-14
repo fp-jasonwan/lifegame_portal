@@ -101,7 +101,7 @@ MIDDLEWARE = [
     'middleware.login.AuthRequiredMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsPostCsrfMiddleware'
+    # 'corsheaders.middleware.CorsPostCsrfMiddleware'
 ]
 
 ROOT_URLCONF = 'portal.urls'
