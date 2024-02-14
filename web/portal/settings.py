@@ -49,8 +49,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
-    # 'https://*.a.run.app', 
+    'https://*.a.run.app', 
     "https://lionslifegame.web.app", 
+    "lionslifegame.firebaseapp.com",
     # "https://www.lionslifegame.web.app", 
     # "https://*.lionslifegame.web.app",
     # 'http://127.0.0.1'
