@@ -44,6 +44,7 @@ if CLOUDRUN_SERVICE_URL:
 else:
     ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS.append('lionslifegame.web.app')
+ALLOWED_HOSTS.append('lionslifegame.firebaseapp.com')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -52,7 +53,6 @@ CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = False
 
 CORS_ALLOW_ALL_ORIGINS = True
-ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://*.a.run.app', 
     "https://lionslifegame.web.app", 
