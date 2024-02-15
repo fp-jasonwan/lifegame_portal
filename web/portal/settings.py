@@ -55,10 +55,10 @@ SECURE_SSL_REDIRECT = False
 CORS_ORIGIN_ALLOW_ALL = True
 CSRF_TRUSTED_ORIGINS = [
     'https://*.a.run.app', 
-    "https://a.run.app",
-    "https://lionslifegame.web.app", 
-    "https://lionslifegame.firebaseapp.com",
-    "https://www.lionslifegame.web.app", 
+    #"https://a.run.app",
+    #"https://lionslifegame.web.app", 
+    #"https://lionslifegame.firebaseapp.com",
+    #"https://www.lionslifegame.web.app", 
     "https://*.lionslifegame.web.app",
     # 'http://127.0.0.1'
     ]
