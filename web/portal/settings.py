@@ -63,10 +63,10 @@ CSRF_TRUSTED_ORIGINS = [
     # 'http://127.0.0.1'
     ]
 # CSRF_COOKIE_DOMAIN = [
-    ".web.app", 
-    ".firebaseapp.com",
-    ".a.run.app"
-]
+#   ".web.app", 
+#    ".firebaseapp.com",
+#    ".a.run.app"
+#]
 # Application definition
 
 INSTALLED_APPS = [
