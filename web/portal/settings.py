@@ -49,7 +49,7 @@ ALLOWED_HOSTS.append('lionslifegame.firebaseapp.com')
 DEBUG = True
 
 SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
 
 CORS_ORIGIN_ALLOW_ALL = True
