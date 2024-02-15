@@ -62,6 +62,21 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.lionslifegame.web.app",
     # 'http://127.0.0.1'
     ]
+CORS_ALLOWED_ORIGINS = [
+    'https://*.a.run.app', 
+    #"https://a.run.app",
+    #"https://lionslifegame.web.app", 
+    #"https://lionslifegame.firebaseapp.com",
+    #"https://www.lionslifegame.web.app", 
+    "https://*.lionslifegame.web.app",
+    # 'http://127.0.0.1'
+    ]
+    
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SAMESITE = None
 # CSRF_COOKIE_DOMAIN = [
 #   ".web.app", 
 #    ".firebaseapp.com",
