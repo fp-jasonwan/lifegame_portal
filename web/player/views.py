@@ -9,7 +9,9 @@ from account.models import User, InstructorGroup
 from django_tables2 import SingleTableView
 from django.db.models import Sum, Max, Subquery, Q
 import pandas as pd
+from constance import config
 import datetime
+from urllib.parse import urlparse
 
 # Create your views here.
 def get_profile(request, encrypted_id=""):
@@ -22,6 +24,7 @@ def get_profile(request, encrypted_id=""):
         visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
         # instructor_score = InstructorScore.objects.filter(player=player).first()
         template = loader.get_template('player/profile.html')
+        print(scores['steps'])
         context = {
             'encrypted_id': encrypted_id,
             'scores': scores,
@@ -96,6 +99,15 @@ def get_score_list(request, encrypted_id=""):
     }
     return HttpResponse(template.render(context, request))
 
+def get_map(request, encrypted_id=""):
+    template = loader.get_template('map.html')
+    map_url = urlparse(config.MAP_URL)
+    map_id = map_url.path.split('/')[3]
+    context = {
+        'map_url': f"https://drive.google.com/thumbnail?id={map_id}&sz=w1600"
+    }
+    return HttpResponse(template.render(context, request))
+
 def get_instructor_students(request, encrypted_id=""):
     user = get_object_or_404(User, encrypted_id=encrypted_id)
     template = loader.get_template('instructor_students.html')
@@ -115,6 +127,37 @@ def get_instructor_students(request, encrypted_id=""):
         }
         return HttpResponse(template.render(context, request))
     
+
+def show_participation(request, parti_id, encrypted_id=""):
+    template = loader.get_template('player/booth_participation.html')
+    participation = get_object_or_404(Participation, id=parti_id)
+    scores = {}
+    for s in ['health_score','skill_score','growth_score','relationship_score','money', 'academic_level','steps','flat']:
+        if getattr(participation.score, s) != 0:
+            field_name = participation.score._meta.get_field(s).verbose_name
+            scores[field_name] = getattr(participation.score, s)
+    print(scores )
+    context = {
+        'participation': participation,
+        'scores': scores
+    }
+    return HttpResponse(template.render(context, request))
+
+def show_transaction(request, tran_id, encrypted_id=""):
+    template = loader.get_template('player/booth_transaction.html')
+    transaction = get_object_or_404(Transaction, id=tran_id)
+    transaction_record = {}
+    if transaction.get_money() != 0:
+        transaction_record['金錢'] = transaction.get_money()
+    if transaction.get_deposit() != 0:
+        transaction_record['銀行存款'] = transaction.get_deposit()
+    if transaction.interest_rate != 0:
+        transaction_record['利率'] = transaction.interest_rate()
+    context = {
+        'transaction': transaction,
+        'scores': transaction_record,
+    }
+    return HttpResponse(template.render(context, request))
 
 def instructor_get_player(request, encrypted_id, player_id):
     instructor = get_object_or_404(User, encrypted_id=encrypted_id)

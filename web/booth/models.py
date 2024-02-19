@@ -2,7 +2,7 @@ from django.db import models
 import datetime
 from django.db.models import Avg, Count, Min, Max, Sum, F, Q
 from django.db.models import Value, IntegerField
-from django.db.models.functions import Coalesce, Greatest
+from django.db.models.functions import Coalesce, Greatest, Floor
 from datetime import datetime
 import pytz
 
@@ -123,7 +123,19 @@ class Participation(models.Model):
             'money': participation_scores['money'] + player.born_money,
             'academic_level': max(participation_scores['academic_level'], player.born_academic_level),
             'steps': participation_scores['steps'] + player.born_steps,
-            'flat': participation_scores['flat'],
+            'flat': participation_scores['flat'] ,
+        }
+
+    def get_score(self):
+        return {
+            'health_score': self.score.health_score,
+            'skill_score': self.score.skill_score,
+            'growth_score': self.score.growth_score,
+            'relationship_score': self.score.relationship_score,
+            'money': self.score.money,
+            'academic_level': self.score.academic_level,
+            'steps': self.score.steps,
+            'flat': self.score.flat,
         }
 
     id = models.AutoField(primary_key=True)
@@ -149,6 +161,16 @@ class Transaction(models.Model):
     def get_time(self):
         return self.record_time.strftime("%d/%m %H:%S")
         
+    def get_player_str(self):
+        if self.type == 'pay':
+            return f'收取${self.money}'
+        if self.type == 'receive':
+            return f'付款${self.player.user.id}'
+        if self.type == 'deposit':
+            return f'存款${self.money}'
+        if self.type == 'withdrawal':
+            return f'提款${self.money}'
+        return False
     
     @staticmethod
     def get_player_transactions(player):
@@ -157,7 +179,10 @@ class Transaction(models.Model):
         receive = Coalesce(Sum('money', filter=Q(type='receive')), Value(0)) 
         deposit = Coalesce(Sum('money', filter=Q(type='deposit')), Value(0))
         withdrawal_money = Coalesce(
-            Sum(F('money') * (1 + F('interest_rate')), output_field=IntegerField(), filter=Q(type='withdrawal')), Value(0)
+            Floor(
+                Sum(F('money') * (1 + F('interest_rate')), output_field=IntegerField(), filter=Q(type='withdrawal'))
+            ), 
+            Value(0)
         )
         withdrawal_deposit = Coalesce(Sum(F('money'), filter=Q(type='withdrawal')), Value(0))
         return player_trx.aggregate(

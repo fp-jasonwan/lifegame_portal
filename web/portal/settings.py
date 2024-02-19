@@ -64,16 +64,16 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.lionslifegame.app/"
     # 'http://127.0.0.1'
     ]
-CORS_ALLOWED_ORIGINS = [
-    'https://*.a.run.app', 
-    'https://*.lionslifegame.app/'
-    #"https://a.run.app",
-    #"https://lionslifegame.web.app", 
-    #"https://lionslifegame.firebaseapp.com",
-    #"https://www.lionslifegame.web.app", 
-    "https://*.lionslifegame.web.app",
-    # 'http://127.0.0.1'
-    ]
+# CORS_ALLOWED_ORIGINS = [
+#     'https://*.a.run.app', 
+#     'https://*.lionslifegame.app'
+#     #"https://a.run.app",
+#     #"https://lionslifegame.web.app", 
+#     #"https://lionslifegame.firebaseapp.com",
+#     #"https://www.lionslifegame.web.app", 
+#     "https://*.lionslifegame.web.app",
+#     'http://127.0.0.1'
+#     ]
     
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -258,5 +258,6 @@ CONSTANCE_CONFIG = {
     'GAME_MODE': ('opening', 'Select game mode', 'game_mode'),
     'SHARING_LINK': ('', ''),
     'RULES': ('', ''),
-    'room': ('', 'room start', 'room'),
+    # 'room': ('', 'room start', 'room'),
+    'MAP_URL': ('', ''),
 }

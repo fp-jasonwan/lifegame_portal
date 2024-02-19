@@ -18,9 +18,9 @@ from django.http import HttpResponseForbidden
 import datetime
 score_translation = {
         'health_score': '健康',
-        'skill_score': '健康',
+        'skill_score': '技能',
         'growth_score': '成長',
-        'relationship_score': '健康',
+        'relationship_score': '關係',
         'money': '金錢'
     }
 
@@ -69,6 +69,7 @@ def search_profile(request, encrypted_id=""):
         participations = Participation.objects.filter(player=player).all().order_by('-record_time')
         transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
         # instructor_score = InstructorScore.objects.filter(player=player).first()
+        print(scores)
         template = loader.get_template('player/profile.html')
         context = {
             'scores': scores,

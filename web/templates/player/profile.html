@@ -55,7 +55,7 @@
 			</div>
 			
 			<!-- Scores breakdown -->
-			<div class="contentNews title">分數</div>
+			<div class="contentNews title">資產</div>
 			{% if config.GAME_MODE == "start" %}
             <div class="contentNews bar">
                 <div class="contentNews bar1"  style="width:30%; font-size:14px">分數類別</div>
@@ -70,8 +70,18 @@
 			</div>
 			<div class="contentNews content1">
 				<div class="content1" style="width:30%; font-size:14px">銀行存款</div>
-				<div class="content3" style="width:35%; font-size:14px"></a></div>
+				<div class="content3" style="width:35%; font-size:14px">N/A</a></div>
 				<div class="content3" style="width:35%; font-size:14px">{{ scores.deposit }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">樓宇</div>
+				<div class="content3" style="width:35%; font-size:14px">N/A</a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.flat }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">步數</div>
+				<div class="content3" style="width:35%; font-size:14px">{{ player.born_steps }}</a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.steps }}</a></div>
 			</div>
             
 
@@ -153,7 +163,7 @@
             <div class="contentNews content1">
                 <div class="content3" style="width:30%; font-size:12px"> {{ participation.get_time }}</div>
                 <div class="content1" style="width:20%; font-size:12px"> {{ participation.booth }}</div>
-                <div class="content3" style="width:50%; font-size:12px"> {{ participation.score.name }}</div>
+                <div class="content3" style="width:50%; font-size:12px"><a href="{{ request.get_full_path }}/participation/{{ participation.id }}">{{ participation.score.name }}</a></div>
             </div>
             {% endfor %}
 			{% else %}
@@ -169,16 +179,16 @@
             <div class="contentNews bar">
                 <div class="contentNews bar3"  style="width:30%; font-size:12px">時間</div>
                 <div class="contentNews bar1"  style="width:20%; font-size:12px">攤位</div>
-                <div class="contentNews bar3"  style="width:25%; font-size:12px">金錢</div>
-                <div class="contentNews bar3"  style="width:25%; font-size:12px">銀行存款</div>
+                <div class="contentNews bar3"  style="width:50%; font-size:12px">內容</div>
             </div>
             
             {% for transaction in transactions %}
             <div class="contentNews content1">
                 <div class="content3" style="width:30%; font-size:12px"> {{ transaction.get_time }}</div>
                 <div class="content1" style="width:20%; font-size:12px"> {{ transaction.booth }}</div>
-                <div class="content3" style="width:25%; font-size:12px"> {{ transaction.get_money }}</div>
-                <div class="content3" style="width:25%; font-size:12px"> {{ transaction.get_deposit }}</div>
+                <div class="content3" style="width:50%; font-size:12px">
+					<a href="{{ request.get_full_path }}/transaction/{{ transaction.id }}">{{ transaction.get_player_str }}</a>
+				</div>
             </div>
             {% endfor %}
 			{% else %}

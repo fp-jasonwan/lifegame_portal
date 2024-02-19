@@ -6,11 +6,15 @@ from django.urls import path, include
 from django.contrib.auth.decorators import login_required, permission_required
 from booth.views import show_participations, get_traffic_record, show_participation, \
                         delete_participation, show_transactions, show_transaction, delete_transaction
+from player.views import show_participation as player_participation
+from player.views import show_transaction as player_transaction
 
 urlpatterns = [
     path('',oc_portal, name='oc_portal'),
     path('search_profile',search_profile, name='search_profile'),
     path('search_profile/<str:encrypted_id>', search_profile, name='search_profile_with_id'),
+    path('search_profile/<str:encrypted_id>/transaction/<str:tran_id>', player_transaction, name='player_trnasction'),
+    path('search_profile/<str:encrypted_id>/participation/<str:parti_id>', player_participation, name='player_participation'),
     path('booth_list', list_booth, name='list_booth'),
 
     path('booth/check_player', booth_home, name='booth_home'),

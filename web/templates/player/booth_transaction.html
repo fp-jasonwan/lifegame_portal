@@ -1,0 +1,88 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+    <div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+    <div class="subContent" style='background:white'>
+        <div class="contentInfo">
+            <div class="contentNews title">參與記錄</div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style="width:30%"></div>
+				<div class="contentNews bar2" style="width:70%"></div>
+			</div>
+
+            <div class="contentNews content1">
+                <div class="content1" style="width:30%">攤位</div>
+                    <div class="content2" style="width:70%">{{ transaction.booth.name }}</div>
+            </div>
+            <div class="contentNews content1">
+                <div class="content1" style="width:30%">記錄時間</div>
+                    <div class="content2" style="width:70%">{{ transaction.record_time|date:"d M H:i" }}</div>
+            </div>
+            <div class="contentNews content1">
+                <div class="content1" style="width:30%">內容</div>
+                    <div class="content2" style="width:70%">{{ transaction.get_player_str }}</div>
+            </div>            
+
+            
+            <div class="contentNews title">分數改變</div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style="width:30%">指數</div>
+				<div class="contentNews bar2" style="width:70%">得分</div>
+			</div>
+            {% for k, v in scores.items %}
+            <div class="contentNews content1">
+                <div class="content1" style="width:30%">{{ k }}</div>
+                <div class="content2" style="width:70%">{{ v }}</div>
+            </div>
+            {% endfor %}
+		</div>
+    </div>
+</div>
+       
+	<div class="footer">
+		{% if encrypted_id %}
+		<div><a href="/player/{{ encrypted_id }}"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% else %}
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% endif %}
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
+	</div>
+	 
+</div>
+
+</body>
+
+<script>
+    var elm = document.getElementById('delete-object');
+    var objectID = elm.getAttribute('data-object-id');
+    var resultDiv = document.getElementById('result');
+    elm.addEventListener('click', function() {
+    var ask = confirm('你確認要把此記錄刪除?');
+    if (ask && objectID) {
+        window.location.replace("/oc/booth/{{ booth.id }}/transactions/{{ transaction.id }}/delete");
+    } else {
+        resultDiv.textContent = "User cancelled the dialog box...";
+    }
+    return false;
+    });
+
+</script>
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert("{{ message }}");
+        window.location.href = "/oc/booth/{{ booth.id }}/traffics";
+    </script>  
+
+    {% endfor %}
+{% endif %}

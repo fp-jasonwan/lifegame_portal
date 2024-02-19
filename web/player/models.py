@@ -60,15 +60,20 @@ class Player(models.Model):
     def get_scores(self):
         participations = Participation.get_player_participation(self)
         transactions = Transaction.get_player_transactions(self)
-        result_dict = {
-            'health_score': participations['health_score'],
-            'skill_score': participations['skill_score'],
-            'growth_score': participations['growth_score'],
-            'relationship_score': participations['relationship_score'],
-            'money': participations['money'] + transactions['money'],
-            'deposit': transactions['deposit'],
-            'academic_level': participations['academic_level']
-        }
+        result_dict = participations
+        result_dict['money'] += transactions['money']
+        result_dict['deposit'] = transactions['deposit']
+        #  = {
+        #     'health_score': participations['health_score'],
+        #     'skill_score': participations['skill_score'],
+        #     'growth_score': participations['growth_score'],
+        #     'relationship_score': participations['relationship_score'],
+        #     'money': participations['money'] + transactions['money'],
+        #     'deposit': transactions['deposit'],
+        #     'academic_level': participations['academic_level'],
+        #     'flat': participations['flat'],
+        #     ''
+        # }
 
         # academic level text
         if participations['academic_level']==1: 
