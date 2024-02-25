@@ -143,7 +143,6 @@ class Participation(models.Model):
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
     record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True, verbose_name="時間")
     score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE, verbose_name="分數")
-    remarks = models.TextField(max_length=1000, null=True, blank=True, verbose_name="評語")
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
 
 class Transaction(models.Model):
@@ -230,7 +229,6 @@ class Transaction(models.Model):
     )
     money = models.IntegerField(verbose_name="金錢", default=0)
     interest_rate = models.FloatField(verbose_name='利率', default=0, blank=True)
-    remarks = models.TextField(max_length=1000, null=True, blank=True, verbose_name="備註")
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
 
 

@@ -138,6 +138,11 @@ def check_player(request, booth_id="", encrypted_id=""):
     else:
         user = get_object_or_404(User, encrypted_id=encrypted_id)
     player = user.player
+    # If the user does not exist, return error
+    if hasattr(user, 'player') == False:
+        context['error_type'] = 'unknown_user'
+        context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+        return HttpResponse(msg_template.render(context, request))
     request.session['booth'] = booth.id
     msg_template = loader.get_template('oc/booth_message.html')
     context = {
@@ -148,11 +153,6 @@ def check_player(request, booth_id="", encrypted_id=""):
         'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']
     }
 
-    # If the user does not exist, return error
-    if hasattr(user, 'player') == False:
-        context['error_type'] = 'unknown_user'
-        context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
-        return HttpResponse(msg_template.render(context, request))
     
     # Check player eligibility
     eligibility = booth.check_player(player)
@@ -531,23 +531,22 @@ def check_player(request, booth_id="", encrypted_id=""):
         user = get_object_or_404(User, id=encrypted_id)
     else:
         user = get_object_or_404(User, encrypted_id=encrypted_id)
-        
-    # If the user does not exist, return error
-    if hasattr(user, 'player') == False:
-        context['error_type'] = 'unknown_user'
-        context['message'] = '查無此玩家!'
-        return HttpResponse(msg_template.render(context, request))
-    
-    player = user.player
-    request.session['booth'] = booth.id
     
     context = {
         'booth': booth,
         'booth_scores': booth.get_requirements(),
-        'player_scores': player.get_scores(),
         'score_translation': score_translation,
         'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']
     }
+    # If the user does not exist, return error
+    if user.player is None:
+        context['error_type'] = 'unknown_user'
+        context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+        return HttpResponse(msg_template.render(context, request))
+    
+    player = user.player
+    request.session['booth'] = booth.id
+    context['player_scores'] = player.get_scores()
 
     # Check player eligibility
     eligibility = booth.check_player(player)

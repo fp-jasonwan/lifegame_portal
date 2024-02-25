@@ -34,7 +34,7 @@
                         <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                         <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
                         <div class="content2" style="display:None">{{ field }}</div>
-                    {% elif field.name == "booth" or field.name == "marker" %}
+                    {% elif field.name == "booth" or field.name == "marker"  or field.name == "record_time" %}
                         <div class="content2" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
                         <div class="content2" style="display:None">{{ field }}</div>
                     {% else %}
