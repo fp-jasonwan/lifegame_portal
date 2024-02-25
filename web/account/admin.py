@@ -21,17 +21,17 @@ class PlayerInline(admin.StackedInline):
 
 class MyUserAdmin(UserAdmin):
     list_per_page = 10
-    list_display = ('id', 'school',)
+    list_display = ('id', 'username',)
     search_fields = ('username','first_name', 'last_name', 'school')
     ordering = ('id',)
     form = MyUserChangeForm
     fieldsets = (
         (None, {'fields': ('username', 'password', 'user_type', 'encrypted_id')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'nick_name', 'email', 'mobile', 'school', 'school_code')}), 
+        ('Personal info', {'fields': ('first_name', 'last_name', 'nick_name', 'email', 'mobile', 'school', 'school_code', 'room_no')}), 
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 
-        # 'groups', 'user_permissions'
+        'groups', 'user_permissions'
         )}), 
-        ('Important dates', {'fields': ('last_login', 'date_joined', )}),
+        ('Voting', {'fields': ('best_booth', )}),
     )
     # inlines = [
     #     PlayerInline,

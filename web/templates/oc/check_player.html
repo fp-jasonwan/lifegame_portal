@@ -157,6 +157,10 @@
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/deposit/" + id
         } else if (scan_type == 'withdrawal') {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/transaction/withdrawal/" + id
+        } else if (scan_type == 'kill' ) {
+            if (confirm("確認要殺害此玩家?")) {
+                window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/kill/" + id
+            }
         } else {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/check_player/" + id
         }

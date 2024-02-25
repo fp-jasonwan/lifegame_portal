@@ -16,6 +16,7 @@ import environ
 from urllib.parse import urlparse
 from google.oauth2 import service_account
 import platform
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(DEBUG=(bool, True))
@@ -220,7 +221,10 @@ GS_DEFAULT_ACL = "publicRead"
 
 LOGIN_REDIRECT_URL = '/'
 STATIC_URL = "/static/"
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
+MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(env("GS_BUCKET_NAME"))
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'account.User'
 
@@ -241,23 +245,25 @@ CONSTANCE_ADDITIONAL_FIELDS = {
             ("closing", "Closing")
         )
     }],
-    'room': ['django.forms.fields.ChoiceField', {
+    'yesno': ['django.forms.fields.ChoiceField', {
         'widget': 'django.forms.Select',
         'choices': (
             ("yes", "yes"),
             ("no", "no"),
         )
     }],
+    'image_field': ['django.forms.ImageField', {}],
+
 }
 
 
 CONSTANCE_CONFIG = {
     'SITE_NAME': ('青少年人生之旅', 'Website title'),
     'ANNOUNCEMENT': ('', '公告'),
-    'HALL_LINK': ('', '禮堂連結'),
     'GAME_MODE': ('opening', 'Select game mode', 'game_mode'),
-    'SHARING_LINK': ('', ''),
     'RULES': ('', ''),
-    # 'room': ('', 'room start', 'room'),
-    'MAP_URL': ('', ''),
+    'voting': ('no', '攤位投票開始', 'yesno'),
+    'MAP': ('', '', 'image_field'),
+    'DEATH_MESSAGE_1': ('', ''),
+    'DEATH_MESSAGE_2': ('', '')
 }

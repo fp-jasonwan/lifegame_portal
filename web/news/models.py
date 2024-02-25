@@ -15,4 +15,6 @@ class News(models.Model):
         null=True, blank=True)
     title = models.CharField(max_length=100)
     message = models.TextField(max_length=200)
+    image_url = models.TextField(max_length=1000, blank=True)
+    image = models.ImageField(upload_to ='uploads/') 
     date = models.DateTimeField(verbose_name='發怖時間')

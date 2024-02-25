@@ -53,11 +53,16 @@
 		{% if 'G1' in booth.id %}
 		<div class="btnIndex">
 			<div class="text">存 款</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/deposit"><img src="{% static 'icons/money_pay.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/deposit"><img src="{% static 'icons/deposit.png' %}" alt="Contact"></a></div>
 		</div>
 		<div class="btnMap">
 			<div class="text">提 款</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/withdrawal"><img src="{% static 'icons/money_receive.png' %}" alt="Contact"></a></div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/withdrawal"><img src="{% static 'icons/withdrawal.png' %}" alt="Contact"></a></div>
+		</div>
+		{% elif 'Z1' in booth.id %}
+		<div class="btnIndex">
+			<div class="text">死 神</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/kill"><img src="{% static 'icons/death_king.png' %}" alt="Contact"></a></div>
 		</div>
 		{% endif %}
 	</div>

@@ -27,6 +27,10 @@
 	<div class="contentNews bar">
 		<div class="contentNews bar1" style='width:100%'><a href='/player/{{ encrypted_id }}/instructor'> 組別{{ group_id }}</a></div>
 	</div>
+	{% elif request.user.username == 'Z1' %}
+	<div class="contentNews bar" style="background-color: red">
+		<div class="contentNews bar1" style='width:100%'><a href='/player/{{ encrypted_id }}/instructor'>殺害此玩家</a></div>
+	</div>
 	{% endif %}
 	<div class="subContent">
 		<div class="titleInfo">
@@ -38,21 +42,25 @@
 		<div class="contentInfo">
 			<div class="contentInfo title">個人資料</div>
 			<div class="contentInfo content">
-				<div class="contentInfo content left">編號</div>
-				<div class="contentInfo content right">{{ player.user.get_id }}</div>
+				<div class="contentInfo content left" style="width:25%">編號</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.get_id }}</div>
 			</div>
 			<div class="contentInfo content">
-				<div class="contentInfo content left">姓名</div>
-				<div class="contentInfo content right">{{ player.user.last_name }}{{ player.user.first_name }}</a></div>
+				<div class="contentInfo content left" style="width:25%">姓名</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.last_name }}{{ player.user.first_name }}</a></div>
 			</div>
+			{% if player.user.user_type == 'student' %}
 			<div class="contentInfo content">
-				{% if player.user.user_type == 'student' %}
-				<div class="contentInfo content left">學校</div>
-				{% else %}
-				<div class="contentInfo content left">屬會</div>
-				{% endif %}
-				<div class="contentInfo content right">{{ player.user.school }}</a></div>
+				<div class="contentInfo content left" style="width:25%">學校</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.school }}</a></div>
 			</div>
+			{% endif %}
+			{% if player.user.user_type == 'student' and player.user.room_no %}
+			<div class="contentInfo content">
+				<div class="contentInfo content left" style="width:25%">房間號碼</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.room_no }}</a></div>
+			</div>
+			{% endif %}
 			
 			<!-- Scores breakdown -->
 			<div class="contentNews title">資產</div>
@@ -214,5 +222,6 @@
 	
 
 </body>
+
 </html>
 

@@ -25,7 +25,8 @@
 		<div class="contentContact">
 			<div class="contentInfo title">獅城地圖</div>
 			<div class="contentInfo content">
-				<a href="{{ map_url }}"><img src="{{ map_url }}" style="width:100%"/></a>
+				{% get_media_prefix as MEDIA_URL %}
+				<a href="{{ MEDIA_URL }}{{ config.MAP }}"><img src="{{ MEDIA_URL }}{{ config.MAP }}" style="width:100%"/></a>
 				<!-- <a href="{% static 'images/map.jpeg' %}"><img src="{% static 'images/map.jpeg' %}" style="width:100%"/></a> -->
 			</div>
 		</div>

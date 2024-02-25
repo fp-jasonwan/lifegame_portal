@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Player, InstructorScore
 from booth.models import Participation, BoothTraffic, Transaction
+from news.models import News, NewsCategory
 from django.shortcuts import get_object_or_404, render
 import django_tables2 as tables
 from account.models import User, InstructorGroup
@@ -12,6 +13,7 @@ import pandas as pd
 from constance import config
 import datetime
 from urllib.parse import urlparse
+from .forms import BoothSettingsForm
 
 # Create your views here.
 def get_profile(request, encrypted_id=""):
@@ -37,7 +39,7 @@ def get_profile(request, encrypted_id=""):
     else:
         template = loader.get_template('error/error_message.html')
         context = {
-            "message": "玩家的角色已經死亡，請到禮堂1尋求協助"
+            "message": f"{config.DEATH_MESSAGE_1}，{config.DEATH_MESSAGE_2}"
         }
         return HttpResponse(template.render(context, request))
 
@@ -101,10 +103,9 @@ def get_score_list(request, encrypted_id=""):
 
 def get_map(request, encrypted_id=""):
     template = loader.get_template('map.html')
-    map_url = urlparse(config.MAP_URL)
-    map_id = map_url.path.split('/')[3]
+    news_categories = NewsCategory.objects.all()
     context = {
-        'map_url': f"https://drive.google.com/thumbnail?id={map_id}&sz=w1600"
+        'news_categories': news_categories
     }
     return HttpResponse(template.render(context, request))
 
@@ -177,5 +178,32 @@ def instructor_get_player(request, encrypted_id, player_id):
         'participations': participations,
         'visits': visits,
         'is_instructor': True
+    }
+    return HttpResponse(template.render(context, request))
+    
+def vote_best_booth(request, encrypted_id=""):
+    user = User.objects.get(encrypted_id=encrypted_id)
+    request.session['from'] = request.META.get('HTTP_REFERER', '/')
+    # if Booth.objects.filter(booth=booth).exists():
+    instance = user
+    form = BoothSettingsForm(request.POST or None, instance=instance)
+    
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            msg_template = loader.get_template('player/player_message.html')
+            context = {
+                'encrypted_id': encrypted_id,
+                'message': '成功投選我最喜愛攤位!'
+            }
+            return HttpResponse(msg_template.render(context, request))
+        else:
+            print("INVALID FORM")
+    template = loader.get_template('player/voting_booth.html')
+    
+    context = {
+        'encrypted_id': encrypted_id,
+        'form': form,
+        'user': user,
     }
     return HttpResponse(template.render(context, request))

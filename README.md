@@ -45,3 +45,6 @@ gcloud secrets describe django_app_settings
 
 ### LOCAL
 $env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\wanyi\git\lifegame_portal\creds.json"
+
+### jupyter notebook
+python manage.py shell_plus --notebook

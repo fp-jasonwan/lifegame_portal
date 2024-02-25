@@ -1,11 +1,13 @@
 from django.db import models
 from booth.models import Participation, Transaction
 from django.db.models import Sum
-from django.db.models.functions import Coalesce
+from django.db.models.functions import Coalesce, Least
 # from account.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from booth.models import Transaction, Participation
-from django.db.models import Sum, Max, Subquery, Q, F
+from django.db.models import Sum, Max, Subquery, Q, F, Avg, Count, Min, Max, Sum, F, Q
+from django.db.models import Value, IntegerField
+from django.db.models.functions import Coalesce, Greatest, Floor
 import pandas as pd
 import pytz
 from datetime import datetime
@@ -45,7 +47,7 @@ class Player(models.Model):
     born_academic_level = models.IntegerField()
     born_steps = models.IntegerField()
     born_defect = models.CharField(max_length=100, blank=True, null=True)
-
+    inactive_reason = models.CharField(max_length=200, blank=True, null=True)
     def get_born_scores(self):
         return {
             'health_score': self.born_health_score,
@@ -63,17 +65,6 @@ class Player(models.Model):
         result_dict = participations
         result_dict['money'] += transactions['money']
         result_dict['deposit'] = transactions['deposit']
-        #  = {
-        #     'health_score': participations['health_score'],
-        #     'skill_score': participations['skill_score'],
-        #     'growth_score': participations['growth_score'],
-        #     'relationship_score': participations['relationship_score'],
-        #     'money': participations['money'] + transactions['money'],
-        #     'deposit': transactions['deposit'],
-        #     'academic_level': participations['academic_level'],
-        #     'flat': participations['flat'],
-        #     ''
-        # }
 
         # academic level text
         if participations['academic_level']==1: 
@@ -97,42 +88,44 @@ class Player(models.Model):
         return self.get_scores()[score_name]
 
     @staticmethod
-    def get_total_score_list():
-        born_df = pd.DataFrame(Player.objects \
-            .filter(user__user_type = 'student') \
-            .values(uid=F('user__id')) \
-            .annotate(
-                born_health=Max('born_health_score'),
-                born_skill=Max('born_skill_score'),
-                born_growth=Max('born_growth_score'),
-                born_relationship=Max('born_relationship_score'),
-            )
-        ).fillna(0)
-        participation_df = pd.DataFrame(Participation.objects \
-            .filter(player__user__user_type = 'student') \
-            .values(uid=F('player__user__id')) \
-            .annotate(
-                participation_health=Sum('score__health_score'),
-                participation_skill=Sum('score__skill_score'),
-                participation_growth=Sum('score__growth_score'),
-                participation_relationship=Sum('score__relationship_score'),
-            )
-        ).fillna(0)
-        score_df = born_df.copy()
-        if len(participation_df) > 0:
-            score_df = score_df.merge(participation_df, how='left', on='uid')
-        score_df = score_df.set_index('uid').sum(axis=1).reset_index()
-        score_df.rename(columns={0: 'total_score'}, inplace=True)
-        score_df = score_df.sort_values('total_score', ascending=False)
-        return score_df
+    def get_total_score_list(no_of_rows=10):
+        best_score_df  = pd.DataFrame(
+            Participation.objects \
+                         .filter(player__user__user_type='student') \
+                         .values('player') \
+                         .annotate(total_score=
+                            Least(300, Sum('score__health_score') + Max('player__born_health_score')) +
+                            Least(300, Sum('score__skill_score') + Max('player__born_skill_score')) +
+                            Least(300, Sum('score__relationship_score') + Max('player__born_relationship_score')) +
+                            Least(300, Sum('score__growth_score') + Max('player__born_growth_score'))
+                         )
+                         .order_by('-total_score')[:no_of_rows]
+        )
+        return best_score_df
 
     @staticmethod
-    def get_rich_list():
-        participation_df = pd.DataFrame(Participation.objects \
-                                        # .filter(player__user__user_type = 'student') \
-                                        .values('player') \
-                                        .annotate(money=Sum('score__money')))
-        return participation_df.sort_values('money', ascending=False)
+    def get_rich_list(no_of_rows=10):
+        parti_money_df = pd.DataFrame(Participation.objects.values('player').annotate(money=Sum('score__money')))
+        player_df =  pd.DataFrame(Player.objects.values('id', money=F('born_money')).all())
+        pay = Coalesce(Sum('money', filter=Q(type='pay')), Value(0))
+        receive = Coalesce(Sum('money', filter=Q(type='receive')), Value(0)) 
+        deposit = Coalesce(Sum('money', filter=Q(type='deposit')), Value(0))
+        withdrawal_money = Coalesce(
+            Floor(
+                Sum(F('money') * (1 + F('interest_rate')), output_field=IntegerField(), filter=Q(type='withdrawal'))
+            ), 
+            Value(0)
+        )
+        withdrawal_deposit = Coalesce(Sum(F('money'), filter=Q(type='withdrawal')), Value(0))
+        trx_df = pd.DataFrame(
+            Transaction.objects.values('player') \
+                               .annotate(money = pay - receive - deposit + withdrawal_money + deposit - withdrawal_deposit)
+        )
+        rich_df = pd.concat([parti_money_df, player_df, trx_df]).groupby('player', as_index=False)['money'].sum()
+        rich_df = rich_df.sort_values('money', ascending=False)
+        rich_df['player'] = rich_df['player'].astype('int')
+        rich_df['money'] = rich_df['money'].astype('int')
+        return rich_df[:no_of_rows]
 
 class InstructorScore(models.Model):
     player = models.OneToOneField(Player, on_delete=models.CASCADE)

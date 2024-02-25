@@ -6,6 +6,38 @@
 <title>青少年人生之旅</title>
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<style>
+	ul {
+	  list-style-type: none;
+	  margin: 0;
+	  padding: 0;
+	  overflow: hidden;
+	  border: 1px solid #e7e7e7;
+	  background-color: #f3f3f3;
+	}
+	
+	li {
+	  float: left;
+	}
+	
+	li a {
+	  display: block;
+	  /* color: #666; */
+	  color: #d85e2d;
+	  text-align: center;
+	  padding: 12px 16px;
+	  text-decoration: none;
+	}
+	
+	li a:hover:not(.active) {
+	  background-color: #ddd;
+	}
+	
+	li a.active {
+	  color: white;
+	  background-color: #d85e2d;
+	}
+	</style>
 </head>
 
 <body>
@@ -23,15 +55,33 @@
 	<div class="subContent">
 		<div class="contentInfo">
             <div class="contentNews title">新聞</div>
+			<div class="contentNews title">
+				<ul>
+					{% if news_category_filter == "all" %}
+					<li><a class="active" href="{{ request.path }}">全部</a></li>
+					{% else %}
+					<li><a href="{{ request.path }}">全部</a></li>
+					{% endif %}
+					{% for c in news_category %}
+					{% if news_category_filter == c.name %}
+					<li><a class="active" href="{{ request.path }}?news_category={{ c.name }}">{{ c.name }}</a></li>
+					{% else %}
+					<li><a href="{{ request.path }}?news_category={{ c.name }}">{{ c.name }}</a></li>
+					{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
 			<div class="contentNews bar">
 				<div class="contentNews bar1" style='width:30%'>時間</div>
-				<div class="contentNews bar3" style='width:70%'>內容</div>
+				<div class="contentNews bar3" style='width:20%'>類別</div>
+				<div class="contentNews bar3" style='width:50%'>標題</div>
 			</div>
             
             {% for new in news %}
 			<div class="contentNews content1">
-				<div class="content1" style='width:30%'> {{ new.date|date:"d M" }}</div>
-				<div class="content3" style='width:70%'>{{ new.title }}</div>
+				<div class="content1" style='width:30%'> {{ new.date|date:"d M H:i" }}</div>
+				<div class="content1" style='width:20%'> {{ new.category.name }}</div>
+				<div class="content3" style='width:50%'><a href="{{ request.get_full_path }}{{ new.id }}">{{ new.title }}</a></div>
 			</div>
             {% endfor %}
      

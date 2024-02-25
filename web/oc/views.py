@@ -50,21 +50,20 @@ def search_profile(request, encrypted_id=""):
     if encrypted_id == "":
         return HttpResponse(template.render(context, request))
     else:
-        try:
-            if encrypted_id.isnumeric():
-                user = get_object_or_404(User, id=int(encrypted_id))
-                player = user.player
-            elif len(encrypted_id) < 10:
-                id = int(encrypted_id[:3])
-                user = get_object_or_404(User, id=id)
-                player = user.player
-            else:
-                user = get_object_or_404(User, encrypted_id=encrypted_id)
-                player = user.player
-        except:
-            messages.success(request, '查無此玩家!')
-            context['message'] = '查無此玩家!'
-            return HttpResponse(template.render(context, request))
+        if encrypted_id.isnumeric():
+            user = get_object_or_404(User, id=int(encrypted_id))
+            player = user.player
+        else:
+            user = get_object_or_404(User, encrypted_id=encrypted_id)
+            player = user.player
+        
+        # If the user does not exist, return error
+        if user.player is None:
+            msg_template = loader.get_template('oc/booth_message.html')
+            context['error_type'] = 'unknown_user'
+            context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+            return HttpResponse(msg_template.render(context, request))
+        
         scores = player.get_scores()
         participations = Participation.objects.filter(player=player).all().order_by('-record_time')
         transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
@@ -93,7 +92,7 @@ def list_booth(request, type=""):
     # elif type == 'participations':
     #     url_base = '/oc/booth/%s/participations'
     # else:
-    #     url_base = '/oc/booth/%s'
+    url_base = '/oc/booth/%s'
 
     if len(booths) > 1:
         template = loader.get_template('oc/booth_list.html')
@@ -152,7 +151,7 @@ def check_player(request, booth_id="", encrypted_id=""):
     # If the user does not exist, return error
     if hasattr(user, 'player') == False:
         context['error_type'] = 'unknown_user'
-        context['message'] = '查無此玩家!'
+        context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
         return HttpResponse(msg_template.render(context, request))
     
     # Check player eligibility
@@ -376,7 +375,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
             template = loader.get_template('oc/booth_message.html')
             context = {
                 'booth': booth,
-                'message': '查無此玩家!'
+                'message': '此玩家的角色已經死亡,請重新領取身份!'
             }
             return HttpResponse(template.render(context, request))
         form = TransactionForm(request.POST or None,
@@ -498,3 +497,64 @@ def get_contact(request, encrypted_id=""):
         'encrypted_id': encrypted_id
     }
     return HttpResponse(template.render(context, request))
+
+def kill_player(request, booth_id, encrypted_id=None):
+    booth = get_object_or_404(Booth, id=booth_id)
+    template = loader.get_template('oc/check_player.html')
+    msg_template = loader.get_template('oc/booth_message.html')
+    context = {
+        'booth': booth,
+        'scan_type': 'kill'
+    }
+    # If the user does not exist, return error
+    if encrypted_id:
+        if encrypted_id.isnumeric():
+            user = get_object_or_404(User, id=encrypted_id)
+        else:
+            user = get_object_or_404(User, encrypted_id=encrypted_id)
+        if user.player is None:
+            context['error_type'] = 'unknown_user'
+            context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+            return HttpResponse(msg_template.render(context, request))
+        
+        player = user.get_player()
+        player.is_active = False
+        player.save()
+        context['message'] = '此玩家的角色已被死神殺害,請重新領取身份!'
+        return HttpResponse(msg_template.render(context, request))
+    return HttpResponse(template.render(context, request))
+
+def check_player(request, booth_id="", encrypted_id=""):
+    booth = get_object_or_404(Booth, id=booth_id)
+    msg_template = loader.get_template('oc/booth_message.html')
+    if encrypted_id.isnumeric():
+        user = get_object_or_404(User, id=encrypted_id)
+    else:
+        user = get_object_or_404(User, encrypted_id=encrypted_id)
+        
+    # If the user does not exist, return error
+    if hasattr(user, 'player') == False:
+        context['error_type'] = 'unknown_user'
+        context['message'] = '查無此玩家!'
+        return HttpResponse(msg_template.render(context, request))
+    
+    player = user.player
+    request.session['booth'] = booth.id
+    
+    context = {
+        'booth': booth,
+        'booth_scores': booth.get_requirements(),
+        'player_scores': player.get_scores(),
+        'score_translation': score_translation,
+        'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']
+    }
+
+    # Check player eligibility
+    eligibility = booth.check_player(player)
+    if len(eligibility) == 0:
+        return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id)) 
+    else:
+        context['eligibility'] = eligibility
+        context['error_type'] = 'not_eligible'
+        context['message'] = '此玩家不符合攤位要求!'
+        return HttpResponse(msg_template.render(context, request))

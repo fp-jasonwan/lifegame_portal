@@ -1,0 +1,63 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+    <div class="logo"><a href="/player/{{ encrypted_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+    <div class="subContent" style='background:white'>
+        <form action="/player/{{ encrypted_id }}/vote" method="post">
+        {% csrf_token %}
+        <div class="contentInfo">
+            <div class="contentNews title">投票</div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style="width:100%">我最喜愛攤位</div>
+			</div>
+            <div class="contentNews content1">
+                <div class="content2" style="width:100%">投票只能進行一次,請謹慎選擇!</div>
+            </div>
+            
+            {% if user.best_booth %}
+                <div class="contentNews content1">
+                    <div class="content2" style="width:100%">{{ form.best_booth|attr:"disabled:disabled" }}</div>
+                </div>
+            {% else %}
+                <div class="contentNews content1">
+                    <div class="content2" style="width:100%">{{ form.best_booth }}</div>
+                </div>
+                <div class="btn"><input src="{% static 'images/yolo.png' %}" style="height:100px;width:100px" type="image" /></div>
+            {% endif %}
+            
+            
+		</div>
+        </form>
+        
+    </div>
+</div>
+       
+	<div class="footer">
+		
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
+	</div>
+	 
+</div>
+
+</body>
+
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        alert("{{ message }}");
+        window.location.href = "/oc/booth/{{ booth.id }}/traffics";
+    </script>  
+
+    {% endfor %}
+{% endif %}

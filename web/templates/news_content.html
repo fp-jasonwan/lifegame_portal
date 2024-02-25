@@ -23,8 +23,13 @@
 	<div class="subContent">
 		<div class="contentInfo">
             <div class="contentNews title">{{ news.title }}</div>
+			{% if news.image %}
+			<div class="contentNews content">
+				<a href="{{ news.image.url }}"><img src="{{ news.image.url }}" style="width:100%"/></a>
+			</div>
+			{% endif %}
 			<div class="contentNews content">{{ news.message }}</div>
-			<div class="contentNews content">{{ news.date|date:"d M" }}</div>
+			<div class="contentNews content">{{ news.date|date:"d M H:i" }}</div>
      
 		</div>
 	</div>

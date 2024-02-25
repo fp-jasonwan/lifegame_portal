@@ -1,0 +1,43 @@
+
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="main">
+    <div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
+
+	<a href='/oc/booth/{{ booth.id }}'>
+		<div class="contentNews bar">
+			<div class="contentNews bar1" style='width:100%'>{{ booth }}</div>
+		</div>
+	</a>
+	<div class="menu">
+		<div class="btnNews">
+			<div class="text">死神</div>
+			<div class="icon"><a href="check_player"><img src="{% static 'icons/input_booth_score.png' %}" alt="News"></a></div>
+		</div>
+		{% endif %}
+	</div>
+		
+	<div class="footer">
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
+	</div>
+
+</div>
+	
+
+</body>
+</html>

@@ -26,17 +26,26 @@ class NewsListView(SingleTableView):
     table_class = NewsTable
     template_name = 'news.html'
 
-def get_news(request, encrypted_id="", category=''):
+def get_news(request, encrypted_id=""):
+    news_category_filter = request.GET.get('news_category')
+    print(news_category_filter)
     news_category = NewsCategory.objects.all()
-    if category != '':
-        selected_category = NewsCategory.objects.filter(name=category)
-        news = News.objects.filter(category=selected_category).order_by('date').all()
+    if news_category_filter:
+        selected_category = NewsCategory.objects.filter(name=news_category_filter).first()
+        news = News.objects \
+                    .filter(category=selected_category) \
+                    .filter(date__lt=datetime.datetime.now()) \
+                    .order_by('date').all()
     else:
-        news = News.objects.filter().order_by('date').all()
+        news_category_filter = 'all'
+        news = News.objects.filter(
+            date__lt=datetime.datetime.now()
+        ).order_by('date').all()
     currentTime = datetime.datetime.now().time()
     
     template = loader.get_template('news.html')
     context = {
+        'news_category_filter': news_category_filter,
         'news_category': news_category,
         'news': news,
         'encrypted_id': encrypted_id,
