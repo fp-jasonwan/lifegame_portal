@@ -105,7 +105,8 @@ def get_map(request, encrypted_id=""):
     template = loader.get_template('map.html')
     news_categories = NewsCategory.objects.all()
     context = {
-        'news_categories': news_categories
+        'news_categories': news_categories,
+        'encrypted_id': encrypted_id,
     }
     return HttpResponse(template.render(context, request))
 
@@ -116,7 +117,7 @@ def get_instructor_students(request, encrypted_id=""):
         group = get_object_or_404(InstructorGroup, instructor=user)
         context = {
             'group_id': group.id,
-            'students': group.students.all(),
+            'students': group.students.order_by('id').all(),
             'players': group.get_player(),
             'encrypted_id': encrypted_id
         }
@@ -164,11 +165,9 @@ def instructor_get_player(request, encrypted_id, player_id):
     instructor = get_object_or_404(User, encrypted_id=encrypted_id)
     group = get_object_or_404(InstructorGroup, instructor=instructor)
     player = get_object_or_404(Player, id=player_id)
-        # player = Player.objects.get(player_id=player_id)
     scores = player.get_scores()
     participations = Participation.objects.filter(player=player).all().order_by('-record_time')
     visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
-    # instructor_score = InstructorScore.objects.filter(player=player).first()
     template = loader.get_template('player/profile.html')
     context = {
         'group_id': group.id,
@@ -207,3 +206,5 @@ def vote_best_booth(request, encrypted_id=""):
         'user': user,
     }
     return HttpResponse(template.render(context, request))
+
+# def create_player(request, encrypted_id):

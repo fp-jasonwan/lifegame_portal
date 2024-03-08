@@ -64,6 +64,11 @@
 			<div class="text">死 神</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/kill"><img src="{% static 'icons/death_king.png' %}" alt="Contact"></a></div>
 		</div>
+		{% elif 'Z2' in booth.id %}
+		<div class="btnIndex">
+			<div class="text">創 造</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/create"><img src="{% static 'icons/angel.png' %}" alt="Contact"></a></div>
+		</div>
 		{% endif %}
 	</div>
 		

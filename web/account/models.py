@@ -120,8 +120,8 @@ class User(AbstractUser):
     
 class InstructorGroup(models.Model):
     def get_player(self):
-        players = Player.objects.filter(user__in=self.students.all()).order_by('-active')
+        players = Player.objects.filter(user__in=self.students.all()).order_by('-active','user__id')
         return players
-
+    id = models.AutoField(primary_key=True)
     instructor = models.ManyToManyField('account.User', related_name='instructor')
     students = models.ManyToManyField('account.User', related_name='student')

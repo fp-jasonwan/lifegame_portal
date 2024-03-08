@@ -161,6 +161,10 @@
             if (confirm("確認要殺害此玩家?")) {
                 window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/kill/" + id
             }
+        } else if (scan_type == 'create' ) {
+            if (confirm("確認要創造新的身份予此玩家?")) {
+                window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/create/" + id
+            }
         } else {
             window.location.href = baseUrl + "/oc/booth/{{ booth.id }}/check_player/" + id
         }

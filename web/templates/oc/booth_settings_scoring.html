@@ -29,7 +29,7 @@
             {% for field in form %}
                 <div class="contentNews content1">
                     
-                    {% if field.name == "booth" or field.name == "active" %}
+                    {% if field.name == "booth" or field.name == "active" or field.name == 'record_time' %}
                         <div class="content1" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
                         <div class="content2" style="display:None">{{ field }}</div>
                     {% elif field.name == "flat" %}

@@ -11,7 +11,7 @@ from django.db.models.functions import Coalesce, Greatest, Floor
 import pandas as pd
 import pytz
 from datetime import datetime
-
+import numpy as np
 # Create your models here.
 LIVE_STATUS_CHOICES = [
     ('active', 'active'),
@@ -24,7 +24,7 @@ class Player(models.Model):
         if self.active:
             return "{} {} {}".format(self.user.get_id(), self.user.last_name, self.user.first_name)
         else:
-            return "{} (inactive)".format(self.user.get_id())
+            return "{} (已死亡)".format(self.user.get_id())
             # return "{}{} (inactive)".format(self.user.last_name, self.user.first_name)
     
     def save(self, *args, **kwargs):
@@ -89,24 +89,45 @@ class Player(models.Model):
 
     @staticmethod
     def get_total_score_list(no_of_rows=10):
-        best_score_df  = pd.DataFrame(
+        player_df =  pd.DataFrame(
+            Player.objects \
+                  .filter(user__user_type='student') \
+                  .values(
+                        player=F('user__id'), 
+                        total_score=F('born_health_score') +
+                                    F('born_skill_score') +
+                                    F('born_relationship_score') +
+                                    F('born_growth_score')
+            ).all()
+        )
+        parti_df  = pd.DataFrame(
             Participation.objects \
                          .filter(player__user__user_type='student') \
                          .values('player') \
                          .annotate(total_score=
-                            Least(300, Sum('score__health_score') + Max('player__born_health_score')) +
-                            Least(300, Sum('score__skill_score') + Max('player__born_skill_score')) +
-                            Least(300, Sum('score__relationship_score') + Max('player__born_relationship_score')) +
-                            Least(300, Sum('score__growth_score') + Max('player__born_growth_score'))
+                            Sum('score__health_score') +
+                            Sum('score__skill_score') +
+                            Sum('score__relationship_score') +
+                            Sum('score__growth_score')
                          )
-                         .order_by('-total_score')[:no_of_rows]
         )
-        return best_score_df
+        best_score_df = pd.concat([parti_df, player_df]).groupby('player', as_index=False)['total_score'].sum()
+        
+        best_score_df = best_score_df.sort_values('total_score', ascending=False)
+        return best_score_df[:no_of_rows]
 
     @staticmethod
     def get_rich_list(no_of_rows=10):
-        parti_money_df = pd.DataFrame(Participation.objects.values('player').annotate(money=Sum('score__money')))
-        player_df =  pd.DataFrame(Player.objects.values('id', money=F('born_money')).all())
+        parti_money_df = pd.DataFrame(
+            Participation.objects \
+                         .filter(player__user__user_type='student') \
+                         .values(p=F('player__user__id')).annotate(money=Sum('score__money'))
+        )
+        player_df =  pd.DataFrame(
+            Player.objects \
+                  .filter(user__user_type='student') \
+                  .values(p=F('user__id'), money=F('born_money')).all()
+        )
         pay = Coalesce(Sum('money', filter=Q(type='pay')), Value(0))
         receive = Coalesce(Sum('money', filter=Q(type='receive')), Value(0)) 
         deposit = Coalesce(Sum('money', filter=Q(type='deposit')), Value(0))
@@ -118,10 +139,13 @@ class Player(models.Model):
         )
         withdrawal_deposit = Coalesce(Sum(F('money'), filter=Q(type='withdrawal')), Value(0))
         trx_df = pd.DataFrame(
-            Transaction.objects.values('player') \
-                               .annotate(money = pay - receive - deposit + withdrawal_money + deposit - withdrawal_deposit)
+            Transaction.objects \
+                      .filter(player__user__user_type='student') \
+                      .values(p=F('player__user__id')) \
+                      .annotate(money = pay - receive - deposit + withdrawal_money + deposit - withdrawal_deposit)
         )
-        rich_df = pd.concat([parti_money_df, player_df, trx_df]).groupby('player', as_index=False)['money'].sum()
+        rich_df = pd.concat([parti_money_df, player_df, trx_df]).groupby('p', as_index=False)['money'].sum()
+        rich_df = rich_df.rename(columns={'p': 'player'})
         rich_df = rich_df.sort_values('money', ascending=False)
         rich_df['player'] = rich_df['player'].astype('int')
         rich_df['money'] = rich_df['money'].astype('int')

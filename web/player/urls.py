@@ -14,12 +14,10 @@ urlpatterns = [
     path('profile', get_profile, name='profile_by_userid'),
     path('profile/participation/<str:parti_id>', show_participation, name="get_parti_record"),
     path('profile/transaction/<str:tran_id>', show_transaction, name="get_parti_record"),
-    # path('', views.get_profile, name='self_profile'),
-    # path('', TemplateView.as_view(template_name='home.html'), name='home'),
+
     path('', home_page, name='home'),
     path('oc/', include('oc.urls')),
     path('admin/', admin.site.urls),
-    # path('accounts/', include('django.contrib.auth.urls')),
     path('news/', get_news),
     path('news/<str:news_id>', get_news_content),
     path('contact/', get_contact, name='contact'),

@@ -17,7 +17,7 @@ admin.site.register(Booth, BoothAdmin)
 class ParticipationAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_select_related = True
-    list_display = ('score', )
+    list_display = ('id', 'booth', 'player', 'record_time', 'score' )
     search_fields = ['player__user__username']
     raw_id_fields = ['player', 'booth']
     ordering = ['player__user__id']
@@ -26,6 +26,7 @@ admin.site.register(Participation, ParticipationAdmin)
 class TransactionAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_select_related = True
+    list_display = ('id', 'booth', 'player', 'record_time', 'type', 'money')
     search_fields = ['player__user__username']
     raw_id_fields = ['player', 'booth']
     ordering = ['player__user__id']

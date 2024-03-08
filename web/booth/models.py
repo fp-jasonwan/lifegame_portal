@@ -89,7 +89,7 @@ class BoothScoring(models.Model):
     relationship_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='關係分數')
     money = models.IntegerField(blank=True, null=True, default=0, verbose_name='金錢')
     academic_level = models.IntegerField(blank=True, null=True, default=0, verbose_name='學歷')
-    steps = models.IntegerField(blank=True, null=True, default=0, verbose_name='步數')
+    steps = models.IntegerField(blank=True, null=True, default=-1, verbose_name='步數')
     flat = models.IntegerField(blank=True, null=True, default=0, verbose_name='樓宇')
     record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True, verbose_name="時間")
     active = models.BooleanField(default=True)

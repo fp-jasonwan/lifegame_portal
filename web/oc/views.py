@@ -16,6 +16,8 @@ from django.db.models import Q
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseForbidden
 import datetime
+import random
+
 score_translation = {
         'health_score': '健康',
         'skill_score': '技能',
@@ -411,7 +413,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                         context = {
                             'error_type': 'insufficient_amount',
                             'message': f"""
-                                玩家銀行不足! 玩家現有銀行存款為${player_deposit} 
+                                玩家銀行存款不足! 玩家現有銀行存款為${player_deposit} 
                             """,
                             'booth': booth
                         }
@@ -557,3 +559,38 @@ def check_player(request, booth_id="", encrypted_id=""):
         context['error_type'] = 'not_eligible'
         context['message'] = '此玩家不符合攤位要求!'
         return HttpResponse(msg_template.render(context, request))
+
+def create_player(request, booth_id, encrypted_id=None):
+    booth = get_object_or_404(Booth, id=booth_id)
+    template = loader.get_template('oc/check_player.html')
+    msg_template = loader.get_template('oc/booth_message.html')
+    context = {
+        'booth': booth,
+        'scan_type': 'create'
+    }
+    # If the user does not exist, return error
+    if encrypted_id:
+        if encrypted_id.isnumeric():
+            user = get_object_or_404(User, id=encrypted_id)
+        else:
+            user = get_object_or_404(User, encrypted_id=encrypted_id)
+        random_index = {
+            'money': [10000,15000,20000,25000,30000,35000,40000,45000,50000],
+            'health_score': [20, 40, 60, 80, 100, 120],
+            'skill_score': [20, 40, 60, 80, 100, 120, 130],
+            'growth_score': [5, 10, 15, 20, 25, 30, 35],
+            'relationship_score': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            'academic_level': [1, 2, 3, 4]
+        }
+        player = Player.objects.create(
+            user=user,
+            born_money=random.choice(random_index['money']),
+            born_health_score=random.choice(random_index['health_score']),
+            born_skill_score=random.choice(random_index['skill_score']),
+            born_growth_score=random.choice(random_index['growth_score']),
+            born_relationship_score=random.choice(random_index['relationship_score']),
+            born_academic_level=random.choice(random_index['academic_level']),
+            born_steps=15
+        )
+        return redirect(f"/oc/search_profile/{user.id}")
+    return HttpResponse(template.render(context, request))
