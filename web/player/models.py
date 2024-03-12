@@ -76,7 +76,7 @@ class Player(models.Model):
         elif participations['academic_level']==4: 
             result_dict['academic_level_text'] = '大學畢業'
         else:
-            result_dict['academic_level_text'] = ''
+            result_dict['academic_level_text'] = '無學歷'
 
         result_dict['total_score'] = result_dict['health_score'] + \
                                      result_dict['skill_score'] + \

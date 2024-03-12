@@ -2,3 +2,6 @@ web/booth/forms.py
 creds.json
 qrcodes/
 web/Notebooks/data.xlsx
+.xlsx
+web/Notebooks/instructor.xlsx
+web/Notebooks/student.xlsx
