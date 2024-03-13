@@ -40,7 +40,7 @@ def get_news(request, encrypted_id=""):
         news_category_filter = 'all'
         news = News.objects.filter(
             date__lt=datetime.datetime.now()
-        ).order_by('date').all()
+        ).order_by('-date').all()
     currentTime = datetime.datetime.now().time()
     
     template = loader.get_template('news.html')
