@@ -20,4 +20,4 @@ class NewsCategoryAdmin(admin.ModelAdmin):
     inlines = [NewsCategoryInline]
     list_display = ('id', 'name')
 
-admin.site.register(NewsCategory, NewsAdmin)
+admin.site.register(NewsCategory, NewsCategoryAdmin)
