@@ -7,8 +7,10 @@ admin.site.register(News)
 
 class NewsInline(admin.TabularInline):
     model = News
+    list_display = ('id', 'name',)
 
 class NewsAdmin(admin.ModelAdmin):
     inlines = [NewsInline]
+    list_display = ('id', 'title', 'category')
 
 admin.site.register(NewsCategory, NewsAdmin)
