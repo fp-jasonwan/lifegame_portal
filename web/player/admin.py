@@ -16,7 +16,8 @@ class PlayerForm(forms.ModelForm):
 
 class PlayerAdmin(admin.ModelAdmin):
     list_per_page = 10
-    search_fields = ['user__username']
+    list_display = ('user', '__str__',)
+    search_fields = ['user__username', 'user__id']
     form = PlayerForm
     ordering = ['user__id']
     

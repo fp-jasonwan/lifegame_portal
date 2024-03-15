@@ -575,12 +575,12 @@ def create_player(request, booth_id, encrypted_id=None):
         else:
             user = get_object_or_404(User, encrypted_id=encrypted_id)
         random_index = {
-            'money': [10000,15000,20000,25000,30000,35000,40000,45000,50000],
-            'health_score': [20, 40, 60, 80, 100, 120],
-            'skill_score': [20, 40, 60, 80, 100, 120, 130],
-            'growth_score': [5, 10, 15, 20, 25, 30, 35],
+            'money': [10000,10000,15000,20000,25000,30000,35000,40000,45000,50000],
+            'health_score': [20, 40, 40, 60, 60, 80, 80, 100, 100, 120],
+            'skill_score': [20, 20, 40, 40, 60, 60, 80, 100, 120, 130],
+            'growth_score': [5, 5, 5, 10, 10, 15, 20, 25, 30, 35],
             'relationship_score': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-            'academic_level': [1, 2, 3, 4]
+            'academic_level': [0, 0, 0, 0, 1, 1, 1, 2, 2, 4]
         }
         player = Player.objects.create(
             user=user,
