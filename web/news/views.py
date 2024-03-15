@@ -54,10 +54,11 @@ def get_news(request, encrypted_id=""):
     return HttpResponse(template.render(context, request))
 
 
-def get_news_content(request, news_id):
+def get_news_content(request, news_id, encrypted_id=""):
     news = get_object_or_404(News, id=news_id)
     template = loader.get_template('news_content.html')
     context = {
-        'news': news
+        'news': news,
+        'encrypted_id': encrypted_id,
     }
     return HttpResponse(template.render(context, request))

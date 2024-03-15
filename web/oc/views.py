@@ -238,7 +238,6 @@ def register_player(request, booth_id, encrypted_id, participation=""):
         else:
             print("INVALID FORM")
     template = loader.get_template('oc/booth_register2.html')
-    print('register checkpoint 3: ', datetime.datetime.now())
 
     # reduce options in the fields
     form.fields['booth'].queryset = Booth.objects.filter(id=booth.id)

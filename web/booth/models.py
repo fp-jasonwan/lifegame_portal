@@ -5,6 +5,7 @@ from django.db.models import Value, IntegerField
 from django.db.models.functions import Coalesce, Greatest, Floor
 from datetime import datetime
 import pytz
+from django.utils import timezone
 
 # from player.models import Player
 
@@ -91,7 +92,7 @@ class BoothScoring(models.Model):
     academic_level = models.IntegerField(blank=True, null=True, default=0, verbose_name='學歷')
     steps = models.IntegerField(blank=True, null=True, default=-1, verbose_name='步數')
     flat = models.IntegerField(blank=True, null=True, default=0, verbose_name='樓宇')
-    record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True, verbose_name="時間")
+    record_time = models.DateTimeField(default=timezone.localtime, blank=True, verbose_name="時間")
     active = models.BooleanField(default=True)
 
 
@@ -141,7 +142,7 @@ class Participation(models.Model):
     id = models.AutoField(primary_key=True)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
-    record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True, verbose_name="時間")
+    record_time = models.DateTimeField(default=timezone.localtime, blank=True, verbose_name="時間")
     score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE, verbose_name="分數")
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
 
@@ -223,7 +224,7 @@ class Transaction(models.Model):
         , verbose_name="交易類型"
     )
     record_time = models.DateTimeField(
-        default=datetime.now(pytz.timezone('Asia/Hong_Kong')), 
+        default=timezone.localtime, 
         blank=True, 
         verbose_name="時間"
     )
@@ -242,4 +243,4 @@ class BoothTraffic(models.Model):
     # user = models.ForeignKey('account.User', on_delete=models.CASCADE)
     player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
-    record_time = models.DateTimeField(default=datetime.now(pytz.timezone('Asia/Hong_Kong')), blank=True)
+    record_time = models.DateTimeField(default=timezone.localtime, blank=True)
