@@ -590,7 +590,8 @@ def create_player(request, booth_id, encrypted_id=None):
             born_growth_score=random.choice(random_index['growth_score']),
             born_relationship_score=random.choice(random_index['relationship_score']),
             born_academic_level=random.choice(random_index['academic_level']),
-            born_steps=15
+            born_steps=15,
+            born_defect=''
         )
         return redirect(f"/oc/search_profile/{user.id}")
     return HttpResponse(template.render(context, request))
