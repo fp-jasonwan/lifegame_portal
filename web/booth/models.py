@@ -112,7 +112,7 @@ class Participation(models.Model):
             growth_score = Coalesce(Sum(F('score__growth_score')),0),
             relationship_score = Coalesce(Sum(F('score__relationship_score')),0),
             money = Coalesce(Sum(F('score__relationship_score')),0),
-            academic_level = Coalesce(Max(F('score__academic_level')),1),
+            academic_level = Coalesce(Max(F('score__academic_level')),0),
             steps = Coalesce(Sum(F('score__steps')),0),
             flat = Coalesce(Sum(F('score__flat')),0),
         )
