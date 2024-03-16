@@ -91,28 +91,30 @@ class Player(models.Model):
     def get_total_score_list(no_of_rows=10):
         player_df =  pd.DataFrame(
             Player.objects \
-                  .filter(user__user_type='student') \
-                  .values(
-                        player=F('user__id'), 
-                        total_score=F('born_health_score') +
+                .filter(user__user_type='student') \
+                .annotate(user_id_=Cast('user__id', IntegerField())) \
+                .values('user_id_') \
+                .annotate(total_score=F('born_health_score') +
                                     F('born_skill_score') +
                                     F('born_relationship_score') +
                                     F('born_growth_score')
-            ).all()
+                ).all()
         )
+        
         parti_df  = pd.DataFrame(
             Participation.objects \
-                         .filter(player__user__user_type='student') \
-                         .values('player__user__id') \
-                         .annotate(total_score=
-                            Sum('score__health_score') +
-                            Sum('score__skill_score') +
-                            Sum('score__relationship_score') +
-                            Sum('score__growth_score')
-                         )
+                .filter(player__user__user_type='student') \
+                .annotate(user_id_=Cast('player__user__id', IntegerField())) \
+                .values('user_id_') 
+                .annotate(total_score=
+                    Sum('score__health_score') +
+                    Sum('score__skill_score') +
+                    Sum('score__relationship_score') +
+                    Sum('score__growth_score')
+                )
         )
-        best_score_df = pd.concat([parti_df, player_df]).groupby('player', as_index=False)['total_score'].sum()
-        
+        best_score_df = pd.concat([parti_df, player_df]).groupby('user_id_', as_index=False)['total_score'].sum()
+        best_score_df.rename({'user_id_': 'player'}, inplace=True)
         best_score_df = best_score_df.sort_values('total_score', ascending=False)
         return best_score_df[:no_of_rows]
 

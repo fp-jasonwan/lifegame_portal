@@ -167,6 +167,7 @@ def instructor_get_player(request, encrypted_id, player_id):
     player = get_object_or_404(Player, id=player_id)
     scores = player.get_scores()
     participations = Participation.objects.filter(player=player).all().order_by('-record_time')
+    transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
     visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
     template = loader.get_template('player/profile.html')
     context = {
@@ -175,6 +176,7 @@ def instructor_get_player(request, encrypted_id, player_id):
         'scores': scores,
         'player': player,
         'participations': participations,
+        'transactions': transactions,
         'visits': visits,
         'is_instructor': True
     }
