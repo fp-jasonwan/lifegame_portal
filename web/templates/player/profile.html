@@ -176,7 +176,7 @@
             
             {% for participation in participations %}
             <div class="contentNews content1">
-                <div class="content3" style="width:30%; font-size:12px"> {{ participation.get_time }}</div>
+                <div class="content3" style="width:30%; font-size:12px"> {{ participation.record_time|time:"H:i" }}</div>
                 <div class="content1" style="width:20%; font-size:12px"> {{ participation.booth }}</div>
                 <div class="content3" style="width:50%; font-size:12px"><a href="{{ request.get_full_path }}/participation/{{ participation.id }}">{{ participation.score.name }}</a></div>
             </div>
