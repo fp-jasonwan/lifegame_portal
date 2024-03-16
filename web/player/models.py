@@ -103,7 +103,7 @@ class Player(models.Model):
         parti_df  = pd.DataFrame(
             Participation.objects \
                          .filter(player__user__user_type='student') \
-                         .values('player') \
+                         .values('player__user__id') \
                          .annotate(total_score=
                             Sum('score__health_score') +
                             Sum('score__skill_score') +
