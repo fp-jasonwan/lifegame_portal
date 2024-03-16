@@ -140,6 +140,7 @@ def show_participation(request, parti_id, encrypted_id=""):
             scores[field_name] = getattr(participation.score, s)
     print(scores )
     context = {
+        'encrypted_id': encrypted_id, 
         'participation': participation,
         'scores': scores
     }
@@ -156,6 +157,7 @@ def show_transaction(request, tran_id, encrypted_id=""):
     if transaction.interest_rate != 0:
         transaction_record['利率'] = transaction.interest_rate()
     context = {
+        'encrypted_id': encrypted_id, 
         'transaction': transaction,
         'scores': transaction_record,
     }
