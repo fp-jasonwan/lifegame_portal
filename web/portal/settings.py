@@ -48,7 +48,7 @@ ALLOWED_HOSTS.append('lionslifegame.web.app')
 ALLOWED_HOSTS.append('lionslifegame.firebaseapp.com')
 ALLOWED_HOSTS.append('lionslifegame.app/')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
