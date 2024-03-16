@@ -165,7 +165,7 @@ class Transaction(models.Model):
         if self.type == 'pay':
             return f'收取${self.money}'
         if self.type == 'receive':
-            return f'付款${self.player.user.id}'
+            return f'付款${self.money}'
         if self.type == 'deposit':
             return f'存款${self.money}'
         if self.type == 'withdrawal':

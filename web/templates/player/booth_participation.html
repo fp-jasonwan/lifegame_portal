@@ -11,8 +11,11 @@
 
 <body>
 <div class="sub">
-    <div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
-    
+    {% if encrypted_id %}
+	<div class="logo"><a href="/player/{{ encrypted_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% else %}
+	<div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% endif %}
     <div class="subContent" style='background:white'>
         <div class="contentInfo">
             <div class="contentNews title">參與記錄</div>
@@ -52,7 +55,11 @@
        
 	<div class="footer">
 		
+		{% if encrypted_id %}
+		<div><a href="/player/{{ encrypted_id }}"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% else %}
 		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% endif %}
 		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
 	</div>
 	 
