@@ -515,7 +515,7 @@ def kill_player(request, booth_id, encrypted_id=None):
             user = get_object_or_404(User, encrypted_id=encrypted_id)
         if user.player is None:
             context['error_type'] = 'unknown_user'
-            context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+            context['message'] = 'error'
             return HttpResponse(msg_template.render(context, request))
         
         player = user.get_player()
