@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from booth.models import Transaction, Participation
 from django.db.models import Sum, Max, Subquery, Q, F, Avg, Count, Min, Max, Sum, F, Q
 from django.db.models import Value, IntegerField
-from django.db.models.functions import Coalesce, Greatest, Floor
+from django.db.models.functions import Coalesce, Greatest, Floor, Cast
 import pandas as pd
 import pytz
 from datetime import datetime
