@@ -114,7 +114,7 @@ class Player(models.Model):
                 )
         )
         best_score_df = pd.concat([parti_df, player_df]).groupby('user_id_', as_index=False)['total_score'].sum()
-        best_score_df = best_score_df.rename({'user_id_': 'player'})
+        best_score_df = best_score_df.rename(columns={'user_id_': 'player'})
         best_score_df = best_score_df.sort_values('total_score', ascending=False)
         return best_score_df[:no_of_rows]
 
