@@ -4,7 +4,10 @@ from booth.models import Booth, Participation, Transaction, BoothScoring, BoothR
 
 
 
-admin.site.register(BoothScoring)
+class BoothScoringAdmin(admin.ModelAdmin):
+    list_display = ('id', 'booth', 'name')
+
+admin.site.register(BoothScoring, BoothScoringAdmin)
 admin.site.register(BoothRequirement)
 admin.site.register(BoothTraffic)
 
