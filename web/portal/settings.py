@@ -156,7 +156,7 @@ if platform.system() == 'Windows':
         'NAME': 'lifegame',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '104.154.249.55',
+        'HOST': '34.92.127.39',
         'PORT': '5432',
     }
     }
@@ -169,12 +169,6 @@ else:
         DATABASES["default"]["PORT"] = 5432
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'portal.db')
-#     }
-# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {

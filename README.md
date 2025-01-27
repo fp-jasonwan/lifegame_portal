@@ -19,29 +19,22 @@ DATABASE_URL=postgres://postgres:postgres@//cloudsql/peaceful-joy-378401:asia-ea
 GOOGLE_APPLICATION_CREDENTIALS=/secrets/creds.json
 
 4. enable cloud build service 
+gcloud auth login
+gcloud config set project <PROJECT_ID>
 
 5. create secrets
 gcloud secrets create django_app_settings --replication-policy automatic
 gcloud secrets versions add django_app_settings --data-file .env.prod
 
 # Get the PROJECTNUM from your GCP project dashboard
-gcloud secrets add-iam-policy-binding django_app_settings --member serviceAccount:342607320219@cloudbuild.gserviceaccount.com --role roles/secretmanager.secretAccessor
+gcloud secrets add-iam-policy-binding django_app_settings --member serviceAccount:753303899985-compute@developer.gserviceaccount.com --role roles/secretmanager.secretAccessor
 
-gcloud secrets describe django_app_settings
-
-
-
-gcloud secrets create django_app_settings --replication-policy automatic
-gcloud secrets versions add django_app_settings --data-file .env.prod
-
-# Get the PROJECTNUM from your GCP project dashboard
-gcloud secrets add-iam-policy-binding django_app_settings --member serviceAccount:coetics@level-elevator-416109.iam.gserviceaccount.com --role roles/secretmanager.secretAccessor
 gcloud secrets describe django_app_settings
 
 6. 
 
 ### LOCAL
-$env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\wanyi\git\lifegame_portal\creds.json"
+set GOOGLE_APPLICATION_CREDENTIALS=C:\Users\yichwan\git\lifegame_portal\creds.json
 
 ### jupyter notebook
 python manage.py shell_plus --notebook
