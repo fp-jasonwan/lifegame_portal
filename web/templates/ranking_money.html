@@ -96,10 +96,10 @@
 				<div class="contentNews bar2" style="width:70%">金錢</div>
 			</div>
             
-            {% for i, r in rich_list.iterrows %}
+            {% for row in rich_list %}
 			<div class="contentNews content1">
-                <div class="content1" style="width:30%">{{ r.player }}</div>
-                <div class="content2" style="width:70%">{{ r.total_money }}</div>
+                <div class="content1" style="width:30%">{{ row.user }}</div>
+                <div class="content2" style="width:70%">{{ row.total_wealth }}</div>
 			</div>
             {% endfor %}
             <!-- <div class="contentNews content1">更新時間：{{ now }}</div> -->

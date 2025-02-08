@@ -19,7 +19,7 @@
     </a>
     
     <div class="subContent" style='background:white'>
-        <form action="/oc/booth/{{ booth.id }}/{{ action_path }}/{{ user.id }}" method="post">
+        <form action="{{ request.path }}" method="post">
         {% csrf_token %}
         <div class="contentInfo">
             <div class="contentNews title">登記玩家</div>
@@ -29,21 +29,40 @@
 			</div>
 
             {% for field in form %}
+                
+                {% if field.name == "player" %}
                 <div class="contentNews content1">
-                    {% if field.name == "player" %}
+                    <div class="content1" style="width:30%">{{ field.label_tag }}</div>
+                    <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
+                    <div class="content2" style="display:None">{{ field }}</div>
+                </div>
+                {% elif field.name == "booth" or field.name == "marker"  or field.name == "record_time" %}
+                <div class="contentNews content1" style="display:None">
+                    <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
+                    <div class="content2" style="width:30%">{{ field }}</div>
+                </div>
+                {% elif field.name == "flat" %}
+                    {% if booth.id == 'C4' %}
+                    <div class="contentNews content1"></div>
                         <div class="content1" style="width:30%">{{ field.label_tag }}</div>
-                        <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
-                        <div class="content2" style="display:None">{{ field }}</div>
-                    {% elif field.name == "booth" or field.name == "marker"  or field.name == "record_time" %}
-                        <div class="content2" style="width:70%;display:None">{{ field|attr:"disabled:disabled" }}</div>
-                        <div class="content2" style="display:None">{{ field }}</div>
-                    {% else %}
+                        <div class="content2" style="width:70%">{{ field }}</div>   
+                    </div>
+                    {% endif %}
+                {% elif field.name == "academic_level" %}
+                    {% if booth.id == 'S1' or booth.id == 'S2' or booth.id == 'S3' %}
+                    <div class="contentNews content1">
                         <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                         <div class="content2" style="width:70%">{{ field }}</div>
+                    </div>
                     {% endif %}
+                {% else %}
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">{{ field.label_tag }}</div>
+                    <div class="content2" style="width:70%">{{ field }}</div>
                 </div>
+                {% endif %}
             {% endfor %}
-            <div class="btn"><input src="{% static 'images/yolo.png' %}" style="height:100px;width:100px" type="image" /></div>
+            <div class="btn"><input src="{% static 'images/yolo.png' %}" style="height:100px;width:100px" type="image" method="post" /></div>
 		</div>
         </form>
         

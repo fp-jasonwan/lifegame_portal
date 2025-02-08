@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from player.models import Player, InstructorScore
+from player.models import Player
 
 # Register your models here.
 class PlayerForm(forms.ModelForm):

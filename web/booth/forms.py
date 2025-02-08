@@ -6,10 +6,12 @@ from django.forms import ModelForm
 import datetime
 
 class ParticipationForm(forms.ModelForm):
+    # player = forms.CharField(label='玩家')
     def __init__(self, *args, **kwargs):
         super(ParticipationForm, self).__init__(*args, **kwargs)
-        booth = kwargs['initial']['booth']
+        player = kwargs['initial']['player']
         # self.fields['score'].queryset = booth.score_options
+        self.fields['player'].queryset = Player.objects.filter(id=player.id)
         for visible in self.visible_fields():
            visible.field.widget.attrs['class'] = 'usernameBox form-control'        
 

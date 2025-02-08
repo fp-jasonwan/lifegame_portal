@@ -12,8 +12,8 @@ from player.views import get_rich_list, get_score_list, get_instructor_students,
 
 urlpatterns = [
     path('profile', get_profile, name='profile_by_userid'),
-    path('profile/participation/<str:parti_id>', show_participation, name="get_parti_record"),
-    path('profile/transaction/<str:tran_id>', show_transaction, name="get_parti_record"),
+    path('profile/participation/<str:parti_id>', show_participation, name="get_participation_record"),
+    path('profile/transaction/<str:tran_id>', show_transaction, name="get_tranasction_record"),
 
     path('', home_page, name='home'),
     path('oc/', include('oc.urls')),

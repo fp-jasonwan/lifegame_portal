@@ -6,9 +6,13 @@ from django.db.models.functions import Coalesce, Greatest, Floor
 from datetime import datetime
 import pytz
 from django.utils import timezone
-
-# from player.models import Player
-
+ACADEMIC_CHOICES = (
+    (0, '無學歷'),
+    (1, '小學畢業'),
+    (2, '中學畢業'),
+    (3, '大專畢業'),
+    (4, '大學畢業')
+)
 # Create your models here.
 class BoothRequirement(models.Model):
     def __str__ (self):
@@ -25,10 +29,10 @@ class BoothRequirement(models.Model):
 
     def check_player(self, player):
         failed_list = []
-        player_scores = player.get_scores()
-        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money', 'academic_level']:
-            if player_scores[score] < getattr(self, score):
-                failed_list.append(score)
+        # player_scores = player.get_score_summary()
+        # for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money', 'academic_level']:
+        #     if player_scores[score] < getattr(self, score):
+        #         failed_list.append(score)
         return failed_list
 
 
@@ -48,12 +52,12 @@ class Booth(models.Model):
 
     def check_player(self, player):
         failed_list = []
-        player_scores = player.get_scores()
-        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
-            print(score)
-            if getattr(self, score, 0):
-                if player_scores[score] < getattr(self, score, 0):
-                    failed_list.append(score)
+        # player_scores = player.get_score_summary()
+        # for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
+        #     print(score)
+        #     if getattr(self, score, 0):
+        #         if player_scores[score] < getattr(self, score, 0):
+        #             failed_list.append(score)
         return failed_list
 
     id = models.CharField(max_length=20, primary_key=True)
@@ -73,7 +77,12 @@ class Booth(models.Model):
     growth_score = models.IntegerField(blank=True, null=True, verbose_name='成長分數')
     relationship_score = models.IntegerField(blank=True, null=True, verbose_name='關係分數')
     money = models.IntegerField(blank=True, null=True, verbose_name='金錢')
-    academic_level = models.IntegerField(blank=True, null=True, verbose_name='學歷')
+    academic_level = models.IntegerField(
+        blank=True, 
+        null=True, 
+        verbose_name='學歷',
+        choices = ACADEMIC_CHOICES
+    )
     steps = models.IntegerField(blank=True, null=True)
 
 
@@ -83,13 +92,13 @@ class BoothScoring(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, verbose_name='分數名稱')
-    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位", related_name='booth_scoring')
     health_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='健康分數')
     skill_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='技能分數')
     growth_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='成長分數')
     relationship_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='關係分數')
     money = models.IntegerField(blank=True, null=True, default=0, verbose_name='金錢')
-    academic_level = models.IntegerField(blank=True, null=True, default=0, verbose_name='學歷')
+    academic_level = models.IntegerField(blank=True, null=True, default=0, verbose_name='學歷', choices=ACADEMIC_CHOICES)
     steps = models.IntegerField(blank=True, null=True, default=-1, verbose_name='步數')
     flat = models.IntegerField(blank=True, null=True, default=0, verbose_name='樓宇')
     record_time = models.DateTimeField(default=timezone.localtime, blank=True, verbose_name="時間")
@@ -98,7 +107,7 @@ class BoothScoring(models.Model):
 
 class Participation(models.Model):
     def __str__(self):
-        return "{} - {} at {}".format(self.booth.name, self.player.user.get_id(), self.record_time.strftime("%Y%m%d %H:%M:%S"))
+        return "{} - {} at {}".format(self.booth.name, self.player.user.id, self.record_time.strftime("%Y%m%d %H:%M:%S"))
 
     def get_time(self):
         return self.record_time.strftime("%d/%m %H:%S")
@@ -140,10 +149,18 @@ class Participation(models.Model):
         }
 
     id = models.AutoField(primary_key=True)
-    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
-    player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位", related_name='participation_booth')
+    player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家", related_name='participation_player')
+    name = models.CharField(max_length=50, verbose_name='分數名稱')
     record_time = models.DateTimeField(default=timezone.localtime, blank=True, verbose_name="時間")
-    score = models.ForeignKey(BoothScoring, on_delete=models.CASCADE, verbose_name="分數")
+    health_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='健康分數')
+    skill_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='技能分數')
+    growth_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='成長分數')
+    relationship_score = models.IntegerField(blank=True, null=True, default=0, verbose_name='關係分數')
+    money = models.IntegerField(blank=True, null=True, default=0, verbose_name='金錢')
+    academic_level = models.IntegerField(blank=True, null=True, default=0, verbose_name='學歷', choices=ACADEMIC_CHOICES)
+    steps = models.IntegerField(blank=True, null=True, default=-1, verbose_name='步數')
+    flat = models.IntegerField(blank=True, null=True, default=0, verbose_name='樓宇')
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
 
 class Transaction(models.Model):
@@ -211,8 +228,8 @@ class Transaction(models.Model):
             return 0
 
     id = models.AutoField(primary_key=True)
-    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位")
-    player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家")
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, verbose_name="攤位", related_name='transaction_booth')
+    player = models.ForeignKey('player.Player', on_delete=models.CASCADE, verbose_name="玩家", related_name='transaction_player')
     type = models.CharField(
         max_length=10, 
         choices=(
@@ -228,19 +245,7 @@ class Transaction(models.Model):
         blank=True, 
         verbose_name="時間"
     )
-    money = models.IntegerField(verbose_name="金錢", default=0)
+    money = models.FloatField(verbose_name="金錢", default=0)
     interest_rate = models.FloatField(verbose_name='利率', default=0, blank=True)
     marker = models.ForeignKey('account.User', on_delete=models.CASCADE, verbose_name="評分員")
 
-
-class BoothTraffic(models.Model):
-    def is_participated(self):
-        return Participation.objects.filter(
-            player=self.player,
-            booth=self.booth
-        ).exists()
-
-    # user = models.ForeignKey('account.User', on_delete=models.CASCADE)
-    player = models.ForeignKey('player.Player', on_delete=models.CASCADE)
-    booth = models.ForeignKey(Booth, on_delete=models.CASCADE)
-    record_time = models.DateTimeField(default=timezone.localtime, blank=True)

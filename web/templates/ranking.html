@@ -86,23 +86,22 @@
 		<div class="contentInfo">
             <div class="contentNews title">{{ list_name }}</div>
 			
-			<!-- <div class="contentNews sub">
-				<div class="contentNews subMenu select">政策</div>
-				<div class="contentNews subMenu">經濟</div>
-				<div class="contentNews subMenu">...</div>
-			</div> -->
+			
 			<div class="contentNews bar">
+				
 				<div class="contentNews bar1" style="width:30%">學生編號</div>
 				<div class="contentNews bar2" style="width:70%">{{ mark_name }}</div>
 			</div>
             
-            {% for i, r in list.iterrows %}
+            {% for r in list %}
 			<div class="contentNews content1">
-                <div class="content1" style="width:30%">{{ r.player }}</div>
+                <div class="content1" style="width:30%">{{ r.user }}</div>
                 <div class="content2" style="width:70%">{{ r.mark }}</div>
 			</div>
             {% endfor %}
-            <!-- <div class="contentNews content1">更新時間：{{ now }}</div> -->
+			<div class="contentNews content1">
+				{{ description }}
+			</div>
 		</div>
 	</div>
 		

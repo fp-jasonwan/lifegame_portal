@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 
 # Create your views here.
 from django_tables2 import SingleTableView
-from .models import Booth, Participation, BoothTraffic, Transaction
+from .models import Booth, Participation, Transaction
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
@@ -58,29 +58,6 @@ def get_booths_map(request, encrypted_id=""):
     return HttpResponse(template.render(context, request))
 
 
-class TrafficTable(tables.Table):
-    def __init__(self, *args, **kwargs):
-        if kwargs.pop("booth", False):
-            for column in self.base_columns.values():
-                if isinstance(column, tables.LinkColumn):
-                    column.args.insert(0, "booth")
-        super(TrafficTable, self).__init__(*args, **kwargs)
-
-    player = tables.TemplateColumn('<a href="/oc/search_profile/{{record.player.user.id }}">{{record.player}}</a>',
-                                   verbose_name='玩家')
-    record_time = tables.DateTimeColumn(verbose_name='時間', format='h:i A')
-    register = tables.TemplateColumn('<a href="/oc/booth/{{booth.booth_id }}">{{record.player}}</a>',
-                                   verbose_name='登記')
-
-    class Meta:
-        model = BoothTraffic
-        template_name = "django_tables2/bootstrap.html"
-        fields = ("player", "record_time", "register")
-        attrs = {
-            'class': 'table table-bordered dataTable'
-        }
-
-
 class ParticipationsTable(tables.Table):
     
     record_time = tables.DateTimeColumn(verbose_name= '時間', format='h:i A')
@@ -116,19 +93,6 @@ def show_transactions(request, booth_id):
     context = {
         'booth': booth,
         'transactions': transactions,
-    }
-    return HttpResponse(template.render(context, request))
-
-
-def get_traffic_record(request, booth_id):
-    booth = Booth.objects.get(id=booth_id)
-    traffic = BoothTraffic.objects.filter(
-        booth=booth
-    ).all().order_by('-record_time')
-    template = loader.get_template('oc/booth_traffic.html')
-    context = {
-        'booth': booth,
-        'traffic': traffic,
     }
     return HttpResponse(template.render(context, request))
 

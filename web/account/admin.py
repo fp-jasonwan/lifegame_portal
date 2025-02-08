@@ -19,6 +19,10 @@ class MyUserChangeForm(UserChangeForm):
 class PlayerInline(admin.StackedInline):
     model = Player
 
+class UserInline(admin.StackedInline):
+    model = User
+
+@admin.register(User)
 class MyUserAdmin(UserAdmin):
     list_per_page = 10
     list_display = ('id', 'username',)
@@ -26,12 +30,9 @@ class MyUserAdmin(UserAdmin):
     ordering = ('id',)
     form = MyUserChangeForm
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'user_type', 'encrypted_id')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'nick_name', 'email', 'mobile', 'school', 'school_code', 'room_no')}), 
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 
-        'groups', 'user_permissions'
-        )}), 
-        ('Voting', {'fields': ('best_booth', )}),
+        (None, {'fields': ('username', 'password', 'user_type', 'encrypted_id', 'instructor_group')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'nick_name', 'email', 'mobile', 'school', 'school_code',)}), 
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
     )
     # inlines = [
     #     PlayerInline,
@@ -43,5 +44,7 @@ class MyUserAdmin(UserAdmin):
     #     }),
     # )
 
-admin.site.register(User, MyUserAdmin)
-admin.site.register(InstructorGroup)
+@admin.register(InstructorGroup)
+class InstructorGroupAdmin(admin.ModelAdmin):
+    pass
+    # inlines = [UserInline]

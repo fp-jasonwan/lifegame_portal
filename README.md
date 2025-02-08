@@ -35,6 +35,17 @@ gcloud secrets describe django_app_settings
 
 ### LOCAL
 set GOOGLE_APPLICATION_CREDENTIALS=C:\Users\yichwan\git\lifegame_portal\creds.json
-
+set GOOGLE_APPLICATION_CREDENTIALS=/Users/jw/git/lifegame_portal/creds.json
 ### jupyter notebook
 python manage.py shell_plus --notebook
+
+# faster collectstatic
+# settings.py
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# terminal
+gsutil -m rsync -d -r static/ gs://lionslifegame25
+# set public access
+gsutil -m acl set -R -a public-read gs://lionslifegame25  
+
+# set CORS
+gcloud storage buckets update gs://lionslifegame25 --cors-file=cors.json

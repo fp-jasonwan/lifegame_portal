@@ -28,3 +28,8 @@ def home_page(request, encrypted_id=""):
     except:
         pass
     return render(request, 'login.html', {})
+
+
+def handler404(request, exception):
+    message = str(exception)  # Get the error message from the exception
+    return render(request, 'error/404.html', {'error_message': message}, status=404)

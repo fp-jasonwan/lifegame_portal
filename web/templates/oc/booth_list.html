@@ -22,10 +22,10 @@
 			<div class="contentNews content1">
 				<!-- <div class="content1" style='width:15%'></a> </div> -->
 				{% if type == "" %}
-					<div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}'>{{ booth.id }}</a> </div>
+					<div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}'>{{ booth }}</a> </div>
 				{% else %}
 
-					<div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/{{ type }}'>{{ booth.id }}</a> </div>
+					<div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/{{ type }}'>{{ booth }}</a> </div>
 				{% endif %}
 			</div>
             {% endfor %}

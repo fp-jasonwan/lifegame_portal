@@ -23,7 +23,7 @@ from account.views import home_page
 from booth.views import BoothsListView, get_booths_map
 from oc.views import get_contact
 from player.views import get_rich_list, get_score_list, get_map
-handler404 = 'main.views.handler404'
+handler404 = 'account.views.handler404'
 handler403 = 'main.views.handler403'
 
 urlpatterns = [
@@ -44,7 +44,7 @@ urlpatterns = [
     path('map/', get_map, name='map'),
     path('rundown/', TemplateView.as_view(template_name='rundown.html'), name='rundown'),
     path('rules/', TemplateView.as_view(template_name='rules.html'), name='rules'),
-    path('404', TemplateView.as_view(template_name='error/404.html'), name='404'),
+    # path('404', TemplateView.as_view(template_name='error/404.html'), name='404'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

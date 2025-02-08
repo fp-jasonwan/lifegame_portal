@@ -1,5 +1,5 @@
 from django import forms
-from account.models import User
+from account.models import User, BoothVoting
 from .models import Player
 
 class InstructorCommentForm(forms.Form):
@@ -13,5 +13,5 @@ class BoothSettingsForm(forms.ModelForm):
         for visible in self.visible_fields():
            visible.field.widget.attrs['class'] = 'usernameBox form-control'
     class Meta:
-        model = User
-        fields = ['best_booth']
+        model = BoothVoting
+        fields = ['user', 'booth']

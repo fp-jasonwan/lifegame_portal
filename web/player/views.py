@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from .models import Player, InstructorScore
-from booth.models import Participation, BoothTraffic, Transaction
+from .models import Player
+from booth.models import Participation, Transaction
 from news.models import News, NewsCategory
 from django.shortcuts import get_object_or_404, render
 import django_tables2 as tables
-from account.models import User, InstructorGroup
+from account.models import User, InstructorGroup, BoothVoting
 from django_tables2 import SingleTableView
 from django.db.models import Sum, Max, Subquery, Q
 import pandas as pd
@@ -20,26 +20,22 @@ def get_profile(request, encrypted_id=""):
     user = get_object_or_404(User, encrypted_id=encrypted_id)
     player = user.player
     if player:
-        scores = player.get_scores()
-        participations = Participation.objects.filter(player=player).all().order_by('-record_time')
-        transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
-        visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
-        # instructor_score = InstructorScore.objects.filter(player=player).first()
+        scores = player.get_score_summary()
+        participations = player.participation_player.all().order_by('-record_time')
+        transactions = player.transaction_player.all().order_by('-record_time')
         template = loader.get_template('player/profile.html')
-        print(scores['steps'])
         context = {
             'encrypted_id': encrypted_id,
             'scores': scores,
             'player': player,
             'participations': participations,
             'transactions': transactions,
-            'visits': visits,
         }
         return HttpResponse(template.render(context, request))
     else:
         template = loader.get_template('error/error_message.html')
         context = {
-            "message": f"{config.DEATH_MESSAGE_1}，{config.DEATH_MESSAGE_2}"
+            "message": f"{config.DEATH_MESSAGE_1}{config.DEATH_MESSAGE_2}"
         }
         return HttpResponse(template.render(context, request))
 
@@ -76,13 +72,13 @@ class PlayerParticipationTable(tables.Table):
 
 def get_rich_list(request, encrypted_id=""):
     template = loader.get_template('ranking.html')
-    rich_list_df = Player.get_rich_list()
-    rich_list_df.rename(columns={'money': 'mark'}, inplace=True)
-    print(rich_list_df.head(10))
+    rich_list = Player.get_rich_list()
+    print(rich_list)
     context = {
         'list_name': '富豪榜',
         'mark_name': '金錢',
-        'list': rich_list_df.head(10),
+        'description': '*富豪榜計算玩家擁有的現金和銀行存款(其他資產均不計算在內)',
+        'list': rich_list,
         'encrypted_id': encrypted_id,
         'now': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
@@ -90,13 +86,13 @@ def get_rich_list(request, encrypted_id=""):
 
 def get_score_list(request, encrypted_id=""):
     template = loader.get_template('ranking.html')
-    score_list_df = Player.get_total_score_list()
-    score_list_df.rename(columns={'total_score': 'mark'}, inplace=True)
+    score_list = Player.get_total_score_list()
     context = {
         'list_name': '成就榜',
         'mark_name': '總分',
+        'description': '*成就榜計算玩家擁有的四項指數(健康、技能、成長、關係)總和',
         'encrypted_id': encrypted_id,
-        'list': score_list_df.head(10),
+        'list': score_list,
         'now': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
     return HttpResponse(template.render(context, request))
@@ -135,10 +131,10 @@ def show_participation(request, parti_id, encrypted_id=""):
     participation = get_object_or_404(Participation, id=parti_id)
     scores = {}
     for s in ['health_score','skill_score','growth_score','relationship_score','money', 'academic_level','steps','flat']:
-        if getattr(participation.score, s) != 0:
-            field_name = participation.score._meta.get_field(s).verbose_name
-            scores[field_name] = getattr(participation.score, s)
-    print(scores )
+        print(s, getattr(participation, s))
+        if getattr(participation, s) != 0:
+            field_name = participation._meta.get_field(s).verbose_name
+            scores[field_name] = getattr(participation, s)
     context = {
         'encrypted_id': encrypted_id, 
         'participation': participation,
@@ -167,10 +163,9 @@ def instructor_get_player(request, encrypted_id, player_id):
     instructor = get_object_or_404(User, encrypted_id=encrypted_id)
     group = get_object_or_404(InstructorGroup, instructor=instructor)
     player = get_object_or_404(Player, id=player_id)
-    scores = player.get_scores()
+    scores = player.get_score_summary()
     participations = Participation.objects.filter(player=player).all().order_by('-record_time')
     transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
-    visits = BoothTraffic.objects.filter(player=player).all().order_by('-record_time')
     template = loader.get_template('player/profile.html')
     context = {
         'group_id': group.id,
@@ -179,7 +174,6 @@ def instructor_get_player(request, encrypted_id, player_id):
         'player': player,
         'participations': participations,
         'transactions': transactions,
-        'visits': visits,
         'is_instructor': True
     }
     return HttpResponse(template.render(context, request))
@@ -188,7 +182,7 @@ def vote_best_booth(request, encrypted_id=""):
     user = User.objects.get(encrypted_id=encrypted_id)
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
     # if Booth.objects.filter(booth=booth).exists():
-    instance = user
+    instance = BoothVoting.objects.get_or_create(user=user)
     form = BoothSettingsForm(request.POST or None, instance=instance)
     
     if request.method == 'POST':

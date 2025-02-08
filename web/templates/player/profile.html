@@ -43,17 +43,17 @@
 			<div class="contentInfo title">個人資料</div>
 			<div class="contentInfo content">
 				<div class="contentInfo content left" style="width:25%">編號</div>
-				<div class="contentInfo content right" style="width:70%">{{ player.user.get_id }}</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.id }}</div>
 			</div>
 			<div class="contentInfo content">
 				<div class="contentInfo content left" style="width:25%">姓名</div>
 				<div class="contentInfo content right" style="width:70%">{{ player.user.last_name }}{{ player.user.first_name }}</a></div>
 			</div>
 			{% if player.user.user_type == 'student' %}
-			<div class="contentInfo content">
+			<!-- <div class="contentInfo content">
 				<div class="contentInfo content left" style="width:25%">學校</div>
 				<div class="contentInfo content right" style="width:70%">{{ player.user.school }}</a></div>
-			</div>
+			</div> -->
 			{% endif %}
 			{% if player.user.user_type == 'student' and player.user.room_no %}
 			<div class="contentInfo content">
@@ -74,16 +74,16 @@
 			<div class="contentNews content1">
 				<div class="content1" style="width:30%; font-size:14px">現金</div>
 				<div class="content3" style="width:35%; font-size:14px">{{ player.born_money }}</a></div>
-				<div class="content3" style="width:35%; font-size:14px">{{ scores.money }}</a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.cash }}</a></div>
 			</div>
 			<div class="contentNews content1">
 				<div class="content1" style="width:30%; font-size:14px">銀行存款</div>
-				<div class="content3" style="width:35%; font-size:14px"></a></div>
+				<div class="content3" style="width:35%; font-size:14px">N/A</a></div>
 				<div class="content3" style="width:35%; font-size:14px">{{ scores.deposit }}</a></div>
 			</div>
 			<div class="contentNews content1">
 				<div class="content1" style="width:30%; font-size:14px">樓宇</div>
-				<div class="content3" style="width:35%; font-size:14px"></a></div>
+				<div class="content3" style="width:35%; font-size:14px">N/A</a></div>
 				<div class="content3" style="width:35%; font-size:14px">{{ scores.flat }}</a></div>
 			</div>
 			<div class="contentNews content1">
@@ -178,7 +178,7 @@
             <div class="contentNews content1">
                 <div class="content3" style="width:30%; font-size:12px"> {{ participation.record_time|time:"H:i" }}</div>
                 <div class="content1" style="width:20%; font-size:12px"> {{ participation.booth }}</div>
-                <div class="content3" style="width:50%; font-size:12px"><a href="{{ request.get_full_path }}/participation/{{ participation.id }}">{{ participation.score.name }}</a></div>
+				<div class="content3" style="width:50%; font-size:12px"><a href="{{ request.path }}/participation/{{ participation.id }}">{{ participation.name }}</a></div>
             </div>
             {% endfor %}
 			{% else %}
@@ -202,7 +202,7 @@
                 <div class="content3" style="width:30%; font-size:12px"> {{ transaction.record_time|time:"H:i" }}</div>
                 <div class="content1" style="width:20%; font-size:12px"> {{ transaction.booth }}</div>
                 <div class="content3" style="width:50%; font-size:12px">
-					<a href="{{ request.get_full_path }}/transaction/{{ transaction.id }}">{{ transaction.get_player_str }}</a>
+					<a href="{{ request.path }}/transaction/{{ transaction.id }}">{{ transaction.get_player_str }}</a>
 				</div>
             </div>
             {% endfor %}

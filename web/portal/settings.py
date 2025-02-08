@@ -48,7 +48,7 @@ ALLOWED_HOSTS.append('lionslifegame.web.app')
 ALLOWED_HOSTS.append('lionslifegame.firebaseapp.com')
 ALLOWED_HOSTS.append('lionslifegame.app/')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
@@ -56,6 +56,7 @@ SECURE_SSL_REDIRECT = False
 
 CORS_ORIGIN_ALLOW_ALL = True
 CSRF_TRUSTED_ORIGINS = [
+    'https://*.com',
     'https://*.a.run.app', 
     #"https://a.run.app",
     #"https://lionslifegame.web.app", 
@@ -89,6 +90,7 @@ SESSION_COOKIE_SAMESITE = None
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,14 +151,14 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 
 
 # Database
-if platform.system() == 'Windows':
+if platform.system() in ('Windows') or platform.platform()[:5] == 'macOS':
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'lifegame',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '34.92.127.39',
+        'HOST': '35.241.83.63',
         'PORT': '5432',
     }
     }
@@ -203,10 +205,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static"
+# ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
@@ -214,7 +216,9 @@ STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 GS_DEFAULT_ACL = "publicRead"
 
 LOGIN_REDIRECT_URL = '/'
+
 STATIC_URL = "/static/"
+
 # MEDIA_URL = '/media/'
 MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(env("GS_BUCKET_NAME"))
 

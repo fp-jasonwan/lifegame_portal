@@ -24,24 +24,18 @@
         
 		<div class="contentInfo">
             <div class="contentNews bar">
-                <div class="contentNews bar1">攤位要求</div>
-            </div>
-            <div class="contentNews content1">
-                <div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/settings/requirement'>更改攤位要求</a> </div>
-            </div>
-        </div>
-        
-		<div class="contentInfo">
-            <div class="contentNews bar">
                 <div class="contentNews bar1" style='width:90%; text-align: left;'>分數選項</div>
-                <div class="contentNews bar1"><a href='/oc/booth/{{ booth.id }}/settings/create'>增加</a></div>
             </div>
-            {% for s in booth_scores %}
+            {% for option in score_options %}
             <div class="contentNews content1">
                 <div class="content1" style='width:15%'></a> </div>
-                <div class="content2" style='width:100%'><a href='/oc/booth/{{ booth.id }}/settings/{{ s.id  }}'>{{ s }}</a> </div>
+                <div class="content2" style="width:100%;padding:10px"><a href="{% url 'booth_setting_score' booth.id option.id %}">{{ option.name }}</a> </div>
             </div>
             {% endfor %}
+            <div class="contentNews content1">
+                <div class="content1" style='width:15%'></a> </div>
+                <div class="content2" style="width:100%;padding:10px"><a href="{% url 'booth_setting_score_create' booth.id %}">增加</a> </div>
+            </div>
         </div>
     </div>
 </div>

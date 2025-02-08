@@ -1,0 +1,43 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+	<div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	<div class="subContent">
+		<div class="contentInfo">
+            <div class="contentNews title"></div>
+			<div class="contentNews bar">
+				<div class="contentNews bar1" style='width:100%'>分數選項</div>
+			</div>
+            
+            {% for option in score_options %}
+			<div class="contentNews content1">
+				<!-- <div class="content1" style='width:15%'></a> </div> -->
+
+				<div class="content2" style="width:100%;padding:10px"><a href="{% url 'register_player' booth.id user.id %}?score_option={{ option.id }}">{{ option.name }}</a> </div>
+			</div>
+            {% endfor %}
+		</div>
+	</div>
+	
+	<div class="footer">
+		
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
+	</div>
+	
+		
+</div>
+	
+	
+
+</body>
+</html>

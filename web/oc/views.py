@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from booth.models import Booth, Participation, BoothScoring, Transaction, BoothTraffic
+from booth.models import Booth, Participation, BoothScoring, Transaction
 from booth.forms import ParticipationForm, BoothSettingsForm, BoothScoringForm, TransactionForm
 from account.models import User
 from django.contrib import messages
-from player.models import Player, InstructorScore
+from player.models import Player
 from player.views import get_profile
 from player.forms import InstructorCommentForm
 from .models import ContactPerson
@@ -13,10 +14,13 @@ from booth.views import show_participation
 from django.db.models import Q
 # Create your views here.
 # Create your views here.
+from django.views.generic.edit import FormView, CreateView
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseForbidden
 import datetime
 import random
+from django import forms
+from django.contrib.auth.decorators import login_required
 
 score_translation = {
         'health_score': '健康',
@@ -42,8 +46,8 @@ def oc_portal(request):
         return redirect('/404')
     return render(request, 'oc/home.html')
 
+@login_required(login_url="/oc")
 def search_profile(request, encrypted_id=""):
-    access_checking(request)
 
     # profile = get_object_or_404(Student, user=request.user)
     template = loader.get_template('oc/search_profile.html')
@@ -66,15 +70,15 @@ def search_profile(request, encrypted_id=""):
             context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
             return HttpResponse(msg_template.render(context, request))
         
-        scores = player.get_scores()
+        scores = player.get_score_summary()
         participations = Participation.objects.filter(player=player).all().order_by('-record_time')
         transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
-        # instructor_score = InstructorScore.objects.filter(player=player).first()
         print(scores)
         template = loader.get_template('player/profile.html')
         context = {
             'scores': scores,
             'player': player,
+            'encryped_id': player.user.id,
             'participations': participations,
             'transactions': transactions
         }
@@ -85,15 +89,9 @@ def search_profile(request, encrypted_id=""):
     # return HttpResponse("You're voting on question %s." % question_id)
 
 
+@login_required(login_url="/oc")
 def list_booth(request, type=""):
     booths = Booth.objects.filter(booth_admins__in=[request.user]).order_by('id')
-    print(booths)
-    # profile = get_object_or_404(Student, user=request.user)
-    # if type == 'traffics':
-    #     url_base = '/oc/booth/%s/traffics'
-    # elif type == 'participations':
-    #     url_base = '/oc/booth/%s/participations'
-    # else:
     url_base = '/oc/booth/%s'
 
     if len(booths) > 1:
@@ -150,7 +148,7 @@ def check_player(request, booth_id="", encrypted_id=""):
     context = {
         'booth': booth,
         'booth_scores': booth.get_requirements(),
-        'player_scores': player.get_scores(),
+        'player_scores': player.get_score_summary(),
         'score_translation': score_translation,
         'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']
     }
@@ -182,91 +180,111 @@ def register_page(request, booth_id, encrypted_id):
     }
     return HttpResponse(template.render(context, request))
 
-def register_player(request, booth_id, encrypted_id, participation=""):
-    def check_score(player, score):
-        player_scores = player.get_scores()
-        failed_list = []
-        for s in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money']:
-            if getattr(score, s):
-                if getattr(score, s) < 0: # Only check score with negative value
-                    if player_scores[s] < abs(getattr(score, s) or 0):
-                        failed_list.append(s)
-        return failed_list
-
-    request.session['from'] = request.META.get('HTTP_REFERER', '/')
+def get_register_score(request, booth_id, user_id):
     booth = get_object_or_404(Booth, id=booth_id)
-    score_options = BoothScoring.objects.filter(booth=booth, active=True).all()
-    if encrypted_id.isnumeric():
-        user = get_object_or_404(User, id=encrypted_id)
-    else:
-        user = get_object_or_404(User, encrypted_id=encrypted_id)
-    player = user.get_player()
-    form = ParticipationForm(request.POST or None,
-                                initial={
-                                    'booth': booth,
-                                    'player': player,
-                                    'marker': request.user
-                                })
-    if request.method == 'POST':
-        if form.is_valid():
-            player = form.cleaned_data['player']
-            booth = form.cleaned_data['booth']
-            score = form.cleaned_data['score']
-            # check if score less than deduct mark
-            checking = check_score(player, score)
-            print("checking ", checking)
-            if len(checking) > 0:
-                msg_template = loader.get_template('oc/booth_message.html')
-                print(score)
-                context = {
-                    'booth': booth,
-                    'booth_scores': score.__dict__,
-                    'player_scores': player.get_scores(),
-                    'score_translation': score_translation,
-                    'score_types': ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money'],
-                    'eligibility': checking,
-                    'error_type': 'not_eligible',
-                    'message': '此玩家不符合攤位要求!'
-                }
-                return HttpResponse(msg_template.render(context, request))
-            form.save()
-            participation = Participation.objects.filter(
-                booth=booth,
-                player=player
-            ).order_by('-record_time')[0]
-            return HttpResponseRedirect(f'/oc/booth/{booth.id}/participations/{participation.id}/success')
-        else:
-            print("INVALID FORM")
-    template = loader.get_template('oc/booth_register2.html')
-
-    # reduce options in the fields
-    form.fields['booth'].queryset = Booth.objects.filter(id=booth.id)
-    form.fields['player'].queryset = Player.objects.filter(id=player.id)
-    form.fields['marker'].queryset = User.objects.filter(id=request.user.id)
-    form.fields['score'].queryset = BoothScoring.objects.filter(booth = booth, active=True)
+    user = get_object_or_404(User, id=user_id)
+    score_options = booth.booth_scoring.all()
     context = {
-        'action_path': 'register', 
         'booth': booth,
-        'player': player,
-        'marker': request.user,
-        'score_options': score_options,
-        'form': form
+        'user': user,
+        'score_options': score_options
     }
-    print('register checkpoint 4: ', datetime.datetime.now())
+    template = loader.get_template('oc/booth_register_score.html')
     return HttpResponse(template.render(context, request))
 
 
-def update_booth_settings(request, booth_id):
-    request.session['from'] = request.META.get('HTTP_REFERER', '/')
-    booth = get_object_or_404(Booth, id=booth_id)
-    booth_scores = BoothScoring.objects.filter(booth=booth, active=True).all()
-    template = loader.get_template('oc/booth_settings.html')
+class BoothParticipationView(FormView):
+    model = Participation
+    form_class = ParticipationForm
+    template_name = 'oc/booth_register.html'
+    success_url = '/oc/booth'
+    # def get_success_url(self):
+    #     messages.add_message(self.request, messages.INFO, 'form submission success')
+    #     return reverse('/oc/booth', args=(self.kwargs['pk'],))
     
+    def form_invalid(self, form):
+        print("Form is invalid. Errors:", form.errors)
+        return super().form_invalid(form)
+    def form_valid(self, form):
+        form.save()
+        print("Form is valid. Saving...")
+        return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        booth = Booth.objects.get(id=self.kwargs['booth_id'])
+        context['booth'] = booth  # Indicate creation
+        return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        booth = Booth.objects.get(id=self.kwargs['booth_id'])
+        player = User.objects.get(id=self.kwargs['user_id']).player
+        initial['booth'] = booth
+        initial['player'] = player
+        initial['marker'] = self.request.user
+        if 'score_option' in self.request.GET:
+            booth_scoring = BoothScoring.objects.get(id=self.request.GET.get('score_option'))
+            initial = initial | booth_scoring.__dict__
+        return initial
+        # return super().get_success_url()
+        # return HttpResponseRedirect(f'/oc/booth/{booth.id}/participations/{participation.id}/success')
+
+
+def show_booth_score(request, booth_id):
+    booth = get_object_or_404(Booth, id=booth_id)
+    score_options = booth.booth_scoring.all()
     context = {
         'booth': booth,
-        'booth_scores': booth_scores,
+        'score_options': score_options
     }
+    template = loader.get_template('oc/booth_settings.html')
     return HttpResponse(template.render(context, request))
+
+
+
+class BoothScoreFormView(FormView):
+    model = BoothScoring
+    form_class = BoothScoringForm
+    template_name = 'oc/booth_settings_scoring.html'
+    success_url = '/oc/booth'
+
+
+    def form_invalid(self, form):
+        print("Form is invalid. Errors:", form.errors)
+        return super().form_invalid(form)
+    def form_valid(self, form):
+        form.save()
+        print("Form is valid. Saving...")
+        return super().form_valid(form)
+    
+    def get_object(self):
+        """Retrieve the object based on the URL parameter, if it exists."""
+        print(self.kwargs)
+        obj_id = self.kwargs.get('score_id')  # Assumes 'pk' is in the URL
+        return get_object_or_404(BoothScoring, id=obj_id) if obj_id else None
+    
+    def get_form(self, form_class=None):
+        """Modify the form to handle both create and update."""
+        form = super().get_form(form_class)
+        if self.get_object():
+            form.instance = self.get_object()  # Set the instance for update
+        return form
+    def get_initial(self):
+        initial = super().get_initial()
+        obj = self.get_object()
+        if obj:
+            initial = initial | obj.__dict__
+        if 'booth_id' in self.kwargs:
+            booth = Booth.objects.get(id=self.kwargs['booth_id'])
+            initial['booth'] = booth
+        return initial
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        booth = Booth.objects.get(id=self.kwargs['booth_id'])
+        context['booth'] = booth  # Indicate creation
+        return context
 
 def update_booth_settings_scoring(request, booth_id, score_id):
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
@@ -394,7 +412,8 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                 type = form.cleaned_data['type']
                 money = form.cleaned_data['money']
                 if type in ('receive', 'deposit'):
-                    player_money = player.get_score('money')
+                    player_money = player.get_score('cash')
+                    print(money, player_money)
                     if money > player_money:
                         msg_template = loader.get_template('oc/booth_message.html')
                         context = {
@@ -547,12 +566,12 @@ def check_player(request, booth_id="", encrypted_id=""):
     
     player = user.player
     request.session['booth'] = booth.id
-    context['player_scores'] = player.get_scores()
+    context['player_scores'] = player.get_score_summary()
 
     # Check player eligibility
     eligibility = booth.check_player(player)
     if len(eligibility) == 0:
-        return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id)) 
+        return redirect('/oc/booth/{}/register/{}/option'.format(booth.id, user.id)) 
     else:
         context['eligibility'] = eligibility
         context['error_type'] = 'not_eligible'

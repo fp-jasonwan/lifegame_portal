@@ -16,6 +16,7 @@
 	{% else %}
 	<div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
 	{% endif %}
+
     <div class="subContent" style='background:white'>
         <div class="contentInfo">
             <div class="contentNews title">參與記錄</div>
@@ -26,16 +27,12 @@
 
             <div class="contentNews content1">
                 <div class="content1" style="width:30%">攤位</div>
-                    <div class="content2" style="width:70%">{{ participation.booth.name }}</div>
+                    <div class="content2" style="width:70%">{{ participation.booth }}</div>
             </div>
             <div class="contentNews content1">
                 <div class="content1" style="width:30%">記錄時間</div>
                     <div class="content2" style="width:70%">{{ participation.record_time|date:"d M H:i" }}</div>
             </div>
-            <div class="contentNews content1">
-                <div class="content1" style="width:30%">分數</div>
-                    <div class="content2" style="width:70%">{{ participation.score }}</div>
-            </div>            
 
             
             <div class="contentNews title">分數改變</div>
@@ -43,12 +40,20 @@
 				<div class="contentNews bar1" style="width:30%">指數</div>
 				<div class="contentNews bar2" style="width:70%">得分</div>
 			</div>
-            {% for k, v in scores.items %}
+            {% for score in score_list %}
             <div class="contentNews content1">
                 <div class="content1" style="width:30%">{{ k }}</div>
                 <div class="content2" style="width:70%">{{ v }}</div>
             </div>
             {% endfor %}
+			
+		</div>
+		<div class="contentInfo">
+			<a href="#"  onclick="history.back()">
+				<div class="contentNews bar">
+					<div class="contentNews bar1" style="width:100%">返回上一頁</div>
+				</div>
+			</a>
 		</div>
     </div>
 </div>
