@@ -44,9 +44,8 @@ if CLOUDRUN_SERVICE_URL:
     # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 else:
     ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS.append('lionslifegame.web.app')
-ALLOWED_HOSTS.append('lionslifegame.firebaseapp.com')
-ALLOWED_HOSTS.append('lionslifegame.app/')
+ALLOWED_HOSTS.append('lionslifegame.com')
+ALLOWED_HOSTS.append('asia-east2.run.app')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -63,7 +62,9 @@ CSRF_TRUSTED_ORIGINS = [
     #"https://lionslifegame.firebaseapp.com",
     #"https://www.lionslifegame.web.app", 
     "https://*.lionslifegame.web.app",
-    "https://*.lionslifegame.app/"
+    "https://*.lionslifegame.app/",
+    "https://*.asia-east2.run.app/",
+    "https://*.lionslifegame.com"
     # 'http://127.0.0.1'
     ]
 # CORS_ALLOWED_ORIGINS = [
