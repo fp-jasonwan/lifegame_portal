@@ -225,8 +225,6 @@ class BoothParticipationView(FormView):
         initial['marker'] = self.request.user
         if 'score_option' in self.request.GET:
             booth_scoring = BoothScoring.objects.get(id=self.request.GET.get('score_option'))
-            print(initial)
-            print(booth_scoring.__dict__)
             # initial = initial | booth_scoring.__dict__
             initial = {**initial, **booth_scoring.__dict__}
         return initial
