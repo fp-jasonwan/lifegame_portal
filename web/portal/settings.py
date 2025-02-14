@@ -46,6 +46,7 @@ else:
     ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS.append('lionslifegame.com')
 ALLOWED_HOSTS.append('asia-east1.run.app')
+ALLOWED_HOSTS.append('www.lionslifegame.com')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

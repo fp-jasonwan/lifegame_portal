@@ -50,7 +50,9 @@ class User(AbstractUser):
     instructor_group = models.ForeignKey(
         'account.InstructorGroup', 
         on_delete=models.CASCADE,
-        related_name='instructor_group_student'
+        related_name='instructor_group_student',
+        null=True,
+        blank=True
     )
     
 class InstructorGroup(models.Model):
