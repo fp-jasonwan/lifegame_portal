@@ -283,7 +283,9 @@ class BoothScoreFormView(FormView):
         initial = super().get_initial()
         obj = self.get_object()
         if obj:
-            initial = initial | obj.__dict__
+            # initial = initial | obj.__dict__
+            for k, v in obj.__dict__.items():
+                initial[k] = v
         if 'booth_id' in self.kwargs:
             booth = Booth.objects.get(id=self.kwargs['booth_id'])
             initial['booth'] = booth
