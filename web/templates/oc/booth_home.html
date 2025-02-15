@@ -25,16 +25,16 @@
 	</a>
 	<div class="menu">
 		<div class="btnNews">
+			<div class="text">查閱玩家</div>
+			<div class="icon"><a href="/oc/search_profile"><img src="{% static 'icons/record_search.png' %}" alt="News"></a></div>
+		</div>
+		<div class="btnInfo">
 			<div class="text">登記玩家</div>
 			<div class="icon"><a href="check_player"><img src="{% static 'icons/input_booth_score.png' %}" alt="News"></a></div>
 		</div>
-		<div class="btnInfo">
+		<div class="btnStock">
 			<div class="text">登記記錄</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/participations"><img src="{% static 'icons/booth_record.png' %}" alt="Info"></a></div>
-		</div>
-		<div class="btnStock">
-			<div class="text">攤位設置</div>
-			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'icons/setting.png' %}" alt="Map"></a></div>
 		</div>
 		<div class="btnIndex">
 			<div class="text">付 款</div>
@@ -59,17 +59,35 @@
 			<div class="text">提 款</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/transaction/withdrawal"><img src="{% static 'icons/withdrawal.png' %}" alt="Contact"></a></div>
 		</div>
+		<div class="btnContact">
+			<div class="text">攤位設置</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'icons/setting.png' %}" alt="Map"></a></div>
+		</div>
 		{% elif 'Z1' in booth.id %}
-		<div class="btnIndex">
+		<div class="btnNews">
 			<div class="text">死 神</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/kill"><img src="{% static 'icons/death_king.png' %}" alt="Contact"></a></div>
 		</div>
-		{% elif 'Z2' in booth.id %}
+		<div class="btnInfo">
+			<div class="text">攤位設置</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'icons/setting.png' %}" alt="Map"></a></div>
+		</div>
+		{% elif 'C2' in booth.id %}
 		<div class="btnIndex">
 			<div class="text">創 造</div>
 			<div class="icon"><a href="/oc/booth/{{ booth.id }}/create"><img src="{% static 'icons/angel.png' %}" alt="Contact"></a></div>
 		</div>
+		<div class="btnInfo">
+			<div class="text">攤位設置</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'icons/setting.png' %}" alt="Map"></a></div>
+		</div>
+		{% else %}
+		<div class="btnNews">
+			<div class="text">攤位設置</div>
+			<div class="icon"><a href="/oc/booth/{{ booth.id }}/settings"><img src="{% static 'icons/setting.png' %}" alt="Map"></a></div>
+		</div>
 		{% endif %}
+
 	</div>
 		
 	<div class="footer">

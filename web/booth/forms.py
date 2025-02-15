@@ -10,8 +10,10 @@ class ParticipationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ParticipationForm, self).__init__(*args, **kwargs)
         player = kwargs['initial']['player']
+        marker = kwargs['initial']['marker']
         # self.fields['score'].queryset = booth.score_options
         self.fields['player'].queryset = Player.objects.filter(id=player.id)
+        self.fields['marker'].queryset = User.objects.filter(id=marker.id)
         for visible in self.visible_fields():
            visible.field.widget.attrs['class'] = 'usernameBox form-control'        
 

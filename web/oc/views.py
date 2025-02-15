@@ -21,6 +21,7 @@ import datetime
 import random
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 score_translation = {
         'health_score': '健康',
@@ -47,7 +48,7 @@ def oc_portal(request):
     return render(request, 'oc/home.html')
 
 @login_required(login_url="/oc")
-def search_profile(request, encrypted_id=""):
+def search_profile(request, encrypted_id="", booth_id=""):
 
     # profile = get_object_or_404(Student, user=request.user)
     template = loader.get_template('oc/search_profile.html')
@@ -74,7 +75,7 @@ def search_profile(request, encrypted_id=""):
         participations = Participation.objects.filter(player=player).all().order_by('-record_time')
         transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
         print(scores)
-        template = loader.get_template('player/profile.html')
+        template = loader.get_template('oc/player_profile.html')
         context = {
             'scores': scores,
             'player': player,
@@ -82,6 +83,8 @@ def search_profile(request, encrypted_id=""):
             'participations': participations,
             'transactions': transactions
         }
+        if booth_id:
+            context['booth'] = Booth.objects.get(id=booth_id)
         return HttpResponse(template.render(context, request))
         # return get_profile(request, encrypted_id)
         # return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id))
@@ -108,6 +111,7 @@ def list_booth(request, type=""):
     else:
         return redirect('404')
 
+@login_required(login_url="/oc")
 def booth_home(request, booth_id):
     booth = get_object_or_404(Booth, id=booth_id)
     request.session['booth'] = booth.id
@@ -122,6 +126,7 @@ def booth_home(request, booth_id):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/oc")
 def scan_player(request, booth_id):
     booth = get_object_or_404(Booth, id=booth_id)
     template = loader.get_template('oc/check_player.html')
@@ -131,6 +136,7 @@ def scan_player(request, booth_id):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/oc")
 def check_player(request, booth_id="", encrypted_id=""):
     booth = get_object_or_404(Booth, id=booth_id)
     if encrypted_id.isnumeric():
@@ -164,6 +170,7 @@ def check_player(request, booth_id="", encrypted_id=""):
         context['message'] = '此玩家不符合攤位要求!'
         return HttpResponse(msg_template.render(context, request))
 
+@login_required(login_url="/oc")
 def register_page(request, booth_id, encrypted_id):
     booth = get_object_or_404(Booth, id=booth_id)
     score_options = BoothScoring.objects.filter(booth=booth, active=True).all()
@@ -180,6 +187,7 @@ def register_page(request, booth_id, encrypted_id):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/oc")
 def get_register_score(request, booth_id, user_id):
     booth = get_object_or_404(Booth, id=booth_id)
     user = get_object_or_404(User, id=user_id)
@@ -193,7 +201,7 @@ def get_register_score(request, booth_id, user_id):
     return HttpResponse(template.render(context, request))
 
 
-class BoothParticipationView(FormView):
+class BoothParticipationView(LoginRequiredMixin, FormView):
     model = Participation
     form_class = ParticipationForm
     template_name = 'oc/booth_register.html'
@@ -220,13 +228,13 @@ class BoothParticipationView(FormView):
         initial = super().get_initial()
         booth = Booth.objects.get(id=self.kwargs['booth_id'])
         player = User.objects.get(id=self.kwargs['user_id']).player
+        if 'score_option' in self.request.GET:
+            booth_scoring = BoothScoring.objects.get(id=self.request.GET.get('score_option'))
+            initial = {**initial, **booth_scoring.__dict__}
         initial['booth'] = booth
         initial['player'] = player
         initial['marker'] = self.request.user
-        if 'score_option' in self.request.GET:
-            booth_scoring = BoothScoring.objects.get(id=self.request.GET.get('score_option'))
-            # initial = initial | booth_scoring.__dict__
-            initial = {**initial, **booth_scoring.__dict__}
+        initial['record_time'] = datetime.datetime.now()
         return initial
         # return super().get_success_url()
         # return HttpResponseRedirect(f'/oc/booth/{booth.id}/participations/{participation.id}/success')

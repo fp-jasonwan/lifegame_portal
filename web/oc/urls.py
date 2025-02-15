@@ -21,9 +21,12 @@ urlpatterns = [
     path('booth/check_player', booth_home, name='booth_home'),
     path('booth', redirect_to_booth, name='booth_home'),
     path('booth/<str:booth_id>/', booth_home, name='booth_home'),
+
+    path('booth/<str:booth_id>/search_profile/<str:encrypted_id>', search_profile, name='booth_player_profile'),
+    path('booth/<str:booth_id>/search_profile', search_profile, name='booth_search_profile'),
     path('booth/<str:booth_id>/check_player/<str:encrypted_id>', check_player, name='check_player'),
     path('booth/<str:booth_id>/check_player', scan_player, name='check_player'),
-    path('booth/<str:booth_id>/register/<str:user_id>/option', get_register_score),
+    path('booth/<str:booth_id>/register/<str:user_id>/option', get_register_score, name='register_option'),
     path('booth/<str:booth_id>/register/<str:user_id>', BoothParticipationView.as_view(), name='register_player'),
     # path('booth/<str:booth_id>/register2/<str:user_id>', BoothParticipationView.as_view(), name='register_player'),
     

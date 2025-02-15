@@ -29,24 +29,30 @@
 			</div>
 
             {% for field in form %}
+                {% if field.name == "player" or field.name == "type"%}
                 <div class="contentNews content1">
-                    {% if field.name == "player" or field.name == "type"%}
-                        <div class="content1" style="width:30%">{{ field.label_tag }}</div>
-                        <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
-                        <div class="content2" style="display:None">{{ field }}</div>
-                    {% elif field.name == "booth" or field.name == "marker" or field.name == "record_time"  %}
-                        <div class="content2" style="width:70%">{{ field" }}</div>
-                        <div class="content2">{{ field }}</div>
-                    {% elif field.name == "interest_rate" %}
-                        {% if scan_type == "withdrawal" %}
-                            <div class="content1" style="width:30%">{{ field.label_tag }}</div>
-                            <div class="content2" style="width:70%">{{ field }}</div>
-                        {% endif %}
-                    {% else %}
+                    <div class="content1" style="width:30%">{{ field.label_tag }}</div>
+                    <div class="content2" style="width:70%">{{ field|attr:"disabled:disabled" }}</div>
+                    <div class="content2" style="display:None">{{ field }}</div>
+                </div>
+                {% elif field.name == "booth" or field.name == "marker" or field.name == "record_time"  %}
+                <div class="contentNews content1" style="display:none">
+                    <div class="content2" style="width:70%">{{ field }}</div>
+                    <div class="content2">{{ field }}</div>
+                </div>
+                {% elif field.name == "interest_rate" %}
+                    {% if scan_type == "withdrawal" %}
+                    <div class="contentNews content1">
                         <div class="content1" style="width:30%">{{ field.label_tag }}</div>
                         <div class="content2" style="width:70%">{{ field }}</div>
+                    </div>
                     {% endif %}
+                {% else %}
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">{{ field.label_tag }}</div>
+                    <div class="content2" style="width:70%">{{ field }}</div>
                 </div>
+                {% endif %}
             {% endfor %}
             <div class="btn"><input src="{% static 'images/yolo.png' %}" style="height:100px;width:100px" type="image" /></div>
 		</div>

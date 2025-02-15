@@ -1,0 +1,247 @@
+{% load static %}
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>青少年人生之旅</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+<div class="sub">
+	
+	{% if encrypted_id %}
+	<div class="logo"><a href="/player/{{ encrypted_id }}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% else %}
+	<div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
+	{% endif %}
+	{% if booth %}
+	<a href='/oc/booth/{{ booth.id }}'>
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+        </div>
+    </a>
+	<br>
+	<a href="{% url 'register_option' booth.id player.user.id %}">
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>登記此玩家 </div>
+        </div>
+    </a>
+	{% endif %}
+	{% if config.ANNOUNCEMENT != "" %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'>公告: {{ config.ANNOUNCEMENT }}</div>
+	</div>
+	{% endif %}
+
+	{% if is_instructor %}
+	<div class="contentNews bar">
+		<div class="contentNews bar1" style='width:100%'><a href='/player/{{ encrypted_id }}/instructor'> 組別{{ group_id }}</a></div>
+	</div>
+	{% elif request.user.username == 'Z1' %}
+	<div class="contentNews bar" style="background-color: red">
+		<div class="contentNews bar1" style='width:100%'><a href='/player/{{ encrypted_id }}/instructor'>殺害此玩家</a></div>
+	</div>
+	{% endif %}
+	<div class="subContent">
+		<div class="titleInfo">
+			<div class="infoIcon"><img src="{% static 'images/info.png' %}" alt="logo"></div>
+			<div class="infotext">{{ player }}</div>
+			<div class="iconHome"></div>
+	
+		</div>
+		<div class="contentInfo">
+			<div class="contentInfo title">個人資料</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left" style="width:25%">編號</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.id }}</div>
+			</div>
+			<div class="contentInfo content">
+				<div class="contentInfo content left" style="width:25%">姓名</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.last_name }}{{ player.user.first_name }}</a></div>
+			</div>
+			{% if player.user.user_type == 'student' %}
+			<!-- <div class="contentInfo content">
+				<div class="contentInfo content left" style="width:25%">學校</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.school }}</a></div>
+			</div> -->
+			{% endif %}
+			{% if player.user.user_type == 'student' and player.user.room_no %}
+			<div class="contentInfo content">
+				<div class="contentInfo content left" style="width:25%">房間</div>
+				<div class="contentInfo content right" style="width:70%">{{ player.user.room_no }}</a></div>
+			</div>
+			{% endif %}
+			
+			<!-- Scores breakdown -->
+			<div class="contentNews title">資產</div>
+			{% if config.GAME_MODE == "start" %}
+            <div class="contentNews bar">
+                <div class="contentNews bar1"  style="width:30%; font-size:14px">分數類別</div>
+                <div class="contentNews bar3"  style="width:35%; font-size:14px">出生分數</div>
+                <div class="contentNews bar3"  style="width:35%; font-size:14px">現在分數</div>
+            </div>
+			
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">現金</div>
+				<div class="content3" style="width:35%; font-size:14px">{{ player.born_money }}</a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.cash }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">銀行存款</div>
+				<div class="content3" style="width:35%; font-size:14px">N/A</a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.deposit }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">樓宇</div>
+				<div class="content3" style="width:35%; font-size:14px">N/A</a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.flat }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">步數</div>
+				<div class="content3" style="width:35%; font-size:14px">{{ player.born_steps }}</a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.steps }}</a></div>
+			</div>
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">缺憾</div>
+				<div class="content3" style="width:35%; font-size:14px">{{ player.born_defect }}</a></div>
+				<div class="content3" style="width:35%; font-size:14px"></a></div>
+			</div>
+            
+
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
+			<!-- Scores breakdown -->
+			<div class="contentNews title">分數</div>
+			{% if config.GAME_MODE == "start" %}
+            <div class="contentNews bar">
+                <div class="contentNews bar1"  style="width:30%; font-size:14px">分數類別</div>
+                <div class="contentNews bar3"  style="width:35%; font-size:14px">出生分數</div>
+                <div class="contentNews bar3"  style="width:35%; font-size:14px">現在分數</div>
+            </div>
+			
+			<div class="contentNews content1">
+				<div class="content1" style="width:30%; font-size:14px">總得分</div>
+				<div class="content3" style="width:35%; font-size:14px"></a></div>
+				<div class="content3" style="width:35%; font-size:14px">{{ scores.total_score }}</a></div>
+			</div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:30%; font-size:14px">健康指數</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ player.born_health_score }}</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ scores.health_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:30%; font-size:14px">技能指數</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ player.born_skill_score }}</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ scores.skill_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:30%; font-size:14px">成長指數</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ player.born_growth_score }}</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ scores.growth_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:30%; font-size:14px">關係指數</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ player.born_relationship_score }}</div>
+                <div class="content3" style="width:35%; font-size:14px"> {{ scores.relationship_score }}</div>
+            </div>
+			<div class="contentNews content1">
+                <div class="content1" style="width:30%; font-size:14px">教育程度</div>
+				<div class="content3" style="width:35%; font-size:14px"> 
+					{% if player.born_academic_level == 1 %} 小學
+					{% elif player.born_academic_level == 2 %} 中學
+					{% elif player.born_academic_level == 3 %} 文憑
+					{% elif player.born_academic_level == 4 %} 大學
+					{% else %}無學歷
+					{% endif %}
+				</div>
+                <div class="content3" style="width:35%; font-size:14px"> 
+					{% if scores.academic_level == 1 %} 小學
+					{% elif scores.academic_level == 2 %} 中學
+					{% elif scores.academic_level == 3 %} 文憑
+					{% elif scores.academic_level == 4 %} 大學
+					{% else %}無學歷
+					{% endif %}
+				</div>
+            </div>
+
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
+
+
+			<!-- Participation records -->
+            <div class="contentNews title">參與記錄</div>
+			
+			{% if config.GAME_MODE == "start" %}
+            <div class="contentNews bar">
+                <div class="contentNews bar1"  style="width:30%; font-size:12px">時間</div>
+                <div class="contentNews bar3"  style="width:20%; font-size:12px">攤位</div>
+                <div class="contentNews bar3"  style="width:50%; font-size:12px">評分</div>
+            </div>
+            
+            {% for participation in participations %}
+            <div class="contentNews content1">
+                <div class="content3" style="width:30%; font-size:12px"> {{ participation.record_time|time:"H:i" }}</div>
+                <div class="content1" style="width:20%; font-size:12px"> {{ participation.booth }}</div>
+				<div class="content3" style="width:50%; font-size:12px"><a href="{{ request.path }}/participation/{{ participation.id }}">{{ participation.name }}</a></div>
+            </div>
+            {% endfor %}
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
+
+
+			<!-- Transaction records -->
+            <div class="contentNews title">交易記錄</div>
+			{% if config.GAME_MODE == "start" %}
+            <div class="contentNews bar">
+                <div class="contentNews bar3"  style="width:30%; font-size:12px">時間</div>
+                <div class="contentNews bar1"  style="width:20%; font-size:12px">攤位</div>
+                <div class="contentNews bar3"  style="width:50%; font-size:12px">內容</div>
+            </div>
+            
+            {% for transaction in transactions %}
+            <div class="contentNews content1">
+                <div class="content3" style="width:30%; font-size:12px"> {{ transaction.record_time|time:"H:i" }}</div>
+                <div class="content1" style="width:20%; font-size:12px"> {{ transaction.booth }}</div>
+                <div class="content3" style="width:50%; font-size:12px">
+					<a href="{{ request.path }}/transaction/{{ transaction.id }}">{{ transaction.get_player_str }}</a>
+				</div>
+            </div>
+            {% endfor %}
+			{% else %}
+			<div class="contentNews content1">
+                遊戲尚未開始
+            </div>
+			{% endif %}
+		</div>
+	</div>
+	
+	
+	<div class="footer">
+		{% if encrypted_id %}
+		<div><a href="/player/{{ encrypted_id }}"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% else %}
+		<div><a href="/oc"><h4 style="text-align: center;">返回主目錄</h4></a></div>
+		{% endif %}
+		<!-- <img src="{% static 'images/footer.png' %}" alt="footer"> -->
+	</div>
+	
+</div>
+	
+	
+
+</body>
+
+</html>
+
