@@ -97,16 +97,28 @@ def show_transactions(request, booth_id):
     return HttpResponse(template.render(context, request))
 
 
-def show_participation(request, booth_id, parti_id, message=""):
+def show_participation(request, booth_id=None, parti_id=None, message=""):
     if 'success' in request.path:
         message = '成功登記玩家！'
     template = loader.get_template('oc/booth_participation.html')
     booth = get_object_or_404(Booth, id=booth_id)
     participation = get_object_or_404(Participation, id=parti_id)
+    score_list = {
+        '健康指數': participation.health_score,
+        '技能指數': participation.skill_score,
+        '成長指數': participation.growth_score,
+        '關係指數': participation.relationship_score,
+        '金錢': participation.money,
+        '學業': participation.academic_level,
+        '步數': participation.steps,
+        '樓宇': participation.flat
+    }
+    print(score_list)
     context = {
         'message': message, 
         'booth': booth,
-        'participation': participation
+        'participation': participation,
+        'score_list': score_list
     }
     return HttpResponse(template.render(context, request))
 

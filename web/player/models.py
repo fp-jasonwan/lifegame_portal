@@ -68,7 +68,27 @@ class Player(models.Model):
                                      result_dict['growth_score'] + \
                                      result_dict['relationship_score'] 
         return result_dict
-        
+    
+    def check_eligibility(self, score_dict):
+        eligibility = []
+        player_scores = self.get_score_summary()
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score']:
+            if score_dict[score] < 0: # If the score is negative
+                if player_scores[score] < abs(score_dict[score]):
+                    eligibility.append({
+                        'score': score,
+                        'player': player_scores[score],
+                        'requirement': score_dict[score]
+                    })
+        if score_dict['money'] < 0: # If the score is negative
+            if player_scores['cash'] < abs(score_dict['money']):
+                eligibility.append({
+                        'score': 'cash',
+                        'player': player_scores['cash'],
+                        'requirement': score_dict['money']
+                    })
+        return eligibility
+
     def get_born_status(self):
         return {
             'health_score': self.born_health_score,

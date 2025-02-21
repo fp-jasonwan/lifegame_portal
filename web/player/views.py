@@ -130,6 +130,7 @@ def show_participation(request, parti_id, encrypted_id=""):
     template = loader.get_template('player/booth_participation.html')
     participation = get_object_or_404(Participation, id=parti_id)
     scores = {}
+    print(participation)
     for s in ['health_score','skill_score','growth_score','relationship_score','money', 'academic_level','steps','flat']:
         print(s, getattr(participation, s))
         if getattr(participation, s) != 0:

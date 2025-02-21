@@ -68,7 +68,7 @@ def search_profile(request, encrypted_id="", booth_id=""):
         if user.player is None:
             msg_template = loader.get_template('oc/booth_message.html')
             context['error_type'] = 'unknown_user'
-            context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+            context['message'] = '此玩家的角色已經死亡,請到靈堂重生!'
             return HttpResponse(msg_template.render(context, request))
         
         scores = player.get_score_summary()
@@ -147,7 +147,7 @@ def check_player(request, booth_id="", encrypted_id=""):
     # If the user does not exist, return error
     if hasattr(user, 'player') == False:
         context['error_type'] = 'unknown_user'
-        context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+        context['message'] = '此玩家的角色已經死亡,請請到靈堂重生!'
         return HttpResponse(msg_template.render(context, request))
     request.session['booth'] = booth.id
     msg_template = loader.get_template('oc/booth_message.html')
@@ -161,14 +161,14 @@ def check_player(request, booth_id="", encrypted_id=""):
 
     
     # Check player eligibility
-    eligibility = booth.check_player(player)
-    if len(eligibility) == 0:
-        return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id)) 
-    else:
-        context['eligibility'] = eligibility
-        context['error_type'] = 'not_eligible'
-        context['message'] = '此玩家不符合攤位要求!'
-        return HttpResponse(msg_template.render(context, request))
+    # eligibility = booth.check_player(player)
+    # if len(eligibility) == 0:
+    return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id)) 
+    # else:
+    #     context['eligibility'] = eligibility
+    #     context['error_type'] = 'not_eligible'
+    #     context['message'] = '此玩家不符合攤位要求!'
+    #     return HttpResponse(msg_template.render(context, request))
 
 @login_required(login_url="/oc")
 def register_page(request, booth_id, encrypted_id):
@@ -214,8 +214,19 @@ class BoothParticipationView(LoginRequiredMixin, FormView):
         print("Form is invalid. Errors:", form.errors)
         return super().form_invalid(form)
     def form_valid(self, form):
+
+        
+        data = form.cleaned_data
+        eligibility = data['player'].check_eligibility(data)
+        if len(eligibility) > 0:
+            context = {
+                'eligibility': eligibility,
+                'error_type': 'not_eligible',
+                'message': '此玩家不符合攤位要求!'
+            }
+            msg_template = loader.get_template('oc/booth_message.html')
+            return HttpResponse(msg_template.render(context, self.request))
         form.save()
-        print("Form is valid. Saving...")
         return super().form_valid(form)
     
     def get_context_data(self, **kwargs):
@@ -263,8 +274,19 @@ class BoothScoreFormView(FormView):
         print("Form is invalid. Errors:", form.errors)
         return super().form_invalid(form)
     def form_valid(self, form):
+
+        # Check player eligibility
+        # eligibility = booth.check_player(player)
+        # if len(eligibility) == 0:
+        #     return redirect('/oc/booth/{}/register/{}'.format(booth.id, user.id)) 
+        # else:
+        #     context['eligibility'] = eligibility
+        #     context['error_type'] = 'not_eligible'
+        #     context['message'] = '此玩家不符合攤位要求!'
+        #     return HttpResponse(msg_template.render(context, request))
+        print(form)
         form.save()
-        print("Form is valid. Saving...")
+
         return super().form_valid(form)
     
     def get_object(self):
@@ -279,6 +301,7 @@ class BoothScoreFormView(FormView):
         if self.get_object():
             form.instance = self.get_object()  # Set the instance for update
         return form
+    
     def get_initial(self):
         initial = super().get_initial()
         obj = self.get_object()
@@ -405,7 +428,7 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
             template = loader.get_template('oc/booth_message.html')
             context = {
                 'booth': booth,
-                'message': '此玩家的角色已經死亡,請重新領取身份!'
+                'message': '此玩家的角色已經死亡,請到靈堂重生!'
             }
             return HttpResponse(template.render(context, request))
         form = TransactionForm(request.POST or None,
@@ -572,7 +595,7 @@ def check_player(request, booth_id="", encrypted_id=""):
     # If the user does not exist, return error
     if user.player is None:
         context['error_type'] = 'unknown_user'
-        context['message'] = '此玩家的角色已經死亡,請重新領取身份!'
+        context['message'] = '此玩家的角色已經死亡,請到靈堂重生!'
         return HttpResponse(msg_template.render(context, request))
     
     player = user.player
@@ -580,14 +603,14 @@ def check_player(request, booth_id="", encrypted_id=""):
     context['player_scores'] = player.get_score_summary()
 
     # Check player eligibility
-    eligibility = booth.check_player(player)
-    if len(eligibility) == 0:
-        return redirect('/oc/booth/{}/register/{}/option'.format(booth.id, user.id)) 
-    else:
-        context['eligibility'] = eligibility
-        context['error_type'] = 'not_eligible'
-        context['message'] = '此玩家不符合攤位要求!'
-        return HttpResponse(msg_template.render(context, request))
+    # eligibility = booth.check_player(player)
+    # if len(eligibility) == 0:
+    return redirect('/oc/booth/{}/register/{}/option'.format(booth.id, user.id)) 
+    # else:
+    #     context['eligibility'] = eligibility
+    #     context['error_type'] = 'not_eligible'
+    #     context['message'] = '此玩家不符合攤位要求!'
+    #     return HttpResponse(msg_template.render(context, request))
 
 def create_player(request, booth_id, encrypted_id=None):
     booth = get_object_or_404(Booth, id=booth_id)

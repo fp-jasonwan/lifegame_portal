@@ -46,13 +46,26 @@
                 </div>
                 <div class="contentNews content1">
                     <div class="content1" style="width:30%">分數</div>
-                        <div class="content2" style="width:70%">{{ participation.score }}</div>
+                        <div class="content2" style="width:70%">{{ participation.name }}</div>
                 </div>
                 <div class="contentNews content1">
                     <div class="content1" style="width:30%">評分員</div>
                         <div class="content2" style="width:70%">{{ participation.marker }}</div>
                 </div>
-            
+                
+                <div class="contentNews title">分數改變</div>
+                <div class="contentNews bar">
+                    <div class="contentNews bar1" style="width:30%">指數</div>
+                    <div class="contentNews bar2" style="width:70%">得分</div>
+                </div>
+                {% for k, v in score_list.items %}
+                {% if v != 0 %}
+                <div class="contentNews content1">
+                    <div class="content1" style="width:30%">{{ k }}</div>
+                    <div class="content2" style="width:70%">{{ v }}</div>
+                </div>
+                {% endif %}
+                {% endfor %}
             <div class="contentNews title">
                 <a class="delete-link" id="delete-object" data-object-id="3">刪除此記錄</a>
             </div>

@@ -32,7 +32,7 @@ class User(AbstractUser):
                 active=True
             )
         except :
-            raise Http404("此玩家的角色已經死亡,請重新領取身份!")
+            raise Http404("此玩家的角色已經死亡,請到靈堂重生!")
 
     user_type = models.CharField(
         max_length=10,

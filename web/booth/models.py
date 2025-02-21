@@ -29,10 +29,10 @@ class BoothRequirement(models.Model):
 
     def check_player(self, player):
         failed_list = []
-        # player_scores = player.get_score_summary()
-        # for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money', 'academic_level']:
-        #     if player_scores[score] < getattr(self, score):
-        #         failed_list.append(score)
+        player_scores = player.get_score_summary()
+        for score in ['health_score', 'skill_score', 'growth_score', 'relationship_score', 'money', 'academic_level']:
+            if player_scores[score] < getattr(self, score):
+                failed_list.append(score)
         return failed_list
 
 

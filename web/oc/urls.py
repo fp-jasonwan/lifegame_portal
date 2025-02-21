@@ -46,7 +46,7 @@ urlpatterns = [
     path('booth/<str:booth_id>/participations/<str:parti_id>/delete', delete_participation, name='booth_participation_delete'),
 
     path('booth/<str:booth_id>/transactions', show_transactions, name='transaction_record'),
-    path('booth/<str:booth_id>/transactions/<str:tran_id>', show_transaction, name='transaction_record'),
+    path('booth/<str:booth_id>/transactions/<str:tran_id>', show_transaction, name='booth_transaction'),
     path('booth/<str:booth_id>/transactions/<str:tran_id>/success', show_transaction, name='transaction_record_success'),
     path('booth/<str:booth_id>/transactions/<str:tran_id>/delete', delete_transaction, name='transaction_record_success'),
     path('booth/<str:booth_id>/transaction/<str:type>', booth_transaction, name='transaction_scan'),

@@ -36,15 +36,11 @@
 				<div class="contentNews bar3" style="width:25%">玩家</div>
 			</div>
             
-            {% for type in score_types %}
-            {% if type in eligibility %}
+            {% for score in eligibility %}
 			<div class="contentNews content1" style="background-color:#FF938F;">
-            {% else %}
-			<div class="contentNews content1" style="background-color:#97FF86;">
-            {% endif %}
-                <div class="content1" style="width:50%">{{ score_translation|get_item:type }}</div>
-                <div class="content2" style="width:25%">{{ booth_scores|get_item:type }}</div>
-                <div class="content3" style="width:25%">{{ player_scores|get_item:type }}</div>
+                <div class="content1" style="width:50%">{{ score.score }}</div>
+                <div class="content2" style="width:25%">{{ score.requirement }}</div>
+                <div class="content3" style="width:25%">{{ score.player }}</div>
 			</div>
             {% endfor %}
 		</div>
