@@ -74,7 +74,6 @@ def search_profile(request, encrypted_id="", booth_id=""):
         scores = player.get_score_summary()
         participations = Participation.objects.filter(player=player).all().order_by('-record_time')
         transactions = Transaction.objects.filter(player=player).all().order_by('-record_time')
-        print(scores)
         template = loader.get_template('oc/player_profile.html')
         context = {
             'scores': scores,
@@ -118,7 +117,6 @@ def booth_home(request, booth_id):
     template = loader.get_template('oc/booth_home.html')
 
     if request.method == 'POST':
-        print(request.POST['is_active'] )
         booth.is_active = request.POST['is_active'] == 'true'
         booth.save()
     context = {
@@ -191,7 +189,7 @@ def register_page(request, booth_id, encrypted_id):
 def get_register_score(request, booth_id, user_id):
     booth = get_object_or_404(Booth, id=booth_id)
     user = get_object_or_404(User, id=user_id)
-    score_options = booth.booth_scoring.all()
+    score_options = booth.booth_scoring.filter(active=True).all()
     context = {
         'booth': booth,
         'user': user,
@@ -211,7 +209,6 @@ class BoothParticipationView(LoginRequiredMixin, FormView):
     #     return reverse('/oc/booth', args=(self.kwargs['pk'],))
     
     def form_invalid(self, form):
-        print("Form is invalid. Errors:", form.errors)
         return super().form_invalid(form)
     def form_valid(self, form):
 
@@ -253,7 +250,7 @@ class BoothParticipationView(LoginRequiredMixin, FormView):
 
 def show_booth_score(request, booth_id):
     booth = get_object_or_404(Booth, id=booth_id)
-    score_options = booth.booth_scoring.all()
+    score_options = booth.booth_scoring.filter(active=True).all()
     context = {
         'booth': booth,
         'score_options': score_options
@@ -271,7 +268,6 @@ class BoothScoreFormView(FormView):
 
 
     def form_invalid(self, form):
-        print("Form is invalid. Errors:", form.errors)
         return super().form_invalid(form)
     def form_valid(self, form):
 
@@ -284,14 +280,12 @@ class BoothScoreFormView(FormView):
         #     context['error_type'] = 'not_eligible'
         #     context['message'] = '此玩家不符合攤位要求!'
         #     return HttpResponse(msg_template.render(context, request))
-        print(form)
         form.save()
 
         return super().form_valid(form)
     
     def get_object(self):
         """Retrieve the object based on the URL parameter, if it exists."""
-        print(self.kwargs)
         obj_id = self.kwargs.get('score_id')  # Assumes 'pk' is in the URL
         return get_object_or_404(BoothScoring, id=obj_id) if obj_id else None
     
@@ -343,9 +337,6 @@ def update_booth_settings_scoring(request, booth_id, score_id):
                 'message': '成功更新攤位要求!'
             }
             return HttpResponse(msg_template.render(context, request))
-        else:
-            print(form.errors)
-            print("INVALID FORM")
     template = loader.get_template('oc/booth_settings_scoring.html')
     
     context = {
@@ -371,9 +362,7 @@ def create_booth_settings_scoring(request, booth_id):
                 'message': '成功更新攤位要求!'
             }
             return HttpResponse(msg_template.render(context, request))
-        else:
-            print(form.errors)
-            print("INVALID FORM")
+
     template = loader.get_template('oc/booth_settings_scoring_create.html')
     
     context = {
@@ -398,8 +387,6 @@ def update_booth_settings_requirement(request, booth_id):
                 'message': '成功更新攤位要求!'
             }
             return HttpResponse(msg_template.render(context, request))
-        else:
-            print("INVALID FORM")
     template = loader.get_template('oc/booth_settings_requirement.html')
     
     context = {
@@ -447,7 +434,6 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
                 money = form.cleaned_data['money']
                 if type in ('receive', 'deposit'):
                     player_money = player.get_score('cash')
-                    print(money, player_money)
                     if money > player_money:
                         msg_template = loader.get_template('oc/booth_message.html')
                         context = {
@@ -495,50 +481,50 @@ def booth_transaction(request, booth_id, type, encrypted_id=""):
         return HttpResponse(template.render(context, request))
 
 
-def get_instructor_players(request):
-    instructor = request.user
-    players = Player.objects.all()
-    for p in players:
-        p.__dict__['comment_added'] = InstructorScore.objects.filter(player=p).count() > 0
-    template = loader.get_template('oc/instructor.html')
-    last_seen = Participation.objects.filter()
-    context = {
-        'players': players,
-    }
-    return HttpResponse(template.render(context, request))
+# def get_instructor_players(request):
+#     instructor = request.user
+#     players = Player.objects.all()
+#     for p in players:
+#         p.__dict__['comment_added'] = InstructorScore.objects.filter(player=p).count() > 0
+#     template = loader.get_template('oc/instructor.html')
+#     last_seen = Participation.objects.filter()
+#     context = {
+#         'players': players,
+#     }
+#     return HttpResponse(template.render(context, request))
 
-def register_instructor_comment(request, player_id):
-    player = get_object_or_404(Player, id=player_id)
-    try:
-        comment_record = InstructorScore.objects.get(player=player)
-    except:
-        comment_record = None
-    if request.method == 'POST':
-        print(request.POST)
-        form = InstructorCommentForm(request.POST)
-        if form.is_valid():
-            print("VALID FORM")
-            comments = form.cleaned_data['comments']
-            score = form.cleaned_data['score']
+# def register_instructor_comment(request, player_id):
+#     player = get_object_or_404(Player, id=player_id)
+#     try:
+#         comment_record = InstructorScore.objects.get(player=player)
+#     except:
+#         comment_record = None
+#     if request.method == 'POST':
+#         print(request.POST)
+#         form = InstructorCommentForm(request.POST)
+#         if form.is_valid():
+#             print("VALID FORM")
+#             comments = form.cleaned_data['comments']
+#             score = form.cleaned_data['score']
 
-            if not comment_record:
-                comment_record = InstructorScore(
-                    player = player, 
-                    score=score, 
-                    comments=comments,
-                    instructor=request.user, 
-                )
-            comment_record.save()
-            messages.success(request, '評分已被記錄!')
-        else:
-            print("INVALID FORM")
-    template = loader.get_template('oc/instructor_comment.html')
+#             if not comment_record:
+#                 comment_record = InstructorScore(
+#                     player = player, 
+#                     score=score, 
+#                     comments=comments,
+#                     instructor=request.user, 
+#                 )
+#             comment_record.save()
+#             messages.success(request, '評分已被記錄!')
+#         else:
+#             print("INVALID FORM")
+#     template = loader.get_template('oc/instructor_comment.html')
     
-    context = {
-        'player': player,
-        'comment': comment_record
-    }
-    return HttpResponse(template.render(context, request))
+#     context = {
+#         'player': player,
+#         'comment': comment_record
+#     }
+#     return HttpResponse(template.render(context, request))
 
 def redirect_to_booth(request):
     return list_booth(request)
@@ -572,7 +558,7 @@ def kill_player(request, booth_id, encrypted_id=None):
             return HttpResponse(msg_template.render(context, request))
         
         player = user.get_player()
-        player.is_active = False
+        player.active = False
         player.save()
         context['message'] = '此玩家的角色已被死神殺害,請重新領取身份!'
         return HttpResponse(msg_template.render(context, request))
@@ -646,4 +632,19 @@ def create_player(request, booth_id, encrypted_id=None):
             born_defect=''
         )
         return redirect(f"/oc/search_profile/{user.id}")
+    return HttpResponse(template.render(context, request))
+
+
+def get_negative_steps_list(request, booth_id):
+    booth = get_object_or_404(Booth, id=booth_id)
+    template = loader.get_template('oc/negative_steps.html')
+    score_list = Player.get_negative_steps_list()
+    context = {
+        'booth': booth,
+        'list_name': '逃稅玩家',
+        'mark_name': '步數',
+        'description': '以上玩家現時的步數為負數',
+        'list': score_list,
+        'now': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
     return HttpResponse(template.render(context, request))

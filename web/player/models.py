@@ -158,6 +158,13 @@ class Player(models.Model):
         return self.get_score_summary()[score_name]
 
     @staticmethod
+    def get_negative_steps_list():
+        return Player.objects.filter(Q(user__user_type='student'), Q(active=True)).values('user').annotate(
+            steps = Max(F('born_steps')) \
+                    + Sum(Coalesce('participation_player__steps', Value(0))) \
+        ).filter(steps__lt=0).order_by('-steps')
+    
+    @staticmethod
     def get_total_score_list(no_of_rows=10):
         return Player.objects.filter(Q(user__user_type='student'), Q(active=True)).values('user').annotate(
             mark = Max(F('born_health_score')) \

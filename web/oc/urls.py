@@ -1,8 +1,8 @@
-from .views import oc_portal, search_profile, list_booth, booth_home,scan_player, check_player, register_page, get_instructor_players, register_instructor_comment
+from .views import oc_portal, search_profile, list_booth, booth_home,scan_player, check_player, register_page
 from .views import redirect_to_booth, \
      update_booth_settings_requirement, booth_transaction, \
     update_booth_settings_scoring, create_booth_settings_scoring, kill_player, create_player
-from .views import BoothParticipationView, BoothScoreFormView, get_register_score, show_booth_score
+from .views import BoothParticipationView, BoothScoreFormView, get_register_score, show_booth_score, get_negative_steps_list
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required, permission_required
 from booth.views import show_participations, show_participation, \
@@ -58,6 +58,8 @@ urlpatterns = [
     path('booth/<str:booth_id>/create', create_player, name='create_player'),
     path('booth/<str:booth_id>/create/<str:encrypted_id>', create_player, name='create_player'),
     
-    path('instructor', get_instructor_players, name='instructor_page'),
-    path('instructor/register/<str:player_id>', register_instructor_comment, name='instructor_register')
+    # path('instructor', get_instructor_players, name='instructor_page'),
+    # path('instructor/register/<str:player_id>', register_instructor_comment, name='instructor_register'),
+
+    path('booth/<str:booth_id>/negative_steps', get_negative_steps_list, name='negative_steps')
 ]

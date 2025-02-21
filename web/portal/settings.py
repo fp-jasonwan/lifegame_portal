@@ -48,7 +48,7 @@ ALLOWED_HOSTS.append('lionslifegame.com')
 ALLOWED_HOSTS.append('asia-east1.run.app')
 ALLOWED_HOSTS.append('www.lionslifegame.com')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
@@ -207,10 +207,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static"
-# ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"

@@ -24,6 +24,7 @@ def get_profile(request, encrypted_id=""):
         participations = player.participation_player.all().order_by('-record_time')
         transactions = player.transaction_player.all().order_by('-record_time')
         template = loader.get_template('player/profile.html')
+        print(scores)
         context = {
             'encrypted_id': encrypted_id,
             'scores': scores,
@@ -73,7 +74,6 @@ class PlayerParticipationTable(tables.Table):
 def get_rich_list(request, encrypted_id=""):
     template = loader.get_template('ranking.html')
     rich_list = Player.get_rich_list()
-    print(rich_list)
     context = {
         'list_name': '富豪榜',
         'mark_name': '金錢',
@@ -130,9 +130,7 @@ def show_participation(request, parti_id, encrypted_id=""):
     template = loader.get_template('player/booth_participation.html')
     participation = get_object_or_404(Participation, id=parti_id)
     scores = {}
-    print(participation)
     for s in ['health_score','skill_score','growth_score','relationship_score','money', 'academic_level','steps','flat']:
-        print(s, getattr(participation, s))
         if getattr(participation, s) != 0:
             field_name = participation._meta.get_field(s).verbose_name
             scores[field_name] = getattr(participation, s)
@@ -195,8 +193,6 @@ def vote_best_booth(request, encrypted_id=""):
                 'message': '成功投選我最喜愛攤位!'
             }
             return HttpResponse(msg_template.render(context, request))
-        else:
-            print("INVALID FORM")
     template = loader.get_template('player/voting_booth.html')
     
     context = {
