@@ -40,7 +40,7 @@
 				<div class="contentNews bar1" style="width:30%">指數</div>
 				<div class="contentNews bar2" style="width:70%">得分</div>
 			</div>
-            {% for score in score_list %}
+            {% for k, v in scores.items %}
             <div class="contentNews content1">
                 <div class="content1" style="width:30%">{{ k }}</div>
                 <div class="content2" style="width:70%">{{ v }}</div>

@@ -59,10 +59,11 @@ class Player(models.Model):
         transactions = self.get_transaction_summary()
         academic_dict = dict((x, y) for x, y in ACADEMIC_CHOICES)
         df = pd.DataFrame([born_status, participations, transactions]).fillna(0)
+        df['academic_level'] = df['academic_level'].astype(int)
         int_cols = ['academic_level', 'flat', 'steps']
         agg_dict = {col: 'max' if col in ['academic_level'] else 'sum' for col in df.columns}
-        result_dict = df.agg(agg_dict).to_dict()
-        result_dict['academic_level'] = academic_dict[result_dict['academic_level']]
+        result_dict = df.agg(agg_dict).astype(int).to_dict()
+        # result_dict['academic_level'] = academic_dict[result_dict['academic_level']]
         result_dict['total_score'] = result_dict['health_score'] + \
                                      result_dict['skill_score'] + \
                                      result_dict['growth_score'] + \
