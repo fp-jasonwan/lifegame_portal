@@ -8,6 +8,8 @@ RUN apt-get update && \
     apt-get -y install gcc mono-mcs && \
     rm -rf /var/lib/apt/lists/*
 
+RUN apt-get install build-dep python-psycopg2 
+
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /requirements.txt && \
