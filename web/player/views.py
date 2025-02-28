@@ -113,7 +113,7 @@ def get_instructor_students(request, encrypted_id=""):
         group = get_object_or_404(InstructorGroup, instructor=user)
         context = {
             'group_id': group.id,
-            'students': group.students.order_by('id').all(),
+            'students': group.instructor_group_student.order_by('id').all(),
             'players': group.get_player(),
             'encrypted_id': encrypted_id
         }

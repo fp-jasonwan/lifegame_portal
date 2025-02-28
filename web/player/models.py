@@ -144,7 +144,7 @@ class Player(models.Model):
             skill_score=Sum(Value(0.0)),
             growth_score=Sum(Value(0.0)),
             relationship_score=Sum(Value(0.0)),
-            cash=Sum(receive + withdrawal_with_interest - pay - deposit),
+            cash=Sum(pay + withdrawal_with_interest - receive - deposit),
             bank_amount=Sum(deposit-withdrawal),
             academic_level=Sum(Value(0.0)),
             steps=Sum(Value(0.0)),
