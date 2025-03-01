@@ -10,13 +10,13 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* 
 
 
-# RUN apt-get install build-dep python-psycopg2 
+RUN apt-get install build-dep python-psycopg2 
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /requirements.txt && \
     adduser --disabled-password --no-create-home django-user
-RUN pip install psycopg2
+# RUN pip install psycopg2
 
 ENV PATH="/py/bin:$PATH"
 ENV PYTHONDONTWRITEBYTECODE 1
