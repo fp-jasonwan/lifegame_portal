@@ -10,7 +10,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* 
 
 
-# RUN apt-get install build-dep python-psycopg2 
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
