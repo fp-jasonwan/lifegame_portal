@@ -4,9 +4,11 @@ COPY ./requirements.txt /requirements.txt
 COPY ./web /app
 WORKDIR /app
 
+
 RUN apt-get update && \
     apt-get -y install gcc mono-mcs && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get install -y apt-transport-https
 
 RUN apt-get install build-dep python-psycopg2 
 
