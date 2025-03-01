@@ -7,10 +7,9 @@ WORKDIR /app
 
 RUN apt-get update && \
     apt-get -y install gcc mono-mcs && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get install -y apt-transport-https
+    rm -rf /var/lib/apt/lists/* 
 
-RUN apt-get install build-dep python-psycopg2 
+RUN apt-get install build-dep psycopg2 
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
