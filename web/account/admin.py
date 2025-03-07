@@ -25,7 +25,7 @@ class UserInline(admin.StackedInline):
 @admin.register(User)
 class MyUserAdmin(UserAdmin):
     list_per_page = 10
-    list_display = ('id', 'username',)
+    list_display = ('id', 'username', 'last_name','first_name', 'school', 'instructor_group')
     search_fields = ('username','first_name', 'last_name', 'school')
     ordering = ('id',)
     form = MyUserChangeForm

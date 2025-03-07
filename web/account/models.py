@@ -59,6 +59,10 @@ class InstructorGroup(models.Model):
     def get_player(self):
         players = Player.objects.filter(user__in=self.instructor_group_student.all()).order_by('-active','user__id')
         return players
+    
+    def __str__(self):
+        return self.name
+    
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     instructor = models.ManyToManyField('account.User', related_name='instructor')
