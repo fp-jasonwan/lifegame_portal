@@ -17,7 +17,13 @@
 	{% else %}
 	<div class="logo"><a href="/oc"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a></div>
 	{% endif %}
-
+    {% if booth %}
+    <a href='/oc/booth/{{ booth.id }}'>
+        <div class="contentNews bar">
+            <div class="contentNews bar1" style='width:100%'>{{ booth.id }} - {{ booth.name }}</div>
+        </div>
+    </a>
+    {% endif %}
     <div class="subContent">
         <div class="contentInfo" style="padding-bottom: 0px; margin-bottom: 0px">
             <div class="contentNews title"></div>

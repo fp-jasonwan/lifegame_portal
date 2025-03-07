@@ -150,7 +150,7 @@ def show_transaction(request, tran_id, encrypted_id=""):
     if transaction.get_deposit() != 0:
         transaction_record['銀行存款'] = transaction.get_deposit()
     if transaction.interest_rate != 0:
-        transaction_record['利率'] = transaction.interest_rate()
+        transaction_record['利率'] = transaction.interest_rate
     context = {
         'encrypted_id': encrypted_id, 
         'transaction': transaction,

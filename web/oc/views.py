@@ -54,6 +54,8 @@ def search_profile(request, encrypted_id="", booth_id=""):
     template = loader.get_template('oc/search_profile.html')
     context = {
     }
+    if booth_id:
+        context['booth'] = Booth.objects.get(id=booth_id)
     if encrypted_id == "":
         return HttpResponse(template.render(context, request))
     else:

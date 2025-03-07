@@ -186,7 +186,8 @@ class Transaction(models.Model):
         if self.type == 'deposit':
             return f'存款${self.money}'
         if self.type == 'withdrawal':
-            return f'提款${self.money}'
+            withdrawal_amount = self.money * (1 + self.interest_rate)
+            return f'提款${withdrawal_amount}'
         return False
     
     @staticmethod
