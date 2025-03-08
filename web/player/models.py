@@ -179,34 +179,55 @@ class Player(models.Model):
 
     @staticmethod
     def get_rich_list(no_of_rows=10):
+                
         pay = Case(
-            When(transaction_player__type='pay', then='transaction_player__money'), 
+            When(type='pay', then='money'), 
             default=Value(0.0),
             output_field = FloatField()
         )
         receive = Case(
-            When(transaction_player__type='receive', then='transaction_player__money'), 
+            When(type='receive', then='money'), 
             default=Value(0.0),
             output_field = FloatField()
         )
         deposit = Case(
-            When(transaction_player__type='deposit', then='transaction_player__money'), 
+            When(type='deposit', then='money'), 
             default=Value(0.0),
             output_field = FloatField()
         )
         withdrawal = Case(
-            When(transaction_player__type='withdrawal', then='transaction_player__money'), 
+            When(type='withdrawal', then='money'), 
             default=Value(0.0),
             output_field = FloatField()
         )
         withdrawal_with_interest = Case(
-            When(transaction_player__type='withdrawal', then=F('transaction_player__money') * (Value(1.0) + F('transaction_player__interest_rate'))), 
+            When(type='withdrawal', then=(F('money') * (Value(1.0) + F('interest_rate')))), 
             default=Value(0.0),
             output_field = FloatField()
         )
-        return Player.objects.filter(Q(user__user_type='student'), Q(active=True)).values('user').annotate(
-            mark = Sum(F('born_money') + receive + withdrawal_with_interest - pay - deposit)
-        ).order_by('-mark')[:no_of_rows]
+        tran_df = pd.DataFrame(
+            Transaction.objects.values('player__user').annotate(
+                money = Sum(
+                    pay-receive+withdrawal_with_interest-deposit
+                )
+            )
+        )
+        tran_df.columns = ['user', 'mark']
+        parti_df = pd.DataFrame(
+            Participation.objects.values('player__user').annotate(
+                money = Sum(
+                    F('money')
+                )
+            )
+        )
+        parti_df.columns = ['user', 'mark']
+        player_df = pd.DataFrame(Player.objects.filter(Q(user__user_type='student'), Q(active=True)).values('user').annotate(
+            money=Max('born_money')
+        ))
+        player_df.columns = ['user', 'mark']
+        df = pd.concat([tran_df, parti_df, player_df])
+        result_df = df.groupby('user', as_index=False).sum('mark').sort_values('mark',ascending=False)
+        return result_df.head(10).to_dict('records')
 
 
 def create_player(instance, created, raw, **kwargs):
