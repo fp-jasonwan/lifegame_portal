@@ -34,7 +34,9 @@ def handler404(request, exception):
     message = str(exception)  # Get the error message from the exception
     return render(request, 'error/404.html', {'error_message': message}, status=404)
 
+# def handler500(request):
+#     message = str(exception)  # Get the error message from the exception
+#     return render(request, 'error/500.html', {'error_message': message}, status=500)
 
-def handler500(request, exception):
-    message = str(exception)  # Get the error message from the exception
-    return render(request, 'error/500.html', {'error_message': message}, status=500)
+def handler500(request, *args, **argv):
+    return render(request, '500.html', status=500)
