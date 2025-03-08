@@ -24,6 +24,7 @@ from booth.views import BoothsListView, get_booths_map
 from oc.views import get_contact
 from player.views import get_rich_list, get_score_list, get_map
 handler404 = 'account.views.handler404'
+handler404 = 'account.views.handler500'
 handler403 = 'main.views.handler403'
 
 urlpatterns = [
