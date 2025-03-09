@@ -29,5 +29,8 @@ urlpatterns = [
     path('rules/', TemplateView.as_view(template_name='rules.html'), name='rules'),
     path('instructor/', get_instructor_students, name='instructor_students'),
     path('instructor/<str:player_id>', instructor_get_player, name='instructor_get_player'),
+
+    path('instructor/<str:player_id>/participation/<str:parti_id>', show_participation, name="get_participation_record"),
+    path('instructor/<str:player_id>/transaction/<str:tran_id>', show_transaction, name="get_tranasction_record"),
     path('vote', vote_best_booth, name='vote_booth'),
 ]

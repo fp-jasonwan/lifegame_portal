@@ -126,7 +126,7 @@ def get_instructor_students(request, encrypted_id=""):
         return HttpResponse(template.render(context, request))
     
 
-def show_participation(request, parti_id, encrypted_id=""):
+def show_participation(request, parti_id, encrypted_id="", player_id=""):
     template = loader.get_template('player/booth_participation.html')
     participation = get_object_or_404(Participation, id=parti_id)
     scores = {}
