@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from account.models import User, InstructorGroup
+from account.models import User, InstructorGroup, BoothVoting
 from player.models import Player
 # Register your models here.
 
@@ -48,3 +48,5 @@ class MyUserAdmin(UserAdmin):
 class InstructorGroupAdmin(admin.ModelAdmin):
     pass
     # inlines = [UserInline]
+
+admin.site.register(BoothVoting)

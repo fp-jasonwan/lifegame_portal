@@ -26,11 +26,12 @@
             
             {% if user.best_booth %}
                 <div class="contentNews content1">
-                    <div class="content2" style="width:100%">{{ form.best_booth|attr:"disabled:disabled" }}</div>
+                    <div class="content2" style="width:100%">{{ form.booth|attr:"disabled:disabled" }}</div>
                 </div>
             {% else %}
                 <div class="contentNews content1">
-                    <div class="content2" style="width:100%">{{ form.best_booth }}</div>
+                    <div class="content2" style="width:100%; display:None" >{{ form.user }}</div>
+                    <div class="content2" style="width:100%">{{ form.booth }}</div>
                 </div>
                 <div class="btn"><input src="{% static 'images/yolo.png' %}" style="height:100px;width:100px" type="image" /></div>
             {% endif %}

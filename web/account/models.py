@@ -25,6 +25,10 @@ class User(AbstractUser):
         return Player.objects.filter(user=self, active=True).first()
 
     @property
+    def best_booth(self):
+        return BoothVoting.objects.get(user=self)
+    
+    @property
     def player(self):
         try:
             return Player.objects.get(

@@ -180,11 +180,21 @@ def instructor_get_player(request, encrypted_id, player_id):
 def vote_best_booth(request, encrypted_id=""):
     user = User.objects.get(encrypted_id=encrypted_id)
     request.session['from'] = request.META.get('HTTP_REFERER', '/')
-    # if Booth.objects.filter(booth=booth).exists():
-    instance = BoothVoting.objects.get_or_create(user=user)
-    form = BoothSettingsForm(request.POST or None, instance=instance)
+    if BoothVoting.objects.filter(user=user).exists():
+        instance = BoothVoting.objects.get(user=user)
+        form = BoothSettingsForm(
+            request.POST or None, 
+            instance=instance
+        )
+    else:
+        form = BoothSettingsForm(
+            request.POST or None, 
+            initial = {'user': user}
+        )
     
     if request.method == 'POST':
+        print(form.is_valid())
+        print(form.errors)
         if form.is_valid():
             form.save()
             msg_template = loader.get_template('player/player_message.html')
